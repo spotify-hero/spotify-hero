@@ -1,0 +1,13 @@
+{
+  "name": "tc-hero",
+  "version": "0.1.0",
+  "description": "Play Guitar Hero with your favorite Spotify playlist and custom scores",
+  "main": "app.js",
+  "author": "Antoine BALLIET, Cécile POUPON, Gabriel FORIEN",
+  "license": "CC-BY-NC-SA-4.0",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "request": "^2.88.0"
+  }
+}

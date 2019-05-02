@@ -1,0 +1,9 @@
+-H "Authorization: Bearer BQCvkzWYoCyRjvypBYosiMbK29SR0AQr044TfrrYcj3o_aPDb_4ZXTuR3co-IMwtYahCCfDjOWgTxtiCzELIloaoAIJvpNH2EFTBdUB2awx_WZWBXvQdwgNoFfuYt31iBdFie_eygdNTG7UUyh_IBy6oMBtIyP4cEp1r5zk4EqIIUTowRFrK1v9AA-5__I2jclKHxwbAAIVmLeJz1ByRbOdd8FwnRDdRWSAxoTHU1DHo9qfrw_FC7G70hj2eEC8GAOmVeqjx2CaaZoPpsm6ICKilzsEn"
+
+-X "GET" "https://api.spotify.com/v1/me"
+-X "GET" "https://api.spotify.com/v1/me/player/currently-playing"
+
+-X PUT "https://api.spotify.com/v1/me/player/pause" -d ""
+
+!! | jq "."
+!! | jq ".| {is_playing, nom: .item.name, artiste: .item.artist}"
