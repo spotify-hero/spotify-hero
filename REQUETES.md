@@ -53,7 +53,9 @@
 
 ## 3. Recherche de keywords
 Pas besoin d'access token :+1:
+
 Tout est en paramètre de l'URL
+
 (!) _type_ est un paramètre obligatoire, il peut être track/artist/album/playlist
 ou une combinaison de ces valeurs séparées par des virgules
 ```
@@ -379,7 +381,8 @@ ou une combinaison de ces valeurs séparées par des virgules
     "previous": null,
     "total": 29642
   }
-}```
+}
+```
 
 ## 3. Requêtes PUT
 (!) en les lançant depuis Bash, faire -X PUT -d ""
