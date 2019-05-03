@@ -42,17 +42,14 @@
       <div id="loggedin"><!--  Après login -->
         <div id="user-profile">
         </div>
-        <div id="oauth">
-        </div>
-        <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
 
         <div id="searchbar">
           <h2>Rechercher une musique/album/playlist: </h2>
 
-          <form action="" method="get" class="form-example">
+          <form action="javascript:void(0);" method="get" class="form-example">
             <div class="form-example">
-              <input type="text" name="keywords" id="keywords" required>
-              <input type="button" onclick="Recherche()" value="Rechercher">
+              <input type="text" name="keywords" id="keywords" onChange="Recherche()" required>
+              <input type="button" onclick="Recherche()" value="Rechercher" >
             </div>
 
           </form>
@@ -78,9 +75,11 @@
           <button class="btn-pause" id="button-pause">&#10074;&#10074;</button>
         </div>
 
+
+<!--     WIDGET : plutôt cool mais inutile pour notre appli
         <h2>Widget Play Button</h2>
         <iframe src="https://open.spotify.com/embed/album/5fNY0RCCroHB1TxIQfB8ck" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-
+ -->
         <div id="streaming">
             <h2>Spotify Web Playback SDK Quick Start Tutorial</h2>
             <p>1. Vérifier le message dans la console : <code>Ready with Device ID 8809298a4f83da63f1e75c52d6a8c7df0c5f35eb</code><br/>
@@ -113,19 +112,18 @@
             <dt>Email</dt><dd>{{email}}</dd>
             <dt>Spotify URI</dt><dd><a href="{{external_urls.spotify}}">{{external_urls.spotify}}</a></dd>
             <dt>Link</dt><dd><a href="{{href}}">{{href}}</a></dd>
-            <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd>
+            <!-- <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd> -->
             <dt>Country</dt><dd>{{country}}</dd>
+
+            <dt>Token</dt><dd>
+              <input type="text" value="" id="oauth-access">
+              <button class="btn btn-default" onclick="copyClipboard('oauth-access')">Copy</button>
+              <input type="button" class="btn btn-default" onclick="refresh()" value="Refresh">
+            </dd>
+
           </dl>
         </div>
       </div>
-    </script>
-
-    <script id="oauth-template" type="text/x-handlebars-template">
-      <h2>oAuth info</h2>
-      <dl class="dl-horizontal">
-        <dt>Access token</dt><dd class="text">{{access_token}}</dd>
-        <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
-      </dl>
     </script>
 
     <script id="currently-playing-template" type="text/x-handlebars-template">
@@ -156,37 +154,86 @@
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
 
     <script>
-    // Fonction qui lance les requettes associées aux recherche
-    function Recherche(){
-      var x = document.getElementById("keywords").value;
-      document.getElementById("ValeurRecherchee").innerHTML = x;
-    }
+      // Fonction qui lance les requettes associées aux recherche
+      function Recherche(){
+        var acces_token = document.getElementById("oauth-access").value;
+        var x = document.getElementById("keywords").value;
+        document.getElementById("ValeurRecherchee").innerHTML = x;
 
+        $.ajax({
+            type: 'GET',
+            url: 'https://api.spotify.com/v1/search',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            success: function(response) {
+              console.log(response)
+            }
+        });
+      }
+
+      // Copie le contenu de l'element dans le presse-papier
+      function copyClipboard(elementId) {
+        if (elementId != null) {
+          var copyText = document.getElementById(elementId);
+          copyText.select();
+          document.execCommand("copy");
+        } else {
+          console.log('copyClipboard:187 - Could not get element cause it is null');
+        }
+      }
+
+      // Demande un nouvel acces_token (valable 1h seulement) grace au refresh token
+      function refresh() {
+        var params = getHashParams();
+
+        if (params.error) {
+          alert('There was an error during the authentication');
+        } else {
+
+          $.ajax({
+            url: '/refresh_token',
+            data: {
+              'refresh_token': params.refresh_token
+            }
+            }).done(function(data) {
+
+              var field = document.getElementById('oauth-access');
+              if (field != null) {
+                field.value = data.access_token;
+              } else {
+                console.log('refresh:186 - Could not write in oauth-access')
+              }
+          });
+        }
+      }
+
+      /**
+       * Obtains parameters from the hash of the URL
+       * @return Object
+       */
+      function getHashParams() {
+        var hashParams = {};
+        var e, r = /([^&;=]+)=?([^&;]*)/g,
+            q = window.location.hash.substring(1);
+        while ( e = r.exec(q)) {
+           hashParams[e[1]] = decodeURIComponent(e[2]);
+        }
+        return hashParams;
+      }
+
+      function spotify_recherche(keywords) {
+        var acces_token = document.getElementById("oauth-access").value;
+
+
+      }
 
 
       (function() {
 
-        /**
-         * Obtains parameters from the hash of the URL
-         * @return Object
-         */
-        function getHashParams() {
-          var hashParams = {};
-          var e, r = /([^&;=]+)=?([^&;]*)/g,
-              q = window.location.hash.substring(1);
-          while ( e = r.exec(q)) {
-             hashParams[e[1]] = decodeURIComponent(e[2]);
-          }
-          return hashParams;
-        }
-
         var userProfileSource = document.getElementById('user-profile-template').innerHTML,
             userProfileTemplate = Handlebars.compile(userProfileSource),
             userProfilePlaceholder = document.getElementById('user-profile');
-
-        var oauthSource = document.getElementById('oauth-template').innerHTML,
-            oauthTemplate = Handlebars.compile(oauthSource),
-            oauthPlaceholder = document.getElementById('oauth');
 
         var cpTemplate = Handlebars.compile(document.getElementById('currently-playing-template').innerHTML),
             cpPlaceholder = document.getElementById('currently-playing');
@@ -202,11 +249,6 @@
         } else {
 
           if (access_token) {
-            // render oauth info
-            oauthPlaceholder.innerHTML = oauthTemplate({
-              access_token: access_token,
-              refresh_token: refresh_token
-            });
 
 
             $.ajax({
@@ -216,6 +258,13 @@
                 },
                 success: function(response) {
                   userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+
+                  var field = document.getElementById('oauth-access');
+                  if (field != null) {
+                    field.value = access_token;
+                  } else {
+                    console.log('index.html:305 - Could not write in oauth-access')
+                  }
 
                   $('#login').hide();
                   $('#loggedin').show();
@@ -236,60 +285,46 @@
             });
             console.log("AJAX request executed successfully");
 
-
-            /******************************************************
-            *                   STREAMING                         *
-            *******************************************************/
-            window.onSpotifyWebPlaybackSDKReady = () => {
-            const player = new Spotify.Player({
-              name: 'Web Playback SDK Quick Start Player',
-              getOAuthToken: cb => { cb(access_token); }
-            });
-
-            // Error handling
-            player.addListener('initialization_error', ({ message }) => { console.error(message); });
-            player.addListener('authentication_error', ({ message }) => { console.error(message); });
-            player.addListener('account_error', ({ message }) => { console.error(message); });
-            player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-            // Playback status updates
-            player.addListener('player_state_changed', state => { console.log(state); });
-
-            // Ready
-            player.addListener('ready', ({ device_id }) => {
-              console.log('Ready with Device ID', device_id);
-            });
-
-            // Not Ready
-            player.addListener('not_ready', ({ device_id }) => {
-              console.log('Device ID has gone offline', device_id);
-            });
-
-            // Connect to the player!
-            player.connect();
-          };
-
           } else {
               // render initial screen
               $('#login').show();
               $('#loggedin').hide();
           }
-
-          document.getElementById('obtain-new-token').addEventListener('click', function() {
-            $.ajax({
-              url: '/refresh_token',
-              data: {
-                'refresh_token': refresh_token
-              }
-            }).done(function(data) {
-              access_token = data.access_token;
-              oauthPlaceholder.innerHTML = oauthTemplate({
-                access_token: access_token,
-                refresh_token: refresh_token
-              });
-            });
-          }, false);
         }
+
+        /******************************************************
+        *                   STREAMING                         *
+        *******************************************************/
+        window.onSpotifyWebPlaybackSDKReady = () => {
+
+          const player = new Spotify.Player({
+            name: 'Web Playback SDK Quick Start Player',
+            getOAuthToken: cb => { cb(access_token); }
+          });
+
+          // Error handling
+          player.addListener('initialization_error', ({ message }) => { console.error(message); });
+          player.addListener('authentication_error', ({ message }) => { console.error(message); });
+          player.addListener('account_error', ({ message }) => { console.error(message); });
+          player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+          // Playback status updates
+          player.addListener('player_state_changed', state => { console.log(state); });
+
+          // Ready
+          player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+          });
+
+          // Not Ready
+          player.addListener('not_ready', ({ device_id }) => {
+            console.log('Device ID has gone offline', device_id);
+          });
+
+          // Connect to the player!
+          player.connect();
+        };
+
       })();
     </script>
   </body>
