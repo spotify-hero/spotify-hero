@@ -2,7 +2,8 @@
 
 ## 1. Spécifier l'Access Token
 ```-H "BQAVuaNjcxME-sl0_mjsb01ZUBysZ9wqDMuty1njgJApDrQ8KnR9uILbryWIxEOqp8PEuM-wnNwYs4t0BnYkTpivelEeV9k1FXAvCoa7AsGu_Us67Ywqg-_qmQyS0ktzxy_VNHl90_Lz13lnG19q2dlQoqa2NLC133EFuwgsNvRBH1RSEyyRT2vGBgs0iIUMDNZixGREdmuW2eG8o2RROVsJ9WZHhcXrxvaw2X8MinscX5cJkgDN8Um116Fqc-jhGqBh2ISDOv-mADlxa5uqDkQcWHwr"```
-
+Pour faire plaisir à Spotify
+```-H "Accept: application/json" -H "Content-Type: application/json"```
 
 ## 2. Requêtes GET
 - Informations sur l'utilisateur
@@ -387,14 +388,16 @@ ou une combinaison de ces valeurs séparées par des virgules
 ## 3. Requêtes PUT
 (!) en les lançant depuis Bash, faire -X PUT -d ""
 
-- Pause
+- Pause / Resume
 ```
--X PUT "https://api.spotify.com/v1/me/player/pause" -d ""
+-X PUT "https://api.spotify.com/v1/me/player/pause/play" -d ""
 ```
 
 ## 4. PUT pour lancer un morceau
 S'il n'y a pas de _active_device_, il faut récupérer un _device_id_ d'abord
+
 On ne peut pas préciser l'URI d'un seul morceau : c'est soit une liste de morceau soit un album/playlist/artiste
+
 Attention à ne pas préciser une _position_ qui dépasse de la liste donnée !
 
 - Lancer un album sans active_device
@@ -414,6 +417,3 @@ Attention à ne pas préciser une _position_ qui dépasse de la liste donnée !
 -X "PUT" "https://api.spotify.com/v1/me/player/play?device_id=426b69956057c08cae7412096880367d88fa2856"
 --data "{\"uris\":[\"spotify:track:561F1zqRwGPCTMRsLsXVtL\",\"spotify:track:51ueZKM83MTRv9rgiDfI6Y\"]}"
 ```
-
-- Pour faire plaisir à Spotify
-```-H "Accept: application/json" -H "Content-Type: application/json"```
