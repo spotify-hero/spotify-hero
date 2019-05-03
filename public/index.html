@@ -47,17 +47,18 @@
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
 
         <div id="searchbar">
-          <h2>Rechercher une musique/album/playlist0: </h2>
+          <h2>Rechercher une musique/album/playlist: </h2>
 
           <form action="" method="get" class="form-example">
             <div class="form-example">
               <input type="text" name="keywords" id="keywords" required>
+              <input type="button" onclick="Recherche()" value="Rechercher">
             </div>
 
-            <div class="form-example">
-              <input type="submit" value="Lancer la recherche">
-            </div>
           </form>
+
+        <p id="ValeurRecherchee"></p>
+
 
 
         <div id="plus"> <!-- Bloc avec fonctionnalités bonus de l'API -->
@@ -155,6 +156,14 @@
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
 
     <script>
+    // Fonction qui lance les requettes associées aux recherche
+    function Recherche(){
+      var x = document.getElementById("keywords").value;
+      document.getElementById("ValeurRecherchee").innerHTML = x;
+    }
+
+
+
       (function() {
 
         /**
@@ -198,6 +207,7 @@
               access_token: access_token,
               refresh_token: refresh_token
             });
+
 
             $.ajax({
                 url: 'https://api.spotify.com/v1/me',
