@@ -38,7 +38,7 @@
         <h1>This is an example of the Authorization Code flow</h1>
         <a href="/login" class="btn btn-primary">Log in with Spotify</a>
       </div>
-      
+
       <div id="loggedin"><!--  Après login -->
         <div id="user-profile">
         </div>
@@ -46,8 +46,22 @@
         </div>
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
 
+        <div id="searchbar">
+          <h2>Rechercher une musique/album/playlist0: </h2>
+
+          <form action="" method="get" class="form-example">
+            <div class="form-example">
+              <input type="text" name="keywords" id="keywords" required>
+            </div>
+
+            <div class="form-example">
+              <input type="submit" value="Lancer la recherche">
+            </div>
+          </form>
+
+
         <div id="plus"> <!-- Bloc avec fonctionnalités bonus de l'API -->
-          <h2>Musique en cours 
+          <h2>Musique en cours
             <span class="gris">GET /player/currently-playing </span>
             <span class="rouge">[user-read-currently-playing]</span></h2>
           <div id="currently-playing"></div>
@@ -270,4 +284,3 @@
     </script>
   </body>
 </html>
-
