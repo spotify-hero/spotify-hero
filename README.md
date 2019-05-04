@@ -8,7 +8,10 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Osu_new_logo.png" alt="Osu" height="145" width="145">
 </p>
 
-
+## Sources (for which we're all very grateful)
+- [JS-Hero by Jay Schwartz](https://github.com/jyschwrtz/JS-Hero)
+- [the Spotify Web SDK quickstart](https://developer.spotify.com/documentation/web-playback-sdk/quick-start/)
+- [the Spotify API Oauth examples](https://github.com/spotify/web-api-auth-examples)
 
 #
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />(This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License)</a>.
