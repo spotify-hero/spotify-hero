@@ -12,9 +12,11 @@
   },
   "scripts": {
     "start": "./startscript.sh",
-    "test": ""
+    "test": "mocha"
   },
   "devDependencies": {
-    "jshint": "^2.10.2"
+    "chai": "^4.2.0",
+    "jshint": "^2.10.2",
+    "mocha": "^6.1.4"
   }
 }
