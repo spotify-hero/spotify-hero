@@ -13,5 +13,8 @@
   "scripts": {
     "start": "node app.js",
     "test": "node app.js"
+  },
+  "devDependencies": {
+    "jshint": "^2.10.2"
   }
 }
