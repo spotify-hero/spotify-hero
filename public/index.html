@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Example of the Authorization Code flow with Spotify</title>
+    <title>TC-Hero</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
     <style type="text/css">
@@ -44,35 +44,29 @@
         </div>
 
         <div id="searchbar">
-          <h2>Rechercher une musique/album/playlist: </h2>
+          <h3>Rechercher une musique/album/playlist: </h3>
 
           <form action="javascript:void(0);" method="get" class="form-example">
             <div class="form-example">
-              <input type="text" name="keywords" id="keywords" onChange="Recherche()" required>
-              <input type="button" onclick="Recherche()" value="Rechercher" >
+              <input type="text" name="keywords" id="keywords" onChange="search()" required>
+              <input type="button" onclick="search()" value="Rechercher" >
             </div>
-
           </form>
 
         <p id="ValeurRecherchee"></p>
+        <div id="pochettes"></div>
 
 
-
-        <div id="plus"> <!-- Bloc avec fonctionnalités bonus de l'API -->
-          <h2>Musique en cours
-            <span class="gris">GET /player/currently-playing </span>
-            <span class="rouge">[user-read-currently-playing]</span></h2>
+        <div id="plus" style="margin-bottom: 30px"> <!-- Bloc avec fonctionnalités bonus de l'API -->
+          <h3>Musique en cours</h3>
           <div id="currently-playing"></div>
 
-          <h2>Contrôles sur la musique
-            <span class="gris">PUT /player/pause </span>
-            <span class="rouge">[user-modify-playback-state]</span></h2>
-          <p>Ne marche pas sur cette page, mais possibilité de
-          <a target="_blank" href="https://developer.spotify.com/documentation/web-api/reference/player/pause-a-users-playback/">tester</a>
-          avec curl</p>
+          <h3>Contrôles</h3>
           <div id="playback-controls"></div>
-          <button class="btn-play" id="button-play">&#9658;</button>
-          <button class="btn-pause" id="button-pause">&#10074;&#10074;</button>
+          <button onclick="previous()" class="btn-play" id="button-play">&#8249;</button>
+          <button onclick="pause()" class="btn-pause" id="button-pause">&#10074;&#10074;</button>
+          <button onclick="play()" class="btn-play" id="button-play">&#9658;</button>
+          <button onclick="next()" class="btn-play" id="button-play">&#8250;</button>
         </div>
 
 
@@ -80,7 +74,7 @@
         <h2>Widget Play Button</h2>
         <iframe src="https://open.spotify.com/embed/album/5fNY0RCCroHB1TxIQfB8ck" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
  -->
-        <div id="streaming">
+<!--         <div id="streaming">
             <h2>Spotify Web Playback SDK Quick Start Tutorial</h2>
             <p>1. Vérifier le message dans la console : <code>Ready with Device ID 8809298a4f83da63f1e75c52d6a8c7df0c5f35eb</code><br/>
             2. Aller dans l'onglet <a href="https://open.spotify.com/" target="_blank">Spotify</a> <code>Spotify > Se connecter à un appareil > Web SDK</code><br/>
@@ -88,7 +82,7 @@
             Si la musique n'est pas lue dans l'onglet, essayer de désactiver AdBlock, s'assurer que les DRM sont activées.<br />
             Si ça ne marche toujours pas, essayer avec Firefox</p>
         </div>
-
+ -->
       </div>
     </div>
       <!-------------------------------------------------------------------------->
@@ -100,7 +94,7 @@
   <!--                    Templates Handlebars                              -->
   <!-------------------------------------------------------------------------->
     <script id="user-profile-template" type="text/x-handlebars-template">
-      <h1>Logged in as {{display_name}}</h1>
+      <h3>Logged in as {{display_name}}</h3>
       <div class="media">
         <div class="pull-left">
           <img class="media-object" width="150" src="{{images.0.url}}" />
@@ -129,16 +123,16 @@
     <script id="currently-playing-template" type="text/x-handlebars-template">
         <div class="media">
         <div class="pull-left">
-          <img class="media-object" width="150" src="{{item.album.images.0.url}}" />
+          <img id="playing_album" class="media-object" width="150" src="{{item.album.images.0.url}}" />
         </div>
         <div class="media-body">
           <dl class="dl-horizontal">
-            <dt>En cours ?</dt><dd>{{is_playing}}</dd>
-            <dt>Titre</dt><dd>{{item.name}}</dd>
-            <dt>Spotify ID</dt><dd>{{item.id}}</dd>
-            <dt>Artiste</dt><dd>{{item.artists.0.name}}</dd>
-            <dt>Temps écoulé (ms)</dt><dd>{{progress_ms}}</dd>
-            <dt>Popularité</dt><dd>{{item.popularity}}</dd>
+            <dt>En cours ?</dt><dd id="is_playing">{{is_playing}}</dd>
+            <dt>Titre</dt><dd id="playing_title">{{item.name}}</dd>
+            <dt>Spotify ID</dt><dd id="playing_id">{{item.id}}</dd>
+            <dt>Artiste</dt><dd id="playing_artist">{{item.artists.0.name}}</dd>
+            <dt>Temps écoulé (ms)</dt><dd id="playing_progress">{{progress_ms}}</dd>
+            <dt>Popularité</dt><dd id="playing_populariry">{{item.popularity}}</dd>
           </dl>
         </div>
       </div>
@@ -159,17 +153,6 @@
         var acces_token = document.getElementById("oauth-access").value;
         var x = document.getElementById("keywords").value;
         document.getElementById("ValeurRecherchee").innerHTML = x;
-
-        $.ajax({
-            type: 'GET',
-            url: 'https://api.spotify.com/v1/search',
-            headers: {
-              'Authorization': 'Bearer ' + access_token
-            },
-            success: function(response) {
-              console.log(response)
-            }
-        });
       }
 
       // Copie le contenu de l'element dans le presse-papier
@@ -208,6 +191,159 @@
         }
       }
 
+      function pause() {
+          var params = getHashParams();
+          var access_token = params.access_token;
+
+          $.ajax({
+            type: 'PUT',
+            url: 'https://api.spotify.com/v1/me/player/pause',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            data : "",
+            success: function(response) {
+              console.log('pause() successfully executed');
+            }
+          });
+      }
+
+      function previous() {
+          var params = getHashParams();
+          var access_token = params.access_token;
+
+          $.ajax({
+            type: 'POST',
+            url: 'https://api.spotify.com/v1/me/player/previous',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            data : "",
+            success: function(response) {
+              console.log('previous() successfully executed');
+            }
+          });
+      }
+
+      function next() {
+          var params = getHashParams();
+          var access_token = params.access_token;
+
+          $.ajax({
+            type: 'POST',
+            url: 'https://api.spotify.com/v1/me/player/next',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            data : "",
+            success: function(response) {
+              console.log('next() successfully executed');
+            }
+          });
+      }
+
+      function play(uri, device_id) {
+          var params = getHashParams();
+          var access_token = params.access_token;
+
+          if (typeof uri === 'undefined' || typeof device_id === 'undefined') {
+            $.ajax({
+              type: 'PUT',
+              url: 'https://api.spotify.com/v1/me/player/play',
+              headers: {
+                'Authorization': 'Bearer ' + access_token
+              },
+              data : "",
+              success: function(response) {
+                console.log('play() successfully executed');
+              }
+            });
+          } else {
+            console.log('Make a precise request');
+          }
+      }
+
+      function search() {
+
+          var keyword = document.getElementById('keywords').value;
+          var BASE_URL = 'https://api.spotify.com/v1/search?';
+          var FETCH_URL = BASE_URL + 'q=' + keyword + '&type=artist&limit=1';
+          var ALBUM_URL = 'https://api.spotify.com/v1/artists/';
+
+          var params = getHashParams();
+          var access_token = params.access_token;
+
+          var myOptions = {
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            }
+          };
+
+          fetch(FETCH_URL, myOptions)
+          .then(response => response.json())
+
+            .then(json => {
+
+              //console.log(json);
+              var artist = json.artists.items[0];
+              FETCH_URL = `${ALBUM_URL}${artist.id}/top-tracks?country=FR&`
+              fetch(FETCH_URL, myOptions)
+              .then(response => response.json())
+              .then(json => {
+                var { tracks } = json;
+                console.log(tracks);
+
+                // create album images
+                for (var i=0; i<5; i++) {
+                  var ele = document.createElement("img");
+                  ele.src = tracks[i].album.images[2].url;
+                  ele.style="margin: 10px"
+                  ele.onclick = function jouer(album_uri) {
+
+                    var params = getHashParams();
+                    var access_token = params.access_token;
+
+                    $.ajax({
+                      type: 'PUT',
+                      url: 'https://api.spotify.com/v1/me/player/play',
+                      headers: {
+                        'Authorization': 'Bearer ' + access_token
+                      },
+                      data : '{"context_uri": "'+album_uri+'"}',
+                      complete: function(response) {
+                        //console.log(response);
+                      }
+                    });
+                    console.log('onclick AJAX request executed');
+                  }(tracks[i].album.uri);
+                  document.getElementById("pochettes").appendChild(ele);
+                }
+              });
+            });
+
+
+        setTimeout(function() {
+          $.ajax({
+            type: 'GET',
+            url: 'https://api.spotify.com/v1/me/player/currently-playing',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            success: function(response) {
+              //console.log(response);
+              document.getElementById('playing_album').src = response.item.album.images[0].url;
+              document.getElementById('is_playing').innerHTML = response.is_playing;
+              document.getElementById('playing_title').innerHTML = response.item.name;
+              document.getElementById('playing_id').innerHTML = response.item.id;
+              document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
+              document.getElementById('playing_progress').innerHTML = response.progress_ms;
+              document.getElementById('playing_populariry').innerHTML = response.item.popularity;
+            }
+          });
+        }, 1000);
+      }
+
       /**
        * Obtains parameters from the hash of the URL
        * @return Object
@@ -220,12 +356,6 @@
            hashParams[e[1]] = decodeURIComponent(e[2]);
         }
         return hashParams;
-      }
-
-      function spotify_recherche(keywords) {
-        var acces_token = document.getElementById("oauth-access").value;
-
-
       }
 
 
@@ -277,13 +407,13 @@
                         'Authorization': 'Bearer ' + access_token
                       },
                       success: function(response) {
-                        console.log(response)
+                        //console.log(JSON.stringify(response));
                         cpPlaceholder.innerHTML = cpTemplate(response);
                       }
-                  })
+                  });
                 }
             });
-            console.log("AJAX request executed successfully");
+            console.log("chained AJAX requests executed successfully");
 
           } else {
               // render initial screen
@@ -309,7 +439,7 @@
           player.addListener('playback_error', ({ message }) => { console.error(message); });
 
           // Playback status updates
-          player.addListener('player_state_changed', state => { console.log(state); });
+          // player.addListener('player_state_changed', state => { console.log(state); });
 
           // Ready
           player.addListener('ready', ({ device_id }) => {

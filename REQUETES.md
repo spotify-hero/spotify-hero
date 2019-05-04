@@ -2,6 +2,7 @@
 
 ## 1. Spécifier l'Access Token
 ```-H "Authorization: Bearer BQAVuaNjcxME-sl0_mjsb01ZUBysZ9wqDMuty1njgJApDrQ8KnR9uILbryWIxEOqp8PEuM-wnNwYs4t0BnYkTpivelEeV9k1FXAvCoa7AsGu_Us67Ywqg-_qmQyS0ktzxy_VNHl90_Lz13lnG19q2dlQoqa2NLC133EFuwgsNvRBH1RSEyyRT2vGBgs0iIUMDNZixGREdmuW2eG8o2RROVsJ9WZHhcXrxvaw2X8MinscX5cJkgDN8Um116Fqc-jhGqBh2ISDOv-mADlxa5uqDkQcWHwr"```
+
 Pour faire plaisir à Spotify
 ```-H "Accept: application/json" -H "Content-Type: application/json"```
 
