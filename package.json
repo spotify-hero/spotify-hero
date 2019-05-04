@@ -9,5 +9,9 @@
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
     "request": "^2.88.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "node app.js"
   }
 }

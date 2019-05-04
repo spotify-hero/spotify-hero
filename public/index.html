@@ -223,6 +223,26 @@
               console.log('previous() successfully executed');
             }
           });
+
+        setTimeout(function() {
+          $.ajax({
+            type: 'GET',
+            url: 'https://api.spotify.com/v1/me/player/currently-playing',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            success: function(response) {
+              //console.log(response);
+              document.getElementById('playing_album').src = response.item.album.images[0].url;
+              document.getElementById('is_playing').innerHTML = response.is_playing;
+              document.getElementById('playing_title').innerHTML = response.item.name;
+              document.getElementById('playing_id').innerHTML = response.item.id;
+              document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
+              document.getElementById('playing_progress').innerHTML = response.progress_ms;
+              document.getElementById('playing_populariry').innerHTML = response.item.popularity;
+            }
+          });
+        }, 1000);
       }
 
       function next() {
@@ -240,6 +260,26 @@
               console.log('next() successfully executed');
             }
           });
+
+        setTimeout(function() {
+          $.ajax({
+            type: 'GET',
+            url: 'https://api.spotify.com/v1/me/player/currently-playing',
+            headers: {
+              'Authorization': 'Bearer ' + access_token
+            },
+            success: function(response) {
+              //console.log(response);
+              document.getElementById('playing_album').src = response.item.album.images[0].url;
+              document.getElementById('is_playing').innerHTML = response.is_playing;
+              document.getElementById('playing_title').innerHTML = response.item.name;
+              document.getElementById('playing_id').innerHTML = response.item.id;
+              document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
+              document.getElementById('playing_progress').innerHTML = response.progress_ms;
+              document.getElementById('playing_populariry').innerHTML = response.item.popularity;
+            }
+          });
+        }, 1000);
       }
 
       function play(uri, device_id) {

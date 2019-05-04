@@ -7,10 +7,9 @@ var request       = require('request');
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
 
-var keys          = require('./keys.js');                 // keys.js is ignored by git
-var client_id     = keys.client_id;
-var client_secret = keys.client_secret;
-var redirect_uri  = keys.redirect_uri;
+var client_id     = process.env.SPOTIFY_CLIENT_ID;
+var client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+var redirect_uri  = process.env.SPOTIFY_REDIRECT_URI;
 
 /**
  * Generates a random string containing numbers and letters
