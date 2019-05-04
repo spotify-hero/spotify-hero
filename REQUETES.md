@@ -1,7 +1,7 @@
 # Requêtes à l'API Spotify
 
 ## 1. Spécifier l'Access Token
-```-H "BQAVuaNjcxME-sl0_mjsb01ZUBysZ9wqDMuty1njgJApDrQ8KnR9uILbryWIxEOqp8PEuM-wnNwYs4t0BnYkTpivelEeV9k1FXAvCoa7AsGu_Us67Ywqg-_qmQyS0ktzxy_VNHl90_Lz13lnG19q2dlQoqa2NLC133EFuwgsNvRBH1RSEyyRT2vGBgs0iIUMDNZixGREdmuW2eG8o2RROVsJ9WZHhcXrxvaw2X8MinscX5cJkgDN8Um116Fqc-jhGqBh2ISDOv-mADlxa5uqDkQcWHwr"```
+```-H "Authorization: Bearer BQAVuaNjcxME-sl0_mjsb01ZUBysZ9wqDMuty1njgJApDrQ8KnR9uILbryWIxEOqp8PEuM-wnNwYs4t0BnYkTpivelEeV9k1FXAvCoa7AsGu_Us67Ywqg-_qmQyS0ktzxy_VNHl90_Lz13lnG19q2dlQoqa2NLC133EFuwgsNvRBH1RSEyyRT2vGBgs0iIUMDNZixGREdmuW2eG8o2RROVsJ9WZHhcXrxvaw2X8MinscX5cJkgDN8Um116Fqc-jhGqBh2ISDOv-mADlxa5uqDkQcWHwr"```
 Pour faire plaisir à Spotify
 ```-H "Accept: application/json" -H "Content-Type: application/json"```
 
@@ -52,7 +52,7 @@ Pour faire plaisir à Spotify
 -X "GET" "https://api.spotify.com/v1/me/player/currently-playing"
 ```
 
-## 3. Recherche de keywords
+## -> Recherche par keywords
 Pas besoin d'access token :+1:
 
 Tout est en paramètre de l'URL
@@ -385,20 +385,29 @@ ou une combinaison de ces valeurs séparées par des virgules
 }
 ```
 
-## 3. Requêtes PUT
-(!) en les lançant depuis Bash, faire -X PUT -d ""
+## 3. Requêtes PUT/POST
+:warning: Ces requêtes peuvent générer l'erreur *411 : POST requests require a Content-Length header*
+
+Dans ce cas, préciser le paramètre *-d ""* en fin de requête
 
 - Pause / Resume
 ```
--X PUT "https://api.spotify.com/v1/me/player/pause/play" -d ""
+-X PUT "https://api.spotify.com/v1/me/player/pause" -d ""
+-X PUT "https://api.spotify.com/v1/me/player/play" -d ""
 ```
 
-## 4. PUT pour lancer un morceau
-S'il n'y a pas de _active_device_, il faut récupérer un _device_id_ d'abord
+- Previous / Next track
+```
+-X POST "https://api.spotify.com/v1/me/player/previous" -d ""
+-X POST "https://api.spotify.com/v1/me/player/next" -d ""
+```
 
-On ne peut pas préciser l'URI d'un seul morceau : c'est soit une liste de morceau soit un album/playlist/artiste
+## -> Lancer un morceau
+:warning: S'il n'y a pas de _active_device_, il faut récupérer un _device_id_ d'abord
 
-Attention à ne pas préciser une _position_ qui dépasse de la liste donnée !
+:warning: On ne peut pas préciser l'URI d'un seul morceau : c'est soit une liste de morceau soit un album/playlist/artiste
+
+:warning: Attention à ne pas préciser une _position_ qui dépasse de la liste donnée !
 
 - Lancer un album sans active_device
 ```
