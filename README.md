@@ -1,13 +1,10 @@
 # TC-Hero = Guitar-Hero:video_game: + Spotify:headphones: + osu!:musical_score:
 #### Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !
-<div class="row">
-<div class="column">
+<p float="left">
     <img src="https://upload.wikimedia.org/wikipedia/fr/3/38/Guitar_Hero_Logo.png" alt="Guitar Hero" height="145" width="199">
-</div><div class="column">
     <img src="https://www.neonmag.fr/content/uploads/2019/04/color-spotify-logo.jpg" alt="Spotify" height="145" width="214">
-</div><div class="column">
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Osu_new_logo.png" alt="Osu" height="145" width="145">
-</div></div>
+</p>
 
 
 
