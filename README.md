@@ -1,5 +1,6 @@
 # TC-Hero = Guitar-Hero:video_game: + Spotify:headphones: + osu!:musical_score:
 [![Build Status](https://img.shields.io/travis/com/gforien/TC-Hero.svg?style=flat)](https://travis-ci.com/gforien/TC-Hero)
+[![CodeFactor](https://www.codefactor.io/repository/github/gforien/tc-hero/badge)](https://www.codefactor.io/repository/github/gforien/tc-hero)
 [![License](https://img.shields.io/static/v1.svg?label=License&message=CC%20BY-NC-SA%204.0&color=ff69b4&style=flat)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 #### Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !
 <p float="left">
