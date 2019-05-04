@@ -9,6 +9,14 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Osu_new_logo.png" alt="Osu" height="145" width="145">
 </p>
 
+## Try it (easy as pie :ok_hand:)
+:warning: TC-Hero requires *Firefox* to work properly
+```bash
+$ git clone https://github.com/gforien/TC-Hero.git
+$ cd TC-Hero
+$ npm install && npm start
+```
+
 ## Sources (for which we're all very grateful)
 - [JS-Hero by Jay Schwartz](https://github.com/jyschwrtz/JS-Hero)
 - [the Spotify Web SDK quickstart](https://developer.spotify.com/documentation/web-playback-sdk/quick-start/)
