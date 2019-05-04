@@ -11,8 +11,8 @@
     "request": "^2.88.0"
   },
   "scripts": {
-    "start": "node app.js",
-    "test": "node app.js"
+    "start": "./startscript.sh",
+    "test": ""
   },
   "devDependencies": {
     "jshint": "^2.10.2"
