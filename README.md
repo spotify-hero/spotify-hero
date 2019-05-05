@@ -10,7 +10,7 @@
 </p>
 
 ## Try it (easy as pie :ok_hand:)
-:warning: TC-Hero requires *Firefox* to work properly
+:warning: TC-Hero requires **Firefox** to work properly
 ```bash
 $ git clone https://github.com/gforien/TC-Hero.git
 $ cd TC-Hero
