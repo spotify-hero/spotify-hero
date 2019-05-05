@@ -9,12 +9,14 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Osu_new_logo.png" alt="Osu" height="145" width="145">
 </p>
 
+![Screenshot](screenshot.gif)
+
 ## Try it (easy as pie :ok_hand:)
 :warning: TC-Hero requires **Firefox** to work properly
 ```bash
 $ git clone https://github.com/gforien/TC-Hero.git
 $ cd TC-Hero
-$ npm install && npm start
+$ npm install && npm start              # launch Firefox on localhost:8888
 ```
 
 ## Sources (for which we're all very grateful)
