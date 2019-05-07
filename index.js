@@ -33,6 +33,15 @@ app.use(express.static(__dirname + '/public'))
 //   .use(cors())
 
 
+app.get('/game', function(req, res) {
+  res.status(200).sendFile(__dirname + '/public/game.html');
+});
+
+
+app.get('/', function(req, res) {
+  res.status(200).sendFile(__dirname + '/public/spotify.html');
+});
+
 app.get('/login', function(req, res) {
 
   var state = generateRandomString(16);

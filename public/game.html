@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Guitar Hero</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110976475-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-110976475-1');
+    </script>
+    <link rel="stylesheet" type="text/css" href="css/master.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+  </head>
+  <body>
+    <script src="vendor/three.js"></script>
+    <script type="text/javascript" src="build/bundle.js"></script>
+    <div id="game-canvas">
+      <div class="game-display">
+        <div class="header">
+          <p class="creator">Created by <span>Jay Schwartz</span></p>
+          <h1 class="title">JS Hero</h1>
+          <div class="professional-links">
+            <a
+            href="https://www.linkedin.com/in/jay-schwartz/"
+            target="_blank">
+            <img src="photos/linkedin_icon.png" alt="Linked In">
+          </a>
+          <a
+          href="https://github.com/jyschwrtz"
+          target="_blank">
+          <img src="photos/github_icon.png" alt="Github">
+        </a>
+      </div>
+        </div>
+
+
+
+        <div class="game-details">
+          <div class="game-details-left">
+            <h1 class="score">Score: 0</h1>
+            <h1 class="max-streak">Max Streak: 0</h1>
+          </div>
+          <div class="game-details-right">
+            <h1 class="multiplier">Multiplier: 1X</h1>
+            <h1 class="streak">Streak: 0</h1>
+          </div>
+        </div>
+
+        <div class="game-start">
+          <h1 class="start">PRESS "A" TO START</h1>
+        </div>
+
+        <div class="instructions">
+          <div class="close-instructions">
+            <h1>X</h1>
+            <h2>(close instructions)</h2>
+          </div>
+          <ul class="instructions-text">
+            <h1>Instructions</h1>
+            <li>As the colored notes move to the circles at the bottom of the fret board, hit the corresponding keys in sequence to score points!</li>
+            <li>Score enough notes in a row, and your score multiplier will increase!</li>
+            <li>To take a look around, click the button in the lower left hand corner.</li>
+          </ul>
+          <ul class="letters">
+            <li class="green">A</li>
+            <li class="red">S</li>
+            <li class="yellow">D</li>
+            <li class="blue">F</li>
+            <li class="orange">G</li>
+          </ul>
+        </div>
+
+        <div class="game-progress">
+          <input
+            class="rock-input"
+            type="range"
+            min="-20"
+            max="20"
+            value="0">
+          </input>
+          <h1 class="rock-header">Rock Meter</h1>
+        </div>
+
+      </div>
+      <div class="game-control-panel">
+        <button class="open-instructions">How To Play</button>
+        <button class="look-around">Look Around</button>
+        <button class="play-pause hidden">Pause</button>
+        <button class="mute">Mute</button>
+      </div>
+    </div>
+    <div id="song"></div>
+
+    <div class="look-around-instructions hidden">
+      <h1>CLICK AND DRAG TO LOOK AROUND</h1>
+    </div>
+
+  </body>
+</html>

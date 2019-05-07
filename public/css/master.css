@@ -1,0 +1,261 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+#game-canvas {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 20px 20px 20px;
+}
+
+.game-details-right, .game-details-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 195px;
+  height: 120px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, .75);
+}
+
+.score, .streak, .multiplier, .max-streak {
+  font-size: 28px;
+}
+
+.game-progress  {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 20px;
+  color: white;
+  background: rgba(0, 0, 0, .75);
+}
+
+.rock-input {
+  background: transparent;
+}
+
+.rock-input::-webkit-slider-runnable-track {
+  background: white;
+}
+
+.red .rock-input::-webkit-slider-runnable-track {
+  background: red;
+}
+
+.green .rock-input::-webkit-slider-runnable-track {
+  background: green;
+}
+
+.yellow .rock-input::-webkit-slider-runnable-track {
+  background: yellow;
+}
+
+#song {
+  display: none;
+}
+
+.game-control-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-weight: 700;
+}
+
+.game-control-panel button {
+  width: 120px;
+  height: 25px;
+  border-radius: 7px;
+  margin-bottom: 5px;
+  border: 1px solid black;
+  background: #ffffff;
+}
+
+.game-control-panel button:hover {
+  background: #cfcfcf;
+  cursor: pointer;
+}
+
+.header {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .75);
+  /*background: #818181;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.professional-links {
+  display: flex;
+  justify-content: flex-end;
+  width: 100px;
+}
+
+.creator {
+  width: 100px;
+}
+
+.creator span {
+  font-weight: 500;
+}
+
+.title {
+  font-family: 'Bangers', sans-serif;
+  letter-spacing: 2.5px;
+}
+
+.header h1, .header p {
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0 20px;
+}
+
+.professional-links img {
+  height: 30px;
+  width: 30px;
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+  transform: translateY(2.5px);
+}
+
+.game-start, .look-around-instructions {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-shadow: 3px 3px black;
+  letter-spacing: 1.5px;
+  z-index: 20;
+}
+
+.look-around-instructions {
+  text-align: center;
+}
+
+.instructions {
+  position: absolute;
+  background: rgba(0, 0, 0, .90);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.close-instructions {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.close-instructions h1:hover {
+  cursor: pointer;
+}
+
+.close-instructions h1 {
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.close-instructions h2 {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.instructions-text {
+  color: white;
+  font-size: 18px;
+  width: 350px;
+  text-align: justify;
+}
+
+.instructions-text li {
+  margin-bottom: 5px;
+}
+
+.instructions .letters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style: none;
+  font-size: 25px;
+  font-weight: 700;
+  width: 325px;
+  color: black;
+}
+
+.instructions .letters li {
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.instructions .green {
+  background: green;
+}
+
+.instructions .red {
+  background: red;
+}
+
+.instructions .yellow {
+  background: yellow;
+}
+
+.instructions .blue {
+  background: blue;
+}
+
+.instructions .orange {
+  background: orange;
+}
+
+/* LEAVE AT BOTTOM OF CSS FILE */
+.hidden {
+  display: none;
+}
