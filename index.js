@@ -39,11 +39,14 @@ app.get('/game', function(req, res) {
 
 
 app.get('/', function(req, res) {
+  res.status(200).sendFile(__dirname + '/public/index.html');
+});
+
+app.get('/spotify', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/spotify.html');
 });
 
 app.get('/login', function(req, res) {
-
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
 //  user-read-recently-played user-top-read user-library-modify user-library-read playlist-read-private playlist-modify-public playlist-modify-private playlist-read-collaborative user-read-email user-read-birthdate user-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming user-follow-read user-follow-modify
@@ -72,7 +75,7 @@ app.get('/callback', function(req, res) {
   var storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect('/#' +
+    res.redirect('spotify/#' +
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -109,7 +112,7 @@ app.get('/callback', function(req, res) {
         });*/
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
+        res.redirect('spotify/#' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
