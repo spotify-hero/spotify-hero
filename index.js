@@ -16,6 +16,13 @@ var client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 var redirect_uri  = process.env.SPOTIFY_REDIRECT_URI;
 
 /**
+ *  OSU Parser part
+ */
+var fs = require('fs')
+var parser = require('osu-parser');
+
+
+/**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
  * @return {string} The generated string
@@ -41,6 +48,11 @@ app.get('/game', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/game.html');
 });
 
+app.get('/osu', function(req, res) {
+  parser.parseFile(__dirname + '/osu/map.osu', function (err, beatmap){
+  res.end(JSON.stringify(beatmap));
+  })
+})
 
 app.get('/', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/index.html');

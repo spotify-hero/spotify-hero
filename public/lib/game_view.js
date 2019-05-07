@@ -163,6 +163,16 @@ class GameView {
       noteInterval, this.musicDelay, this.key
     );
 
+    var xhr = new XMLHttpRequest();
+    
+    xhr.get('http://localhost:8888/osu', function(response) {
+      data = JSON.parse(response)
+      beatmap.hitObjects.forEach((songNote, idx) => {
+        let startTime = songNote.startTime
+  
+        console.log("Note : " + startTime + " position : " + songNote.position[0]);
+      })
+    });
 
     songNotes.forEach((songNote, idx) => {
 
