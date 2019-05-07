@@ -3,6 +3,7 @@ import { songNotes, beatsPerMeasure } from './song';
 import ViewControls from './view_controls';
 import Light from './light';
 import GameNotes from './game_notes';
+import jquery from './jquery';
 
 class GameView {
   constructor(renderer, camera, scene, key, musicDelay) {
@@ -163,7 +164,7 @@ class GameView {
       noteInterval, this.musicDelay, this.key
     );
 
-    var xhr = new XMLHttpRequest();
+    /*var xhr = new XMLHttpRequest();
     
     xhr.get('http://localhost:8888/osu', function(response) {
       data = JSON.parse(response)
@@ -172,7 +173,22 @@ class GameView {
   
         console.log("Note : " + startTime + " position : " + songNote.position[0]);
       })
-    });
+    });*/
+
+    // AJAX request
+    jquery.ajax({
+      type:'GET',
+      url: '/osu',
+      data: '',
+      success: function(response) {
+        var beatmap = JSON.parse(response);
+        console.log('AJAX successful')
+
+        beatmap.hitObjects.forEach((songNote, idx) => {
+          let startTime = songNote.startTime;
+          console.log("Note : "+startTime+" position: "+songNote.position[0]);
+        });
+      }});
 
     songNotes.forEach((songNote, idx) => {
 
