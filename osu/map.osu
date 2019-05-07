@@ -1,0 +1,81 @@
+osu file format v14
+
+[General]
+AudioFilename: Patchwork Staccato.mp3
+AudioLeadIn: 0
+PreviewTime: 112245
+Countdown: 0
+SampleSet: Soft
+StackLeniency: 0.7
+Mode: 0
+LetterboxInBreaks: 0
+EpilepsyWarning: 1
+WidescreenStoryboard: 1
+
+[Editor]
+Bookmarks: 2499,16311,30124,49981,77606,80196,94009,113002,140628,150988,164801,171707,174297,215736,228683,229549,242930
+DistanceSpacing: 1
+BeatDivisor: 4
+GridSize: 8
+TimelineZoom: 1
+
+[Metadata]
+Title:Patchwork Staccato
+TitleUnicode:ツギハギスタッカート
+Artist:nameless x toa
+ArtistUnicode:nameless×とあ
+Creator:Taeyang
+Version:Normal
+Source:初音ミク -Project DIVA- X
+Tags:Tsugihagi Japanese jp cover utaite ネームレス Hatsune Miku vocaloid とあ toa Frontier -_Frontier_-
+BeatmapID:1959144
+BeatmapSetID:416702
+
+[Difficulty]
+HPDrainRate:4
+CircleSize:3
+OverallDifficulty:4
+ApproachRate:4.5
+SliderMultiplier:1.1
+SliderTickRate:1
+
+[Events]
+//Background and Video events
+0,0,"BG.jpg",0,0
+//Break Periods
+2,140826,149726
+//Storyboard Layer 0 (Background)
+//Storyboard Layer 1 (Fail)
+//Storyboard Layer 2 (Pass)
+//Storyboard Layer 3 (Foreground)
+//Storyboard Sound Samples
+
+[TimingPoints]
+1419,431.654676258993,4,2,3,20,1,0
+2498,431.654676258993,4,2,3,30,1,0
+16310,-100,4,2,1,50,0,0
+30123,-100,4,2,3,40,0,0
+49980,431.654676258993,4,2,2,70,1,1
+77605,-100,4,2,3,40,0,0
+79548,-100,4,2,1,40,0,0
+80195,431.654676258993,4,2,1,50,1,0
+94007,-100,4,2,3,40,0,0
+113000,-100,4,2,2,70,0,1
+140626,-100,4,2,1,60,0,0
+174295,431.654676258993,4,2,2,70,1,1
+195014,-100,4,2,1,60,0,0
+196525,-100,4,2,2,70,0,1
+229546,-100,4,2,3,30,0,0
+
+
+[Colours]
+Combo1 : 167,151,210
+Combo2 : 190,149,106
+Combo3 : 213,239,163
+Combo4 : 100,167,161
+SliderTrackOverride : 133,218,250
+SliderBorder : 245,235,156
+
+[HitObjects]
+196,135,52138,1,8,0:0:0:0:
+175,27,52569,2,0,L|43:32,1,110,2|8,0:0|0:0,0:0:0:0:
