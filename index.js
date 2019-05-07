@@ -7,6 +7,10 @@ var request       = require('request');
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
 
+var fs = require("fs");
+var parser = require('osu-parser');
+
+
 var client_id     = process.env.SPOTIFY_CLIENT_ID;
 var client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 var redirect_uri  = process.env.SPOTIFY_REDIRECT_URI;
@@ -45,6 +49,12 @@ app.get('/', function(req, res) {
 app.get('/spotify', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/spotify.html');
 });
+
+app.get('/osu', function(req, res) {
+
+
+});
+
 
 app.get('/login', function(req, res) {
   var state = generateRandomString(16);

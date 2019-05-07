@@ -142,7 +142,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _ven
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ \"./public/lib/game.js\");\n\n\ndocument.addEventListener(\"DOMContentLoaded\", () => {\n  let game = new _game__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\n  \n});\n\n\n//# sourceURL=webpack:///./public/lib/guitar_hero.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ \"./public/lib/game.js\");\n\n\ndocument.addEventListener(\"DOMContentLoaded\", () => {\n  let game = new _game__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\n  console.log(\"Successfully loaded\")\n  \n});\n\n\n//# sourceURL=webpack:///./public/lib/guitar_hero.js?");
 
 /***/ }),
 

@@ -4,4 +4,8 @@
 # and main.js
 nohup /mnt/c/Program\ Files\ \(x86\)/Mozilla\ Firefox/firefox.exe localhost:8888 open.spotify.com &
 rm -v nohup.out
+
+nohup webpack --watch &
+rm -v nohup.out
+
 nodemon index.js
