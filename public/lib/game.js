@@ -17,10 +17,11 @@ class Game {
     this.started = false;
 
     this.gameStartEl = document.getElementsByClassName('start')[0];
+    this.createGameView();
     this.gameStartListener =
       window.addEventListener("keypress", this.hitAToStart.bind(this));
 
-    this.createGameView();
+    
   }
 
   startGame() {

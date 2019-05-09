@@ -52,6 +52,10 @@ app.get('/osu', function(req, res) {
   });
 });
 
+app.get('/music', function(req, res) {
+  res.sendFile(__dirname + '/osu/music.mp3');
+});
+
 app.get('/', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/index.html');
 });

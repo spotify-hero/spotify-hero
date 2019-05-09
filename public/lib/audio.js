@@ -5,7 +5,7 @@ class Audio {
     this.songDivEl = document.getElementById('song');
     this.muteButton = document.getElementsByClassName('mute')[0];
     this.playPauseButton = document.getElementsByClassName('play-pause')[0];
-    this.src = 'https://s3-us-west-1.amazonaws.com/js-hero-guitar-hero-clone/sweet_child_o_mine.mp3';
+    this.src = 'http://localhost:8888/music';
     this.songDivEl.innerHTML =
       `<audio id="audio-player" step="1" controls="controls" src=${this.src} type="audio/mpeg">`;
     this.audioPlayerEl = document.getElementById('audio-player');

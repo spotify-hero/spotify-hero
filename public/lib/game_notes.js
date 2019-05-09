@@ -23,17 +23,19 @@ class GameNotes {
     this.rockInput = 0;
   }
 
-  setNoteCheck(songNote, time) {
+  setNoteCheck(position, time) {
     let timeDelay = 260 + this.musicDelay + time;
 
     setTimeout(
-      () => this.checkNote(songNote),
+      () => this.checkNote(position),
       timeDelay
     );
   }
 
-  checkNote(songNote) {
-    if (this.key.isDown(this.key.pos[songNote.pos])) {
+  checkNote(position) {
+    console.log("On attend la note sur position :" + position)
+    if (this.key.isDown(this.key.pos[position])) {
+      console.log("vous avez bien appuyé !")
       if (this.streak === 30) {
         this.multiplier = 4;
       } else if (this.streak === 20) {
