@@ -13,7 +13,7 @@
     "request": "^2.88.0"
   },
   "scripts": {
-    "start": "./startscript.sh",
+    "start": "(nohup webpack --watch &) && rm nohup.out && nodemon index.js",
     "test": "mocha"
   },
   "devDependencies": {
