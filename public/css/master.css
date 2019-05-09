@@ -10,6 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  touch-action: manipulation;
 }
 
 .game-details {
@@ -52,6 +53,7 @@ body {
   color: white;
   background: rgba(0, 0, 0, .75);
 }
+
 
 .rock-input {
   background: transparent;
