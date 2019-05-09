@@ -11,16 +11,24 @@ import Instructions from './instructions';
 class Game {
   constructor() {
     this.noteInterval = 237.8;
-    this.musicDelay = 1980;
+    this.musicDelay = 1250;
     this.key = new Key();
     this.instructions = new Instructions();
     this.started = false;
 
     this.gameStartEl = document.getElementsByClassName('start')[0];
     this.createGameView();
-    this.gameStartListener =
+    this.setupGame();
+     this.gameStartListener =
       window.addEventListener("keypress", this.hitAToStart.bind(this));
 
+    
+  }
+
+  setupGame(){
+    //il faut charger la musique sans la jouer + télécharger map
+    //load musique
+    this.music = new Audio(this.musicDelay);
     
   }
 
@@ -70,7 +78,6 @@ class Game {
   }
 
   addMusic() {
-    this.music = new Audio(this.musicDelay);
     this.music.startMusic();
     setTimeout(this.music.fadeOut.bind(this.music), 213000);
   }

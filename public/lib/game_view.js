@@ -31,6 +31,9 @@ class GameView {
 
     this.t = 0;
     this.measures = [0];
+
+    this.beatmap = [];
+
   }
 
   setup() {
@@ -38,6 +41,8 @@ class GameView {
     this.backgroundSetup();
     this.addFretBoard();
     this.setNoteAttributes();
+    this.beatmap = this.getOsuFile();
+
     this.controls = new ViewControls(this.camera, this.renderer);
     this.gameLoop();
   }
@@ -159,17 +164,8 @@ class GameView {
     });
   }
 
-  addMovingNotes(noteInterval) {
-    let noteMaterial;
-
-    console.log("movin note : " + this.note.materials)
-
-    this.gameNotes = new GameNotes(
-      noteInterval, this.musicDelay, this.key
-    );
-
-    let beatmap;
-
+  getOsuFile(){
+    let osuData;
     // AJAX request
     jquery.ajax({
       async: false,
@@ -178,12 +174,22 @@ class GameView {
       data: '',
       success: function(response) {
         
-        beatmap = JSON.parse(response);
-        console.log('AJAX successful' + beatmap);
+        osuData = JSON.parse(response);
+        console.log('AJAX successful' + osuData);
       }
     })
 
-    beatmap.hitObjects.forEach((songNote, idx) => {
+    return osuData;
+  }
+
+  addMovingNotes(noteInterval) {
+    let noteMaterial;
+
+    this.gameNotes = new GameNotes(
+      noteInterval, this.musicDelay, this.key
+    );
+
+    this.beatmap.hitObjects.forEach((songNote, idx) => {
       console.log("index : " + idx, "position : " + songNote.position[0] + "start : " + songNote.startTime + "Duration : " + songNote.duration)
 
       let time = songNote.startTime;
