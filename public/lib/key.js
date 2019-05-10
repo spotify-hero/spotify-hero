@@ -6,17 +6,15 @@ class Key {
     this._pressed = {};
     this._pressedVisually = {};
     this.pos = {
-      1: 65,
-      2: 83,
-      3: 68,
-      4: 70,
-      5: 71
+      1: 83,
+      2: 68,
+      3: 75,
+      4: 76
     };
-    this.A = 65;  // songNote.pos: 1
-    this.S = 83;  // songNote.pos: 2
-    this.D = 68;  // songNote.pos: 3
-    this.F = 70;  // songNote.pos: 4
-    this.G = 71;  // songNote.pos: 5
+    this.A = 83;  // songNote.pos: 1
+    this.S = 68;  // songNote.pos: 2
+    this.D = 75;  // songNote.pos: 3
+    this.F = 76;  // songNote.pos: 4
 
     this.addKeyListeners();
   }

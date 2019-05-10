@@ -61,10 +61,12 @@ class GameView {
   }
 
   backgroundSetup() {
-    let backgroundGeometry = new THREE.BoxGeometry( 2000, 1000, 1000 );
+    let backgroundGeometry = new THREE.BoxGeometry( 1920, 1080, 1000 );
+    var texture = new THREE.TextureLoader().load( 'photos/stage.jpeg' );
+    texture.minFilter = THREE.NearestFilter;
     let backgroundMaterials = [ "", "", "", "", "",
       new THREE.MeshPhongMaterial( {
-        map: new THREE.TextureLoader().load( 'photos/stage.jpeg' ),
+        map: texture,
         side: THREE.DoubleSide
       } )
     ];
@@ -124,7 +126,8 @@ class GameView {
     this.note.colors[1] = 0x2EDDA5
     this.note.colors[2] = 0x2EDDA5;
     this.note.colors[3] = 0x2EDDA5;
-    
+    this.note.colors[4] = 0xFFFFFF;
+
     this.note.geometry = new THREE.SphereGeometry(this.note.radius);
 
     this.note.materials = [];
@@ -152,7 +155,7 @@ class GameView {
       // LIGHT UP CIRCLE WHEN KEY IS PRESSED
       setInterval( () => {
         if (this.key.isDownVisually(this.key.pos[idx + 1])) {
-           circle.material = this.note.materials[3];
+           circle.material = this.note.materials[4];
          } else {
            circle.material = this.note.materials[idx];
          }
