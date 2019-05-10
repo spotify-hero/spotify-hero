@@ -21,7 +21,6 @@ class Game {
     this.setupGame();
      this.gameStartListener =
       window.addEventListener("keypress", this.hitAToStart.bind(this));
-
     
   }
 

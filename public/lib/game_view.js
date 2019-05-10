@@ -173,9 +173,7 @@ class GameView {
       url: '/osu',
       data: '',
       success: function(response) {
-        
         osuData = JSON.parse(response);
-        console.log('AJAX successful' + osuData);
       }
     })
 
@@ -190,8 +188,6 @@ class GameView {
     );
 
     this.beatmap.hitObjects.forEach((songNote, idx) => {
-      console.log("index : " + idx, "position : " + songNote.position[0] + "start : " + songNote.startTime + "Duration : " + songNote.duration)
-
       let time = songNote.startTime;
       let position = 0;
 
