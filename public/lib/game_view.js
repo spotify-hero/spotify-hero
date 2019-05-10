@@ -19,7 +19,7 @@ class GameView {
     this.zEndPoint = 0;
     this.yStartPoint = 50;
     this.yEndPoint = -75;
-    this.xPos = [-50, -25, 0, 25, 50];
+    this.xPos = [-45, -15, 15, 45];
 
     this.xRotation = -Math.atan(
       (this.zEndPoint - this.zStartPoint) / (this.yStartPoint - this.yEndPoint)
@@ -80,7 +80,7 @@ class GameView {
 
     // LINES (STRINGS)
     this.lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFFFFF });
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       let lineGeometry = new THREE.Geometry();
       lineGeometry.vertices.push(new THREE.Vector3(
         this.xPos[i], this.yStartPoint, this.zStartPoint));
@@ -93,7 +93,7 @@ class GameView {
   }
 
   addFretBoard() {
-    let width = this.xPos[4] - this.xPos[0] + 50;
+    let width = this.xPos[3] - this.xPos[0] + 50;
     let height = Math.sqrt(
       Math.pow((this.zEndPoint - this.zStartPoint), 2)
         + Math.pow((this.yEndPoint - this.yStartPoint), 2)
@@ -120,13 +120,11 @@ class GameView {
     this.note.radius = 7.5;
 
     this.note.colors = [];
-    this.note.colors[0] = 0x4C7048; // Green
-    this.note.colors[1] = 0xDA3A3C; // Red
-    this.note.colors[2] = 0xffeb3b; // Yellow
-    this.note.colors[3] = 0x3f51b5; // Blue
-    this.note.colors[4] = 0xff5722; // Orange
-    this.note.colors[5] = 0xffffff; // White - selected
-
+    this.note.colors[0] = 0x2EDDA5;
+    this.note.colors[1] = 0x2EDDA5
+    this.note.colors[2] = 0x2EDDA5;
+    this.note.colors[3] = 0x2EDDA5;
+    
     this.note.geometry = new THREE.SphereGeometry(this.note.radius);
 
     this.note.materials = [];
@@ -139,7 +137,7 @@ class GameView {
 
     const circleGeometry = new THREE.CircleGeometry(this.note.radius);
     const circles = [];
-    for (let i = 0; i < 5; i ++) {
+    for (let i = 0; i < 4; i ++) {
       circles[i] = new THREE.Mesh(circleGeometry, this.note.materials[i]);
     }
 
@@ -154,7 +152,7 @@ class GameView {
       // LIGHT UP CIRCLE WHEN KEY IS PRESSED
       setInterval( () => {
         if (this.key.isDownVisually(this.key.pos[idx + 1])) {
-           circle.material = this.note.materials[5];
+           circle.material = this.note.materials[3];
          } else {
            circle.material = this.note.materials[idx];
          }

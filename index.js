@@ -1,3 +1,4 @@
+var keysSpotify = require('./secu.json');
 /**
  * TC Hero : Spotify API testpage
  */
@@ -15,9 +16,9 @@ var parser = require('osu-parser');
 /**
  * API credentials from environment variables
  */
-var client_id     = process.env.SPOTIFY_CLIENT_ID;
-var client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-var redirect_uri  = process.env.SPOTIFY_REDIRECT_URI;
+var client_id     = keysSpotify.cliend_id;
+var client_secret = keysSpotify.client_secret;
+var redirect_uri  = keysSpotify.redirect_uri;
 
 
 /**
