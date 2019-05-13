@@ -202,7 +202,6 @@ class GameView {
         this.cylinders[idx].rotateX(this.xRotation);
       }
 
-      
 
       //this.addMovingBeatLine(songNote.m, noteInterval, lag);
 
@@ -225,7 +224,7 @@ class GameView {
           (this.zStartPoint));
         }, songNote.startTime
         );
-      this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + 700);
+      this.gameNotes.setNoteCheck(songNote.position, songNote.startTime);
     })
   }
       

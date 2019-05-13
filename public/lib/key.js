@@ -6,10 +6,10 @@ class Key {
     this._pressed = {};
     this._pressedVisually = {};
     this.pos = {
-      1: 83,
-      2: 68,
-      3: 75,
-      4: 76
+      0: 83,
+      1: 68,
+      2: 75,
+      3: 76
     };
     this.A = 83;  // songNote.pos: 1
     this.S = 68;  // songNote.pos: 2

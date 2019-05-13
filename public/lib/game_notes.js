@@ -24,7 +24,7 @@ class GameNotes {
   }
 
   setNoteCheck(position, time) {
-    let timeDelay = 260 + this.musicDelay + time;
+    let timeDelay = 1000 + this.musicDelay + time;
 
     setTimeout(
       () => this.checkNote(position),
@@ -33,7 +33,7 @@ class GameNotes {
   }
 
   checkNote(position) {
-    console.log("On attend la note sur position :" + position)
+    console.log("waiting for :" + position + "touche " + this.key.pos[position])
     if (this.key.isDown(this.key.pos[position])) {
       console.log("vous avez bien appuyé !")
       if (this.streak === 30) {
