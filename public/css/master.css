@@ -37,6 +37,19 @@ body {
   background: rgba(0, 0, 0, .75);
 }
 
+.player-spotify{
+  position: absolute;
+  top: 1000;
+  left: 0;
+  right: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 300px 20px 20px 20px;
+
+}
+
 .score, .streak, .multiplier, .max-streak {
   font-size: 28px;
 }
