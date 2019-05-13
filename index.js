@@ -11,7 +11,7 @@ var querystring   = require('querystring');               // stringify json dict
  *  OSU Parser part
  */
 var fs = require('fs')
-var parser = require('osu-parser');
+var osuParser = require("./osuParser")
 
 /**
  * API credentials from environment variables
@@ -48,9 +48,9 @@ app.get('/game', function(req, res) {
 });
 
 app.get('/osu', function(req, res) {
-  parser.parseFile(__dirname + '/osu/map.osu', function (err, beatmap){
-  res.end(JSON.stringify(beatmap));
-  });
+  let textByLine = fs.readFileSync(__dirname + "/osu/map.osu").toString('utf-8').split('\n')
+  res.end(osuParser.parser(textByLine));
+
 });
 
 app.get('/music', function(req, res) {

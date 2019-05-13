@@ -134,8 +134,6 @@ class GameView {
     this.note.colors.forEach( (color, idx) => {
     this.note.materials[idx] =
        new THREE.MeshPhongMaterial( { color: this.note.colors[idx] } );
-       console.log("MATERIALS :" + idx)
-       console.log(this.note.materials[idx])
     });
 
     const circleGeometry = new THREE.CircleGeometry(this.note.radius);
@@ -188,48 +186,33 @@ class GameView {
       noteInterval, this.musicDelay, this.key
     );
 
-    this.beatmap.hitObjects.forEach((songNote, idx) => {
+    this.beatmap.forEach((songNote, idx) => {
       let time = songNote.startTime;
-      let position = 0;
 
-      if (songNote.position[0]<128) {
-        position = 0;
-      }else if (songNote.position[0]<256) {
-        position = 1;
-      }else if (songNote.position[0]<384) {
-        position = 2;
-      }else {
-        position = 3;
-      }
-      
-      noteMaterial = this.note.materials[position];
+      noteMaterial = this.note.materials[songNote.position];
       this.spheres[idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
 
-      let lag = 40
+      if (songNote.duration > 0 ){
 
-      if (typeof songNote.duration !== "undefined"){
-        console.log("note longue !")
-        console.log(songNote.duration);
-
-        let cylinderMaterial = this.note.materials[position];
+        let cylinderMaterial = this.note.materials[songNote.position];
         let cylinderGeometry = new THREE.CylinderGeometry(
-          3.5, 3.5, (songNote.duration * 1 * 30)
-          // voir vélocity à la place de 1
+          3.5, 3.5, (songNote.duration/10 * this.note.vel)
         );
         this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
         this.cylinders[idx].rotateX(this.xRotation);
-
       }
+
+      
 
       //this.addMovingBeatLine(songNote.m, noteInterval, lag);
 
       // POSITION & ADD TO SCENE NOTES & HOLDS & BeatLines
       setTimeout( () => {
         if (this.cylinders[idx]) {
-          let hold = songNote.duration * 3;
+          let hold = songNote.duration/100 ;
           this.cylinders[idx].hold = hold;
           this.cylinders[idx].position.set(
-            this.xPos[position],
+            this.xPos[songNote.position],
             this.yStartPoint - hold * this.note.yVel,
             this.zStartPoint - hold * this.note.zVel
           );
@@ -237,12 +220,12 @@ class GameView {
         }
         this.scene.add(this.spheres[idx]);
         this.spheres[idx].position.set(
-          this.xPos[position],
+          this.xPos[songNote.position],
           (this.yStartPoint),
           (this.zStartPoint));
-        }, time
+        }, songNote.startTime
         );
-      this.gameNotes.setNoteCheck(position, time);
+      this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + 700);
     })
   }
       
