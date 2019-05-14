@@ -128,7 +128,7 @@ class GameView {
     this.note.colors[3] = 0x2EDDA5;
     this.note.colors[4] = 0xFFFFFF;
 
-    this.note.geometry = new THREE.SphereGeometry(this.note.radius);
+    this.note.geometry = new THREE.BoxGeometry(this.note.radius*2.5,10,10);
 
     this.note.materials = [];
     this.note.colors.forEach( (color, idx) => {
@@ -136,10 +136,10 @@ class GameView {
        new THREE.MeshPhongMaterial( { color: this.note.colors[idx] } );
     });
 
-    const circleGeometry = new THREE.CircleGeometry(this.note.radius);
+    const rectangleGeometry = new THREE.BoxGeometry(this.note.radius*2.5,5,10);
     const circles = [];
     for (let i = 0; i < 4; i ++) {
-      circles[i] = new THREE.Mesh(circleGeometry, this.note.materials[i]);
+      circles[i] = new THREE.Mesh(rectangleGeometry, this.note.materials[i]);
     }
 
     circles.forEach((circle, idx) => {
@@ -148,7 +148,7 @@ class GameView {
       this.yEndPoint,
       this.zEndPoint
       );
-      circle.rotateX(-.2);
+      //circle.rotateX(-.2);
 
       // LIGHT UP CIRCLE WHEN KEY IS PRESSED
       setInterval( () => {
@@ -227,7 +227,7 @@ class GameView {
       this.gameNotes.setNoteCheck(songNote.position, songNote.startTime);
     })
   }
-      
+
   addMovingBeatLine(measure, noteInterval, lag) {
     if (this.measures[this.measures.length - 1] < measure) {
       this.measures.push(measure);
