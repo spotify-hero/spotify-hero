@@ -1,4 +1,4 @@
-import * as THREE from '../vendor/three';
+import * as THREE from '../vendor/three.min';
 import PointerLockControls from '../vendor/PointerLockControls.js';
 import OrbitControls from '../vendor/OrbitControls.js';
 
