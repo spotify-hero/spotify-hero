@@ -1,4 +1,4 @@
-import * as THREE from '../vendor/three';
+import * as THREE from '../vendor/three.min';
 
 class Light {
   constructor(scene) {

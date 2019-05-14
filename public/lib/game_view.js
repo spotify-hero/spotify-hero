@@ -1,9 +1,9 @@
-import * as THREE from '../vendor/three';
+import * as THREE from '../vendor/three.min';
+import jquery from '../vendor/jquery.min';
 import { songNotes, beatsPerMeasure } from './song';
 import ViewControls from './view_controls';
 import Light from './light';
 import GameNotes from './game_notes';
-import jquery from './jquery';
 
 class GameView {
   constructor(renderer, camera, scene, key, musicDelay) {
