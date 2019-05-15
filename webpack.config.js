@@ -2,11 +2,14 @@ const path = require('path');
 
 module.exports = {
 
-  entry: "./public/lib/guitar_hero.js",
+  entry: {
+    game: "./public/lib/guitar_hero.js",
+    spotify: "./public/lib/spotify_main.js"
+  },
 
   output: {
     path: path.resolve(__dirname, 'public/build/'),
-  	filename: "bundle.js"
+    filename: "[name]-bundle.js"
   },
 
   mode: 'development'
