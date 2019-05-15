@@ -19,9 +19,6 @@ class Game {
     this.started = false;
     this.beatmap = [];
 
-    document.getElementsByClassName('close-pause')[0].onclick = function(){
-      console.log("Retry !!! ")
-    }
     this.gameStartEl = document.getElementsByClassName('start')[0];
     this.createGameView();
     this.setupGame();
