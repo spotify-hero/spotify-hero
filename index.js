@@ -1,31 +1,42 @@
-var keysSpotify = require('./secu.json');
-/**
- * TC Hero : Spotify API testpage
- */
+/*
+ ______   ______     ______   ______   ______     ______      __  __     ______     ______     ______
+/\__  _\ /\  __ \   /\  == \ /\__  _\ /\  __ \   /\  == \    /\ \_\ \   /\  ___\   /\  == \   /\  __ \
+\/_/\ \/ \ \  __ \  \ \  _-/ \/_/\ \/ \ \  __ \  \ \  _-/    \ \  __ \  \ \  __\   \ \  __<   \ \ \/\ \
+   \ \_\  \ \_\ \_\  \ \_\      \ \_\  \ \_\ \_\  \ \_\       \ \_\ \_\  \ \_____\  \ \_\ \_\  \ \_____\
+    \/_/   \/_/\/_/   \/_/       \/_/   \/_/\/_/   \/_/        \/_/\/_/   \/_____/   \/_/ /_/   \/_____/
+
+@version 0.1.0
+@license CC-BY-NC-SA 4.0
+@authors Cécile POUPON - Antoine BALLIET - Gabriel FORIEN
+*/
+
+
+/*************************************
+*            depedencies
+**************************************/
 var express       = require('express');
 var request       = require('request');
 //var cors        = require('cors');                      // not-necessary
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
-/**
- *  OSU Parser part
- */
+
+// OSU Parser part
 var fs = require('fs')
 var osuParser = require("./osuParser")
 
-/**
- * API credentials from environment variables
- */
+// API credentials from secured file
+var keysSpotify = require('./secu.json');
 var client_id     = keysSpotify.cliend_id;
 var client_secret = keysSpotify.client_secret;
 var redirect_uri  = keysSpotify.redirect_uri;
 
+// Initiate server, static folder is /public, load cookieParser
+var stateKey = 'spotify_auth_state';
+var app = express();
+app.use(express.static(__dirname + '/public'))
+   .use(cookieParser());
+//   .use(cors())
 
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
 var generateRandomString = function(length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -36,12 +47,14 @@ var generateRandomString = function(length) {
   return text;
 };
 
-var stateKey = 'spotify_auth_state';
-var app = express();
-app.use(express.static(__dirname + '/public'))
-   .use(cookieParser());                            // nécessaire au bon fonctionnement
-//   .use(cors())
 
+
+/*************************************
+*            routes definitions
+**************************************/
+app.get('/', function(req, res) {
+  res.status(200).sendFile(__dirname + '/public/index.html');
+});
 
 app.get('/game', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/game.html');
@@ -57,19 +70,15 @@ app.get('/music', function(req, res) {
   res.sendFile(__dirname + '/osu/music.mp3');
 });
 
-app.get('/', function(req, res) {
-  res.status(200).sendFile(__dirname + '/public/index.html');
-});
 
 app.get('/spotify', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/spotify.html');
+  //res.redirect('/login?from=index');
 });
 
 app.get('/login', function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-//  user-read-recently-played user-top-read user-library-modify user-library-read playlist-read-private playlist-modify-public playlist-modify-private playlist-read-collaborative user-read-email user-read-birthdate user-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming user-follow-read user-follow-modify
-//  var scope = 'user-read-private user-read-email';
   var scope = 'user-read-recently-played user-top-read user-library-modify user-library-read playlist-read-private playlist-modify-public playlist-modify-private playlist-read-collaborative user-read-email user-read-birthdate user-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming user-follow-read user-follow-modify';
 
   res.redirect('https://accounts.spotify.com/authorize?' +
@@ -82,13 +91,9 @@ app.get('/login', function(req, res) {
     }));
 });
 
-
-
 app.get('/callback', function(req, res) {
 
-  // your application requests refresh and access tokens
-  // after checking the state parameter
-
+  // requests refresh and access tokens after checking the state parameter
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -131,7 +136,13 @@ app.get('/callback', function(req, res) {
         });*/
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('spotify/#' +
+/*        res.redirect('/spotify#' +
+          querystring.stringify({
+            access_token: access_token,
+            refresh_token: refresh_token
+          }));*/
+
+        res.redirect('/game?' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
@@ -146,11 +157,9 @@ app.get('/callback', function(req, res) {
   }
 });
 
-
-
 app.get('/refresh_token', function(req, res) {
-  // requesting access token from refresh token
 
+  // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -172,9 +181,6 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-
-
-//console.log('Listening on 8888');
 app.listen(8888, function() {
   console.log('Listening on port 8888');
 });

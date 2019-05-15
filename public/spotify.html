@@ -45,11 +45,7 @@
       refresh_token = params.refresh_token,
       error = params.error;
 
-    /******************************************************
-    *                   STREAMING                         *
-    *******************************************************/
     window.onSpotifyWebPlaybackSDKReady = () => {
-
       const player = new Spotify.Player({
         name: 'Web Playback SDK Quick Start Player',
         getOAuthToken: cb => { cb(access_token); }
@@ -67,6 +63,8 @@
       // Ready
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
+        jquery('input_device_id').value = device_id;
+        console.log('Devide ID put in hidden input field');
       });
 
       // Not Ready

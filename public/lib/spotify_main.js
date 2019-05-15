@@ -4,7 +4,7 @@ import Handlebars from '../vendor/handlebars.min';
 import Spotify from '../vendor/spotify-player.min';
 
 // import custom functions
-import spotifyAPI from './spotifyAPI';
+import SpotifyAPI from './SpotifyAPI';
 import {getHashParams, copyClipboard} from './functions';
 
 
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 *        - setup onclick events
 */
 function main() {
-  var spAPI = new spotifyAPI();
+  var spAPI = new SpotifyAPI();
   
   document.getElementById("button-pause").onclick = spAPI.pause;
   document.getElementById("button-play").onclick = spAPI.play;

@@ -9,6 +9,52 @@
   </head>
   <body>
     <script type="text/javascript" src="/build/game-bundle.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+      var params = (() => {
+        var hashParams = {};
+        var e, r = /([^&;=]+)=?([^&;]*)/g,
+            q = window.location.hash.substring(1);
+        while ( e = r.exec(q)) {
+           hashParams[e[1]] = decodeURIComponent(e[2]);
+        }
+        return hashParams;
+      })();
+
+      var access_token = params.access_token,
+        refresh_token = params.refresh_token,
+        error = params.error;
+
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        const player = new Spotify.Player({
+          name: 'Web Playback SDK Quick Start Player',
+          getOAuthToken: cb => { cb(access_token); }
+        });
+
+        // Error handling
+        player.addListener('initialization_error', ({ message }) => { console.error(message); });
+        player.addListener('authentication_error', ({ message }) => { console.error(message); });
+        player.addListener('account_error', ({ message }) => { console.error(message); });
+        player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+        // Playback status updates
+        // player.addListener('player_state_changed', state => { console.log(state); });
+
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+          console.log('Ready with Device ID', device_id);
+        });
+
+        // Not Ready
+        player.addListener('not_ready', ({ device_id }) => {
+          console.log('Device ID has gone offline', device_id);
+        });
+
+        // Connect to the player!
+        player.connect();
+      };
+    </script>
+
     <div id="game-canvas">
       <div class="game-display">
         <div class="header">
@@ -24,6 +70,11 @@
 
           <div class="player-spotify">
             <h1 class="title"> Spotify Player</h1>
+            <form action="javascript:void(0);" class="form-example">
+              <input type="text" id="input_device_id" >
+              <input type="text" id="input_uri" required>
+              <input type="button" id="play_uri">
+            </form>
           </div>
 
           <div class="game-details-right">

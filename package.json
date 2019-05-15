@@ -9,7 +9,6 @@
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
-    "osu-parser": "^0.3.3",
     "request": "^2.88.0"
   },
   "scripts": {

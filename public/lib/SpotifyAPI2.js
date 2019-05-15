@@ -1,10 +1,9 @@
 import jquery from '../vendor/jquery.min';
 import {getHashParams, copyClipboard} from './functions';
 
-class spotifyAPI {
+class SpotifyAPI {
   hello() {
-    jquery.ajax();
-    console.log("elllooooo");
+    console.log("Helllooooo");
   }
 
   // Demande un nouvel acces_token (valable 1h seulement) grace au refresh token
@@ -226,4 +225,4 @@ class spotifyAPI {
   }
 }
 
-export default spotifyAPI;
+export default SpotifyAPI;
