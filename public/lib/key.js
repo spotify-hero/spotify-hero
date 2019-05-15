@@ -37,6 +37,9 @@ class Key {
   }
 
   onKeydown(e) {
+    if (e.keyCode == 27){
+      //console.log("echap appuyé !!!");
+    }
     this._pressed[e.keyCode] = true;
     this._pressedVisually[e.keyCode] = true;
   }

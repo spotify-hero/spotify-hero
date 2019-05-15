@@ -1,5 +1,3 @@
-import { songNotes, beatsPerMeasure } from './song';
-
 class GameNotes {
   constructor(noteInterval, musicDelay, key) {
     this.noteInterval = noteInterval;
@@ -33,9 +31,7 @@ class GameNotes {
   }
 
   checkNote(position) {
-    console.log("waiting for :" + position + "touche " + this.key.pos[position])
     if (this.key.isDown(this.key.pos[position])) {
-      console.log("vous avez bien appuyé !")
       if (this.streak === 30) {
         this.multiplier = 4;
       } else if (this.streak === 20) {
