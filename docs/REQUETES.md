@@ -188,7 +188,7 @@ ou une combinaison de ces valeurs séparées par des virgules
               "uri": "spotify:artist:12Chz98pHFMPJEknJQMWvI"
             }
           ],
-          
+
           "external_urls": {
             "spotify": "https://open.spotify.com/album/0eFHYz8NmK75zSplL5qlfM"
           },
@@ -406,7 +406,7 @@ Dans ce cas, préciser le paramètre *-d ""* en fin de requête
 ## -> Lancer un morceau
 :warning: S'il n'y a pas de _active_device_, il faut récupérer un _device_id_ d'abord
 
-:warning: On ne peut pas préciser l'URI d'un seul morceau : c'est soit une liste de morceau soit un album/playlist/artiste
+:warning: On ne peut pas préciser seulement l'URI d'une musique : c'est soit un array de musiques soit un album/playlist/artiste
 
 :warning: Attention à ne pas préciser une _position_ qui dépasse de la liste donnée !
 
@@ -422,8 +422,8 @@ Dans ce cas, préciser le paramètre *-d ""* en fin de requête
 --data "{\"context_uri\":\"spotify:album:5xyqe6osNs777D8yb5uxOx\"}"
 ```
 
-- Lancer une liste de morceaux avec active_device
+- Lancer un array de une musique avec active_device
 ```
 -X "PUT" "https://api.spotify.com/v1/me/player/play?device_id=426b69956057c08cae7412096880367d88fa2856"
---data "{\"uris\":[\"spotify:track:561F1zqRwGPCTMRsLsXVtL\",\"spotify:track:51ueZKM83MTRv9rgiDfI6Y\"]}"
+--data '{"uris":["spotify:track:40YcuQysJ0KlGQTeGUosTC"]}'
 ```

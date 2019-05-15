@@ -43,8 +43,9 @@ body {
   left: 0;
   right: 0;
   color: white;
-  display: flex;
+/*  display: flex;*/
   align-items: center;
+  float: left;
   justify-content: space-between;
   padding: 300px 20px 20px 20px;
 

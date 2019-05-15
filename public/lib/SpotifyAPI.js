@@ -133,7 +133,7 @@ class SpotifyAPI {
         headers: {
           'Authorization': 'Bearer ' + access_token
         },
-        data : '{"context_uri":"'+uri+'"}',
+        data : '{"uris": ["'+uri+'"]}',
         success: function(response) {
           console.log('play() successfully executed');
         },

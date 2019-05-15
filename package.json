@@ -12,7 +12,7 @@
     "request": "^2.88.0"
   },
   "scripts": {
-    "start": "(nohup webpack --watch &) && rm -f nohup.out && nodemon index.js",
+    "start": "(webpack --watch &) && nodemon index.js",
     "test": "mocha"
   },
   "devDependencies": {

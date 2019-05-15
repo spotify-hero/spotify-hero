@@ -9,7 +9,7 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Osu_new_logo.png" alt="Osu" height="145" width="145">
 </p>
 
-![Screenshot](screenshot.gif)
+![Screenshot](docs/screenshot.gif)
 
 ## Try it (easy as pie :ok_hand:)
 :warning: TC-Hero requires **Firefox** to work properly

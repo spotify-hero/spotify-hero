@@ -67,7 +67,7 @@ app.get('/osu', function(req, res) {
 });
 
 app.get('/music', function(req, res) {
-  res.sendFile(__dirname + '/osu/music.mp3');
+  res.sendFile(__dirname + '/mp3/music.mp3');
 });
 
 
