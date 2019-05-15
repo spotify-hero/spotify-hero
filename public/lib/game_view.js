@@ -195,8 +195,8 @@ class GameView {
       if (songNote.duration > 0 ){
 
         let cylinderMaterial = this.note.materials[songNote.position];
-        let cylinderGeometry = new THREE.CylinderGeometry(
-          3.5, 3.5, (songNote.duration/10 * this.note.vel)
+        let cylinderGeometry = new THREE.BoxGeometry(
+          this.note.radius*2.5,(songNote.duration/10 * this.note.vel),10
         );
         this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
         this.cylinders[idx].rotateX(this.xRotation);
