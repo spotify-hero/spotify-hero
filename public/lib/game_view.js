@@ -1,6 +1,4 @@
 import * as THREE from '../vendor/three.min';
-import jquery from '../vendor/jquery.min';
-import { songNotes, beatsPerMeasure } from './song';
 import ViewControls from './view_controls';
 import Light from './light';
 import GameNotes from './game_notes';
@@ -12,6 +10,8 @@ class GameView {
     this.scene = scene;
     this.key = key;
     this.musicDelay = musicDelay;
+
+    this.isPlay =  true;
 
     this.note = {};
 
@@ -32,7 +32,6 @@ class GameView {
     this.t = 0;
     this.measures = [0];
 
-    this.beatmap = [];
 
   }
 
@@ -41,7 +40,6 @@ class GameView {
     this.backgroundSetup();
     this.addFretBoard();
     this.setNoteAttributes();
-    this.beatmap = this.getOsuFile();
 
     this.controls = new ViewControls(this.camera, this.renderer);
     this.gameLoop();
@@ -163,31 +161,14 @@ class GameView {
     });
   }
 
-  getOsuFile(){
-    let osuData;
-    // AJAX request
-    jquery.ajax({
-      async: false,
-      type:'GET',
-      url: '/osu',
-      data: '',
-      success: function(response) {
-        osuData = JSON.parse(response);
-      }
-    })
-
-    return osuData;
-  }
-
-  addMovingNotes(noteInterval) {
+  addMovingNotes(noteInterval, beatmap) {
     let noteMaterial;
 
     this.gameNotes = new GameNotes(
       noteInterval, this.musicDelay, this.key
     );
 
-    this.beatmap.forEach((songNote, idx) => {
-      let time = songNote.startTime;
+    beatmap.forEach((songNote, idx) => {
 
       noteMaterial = this.note.materials[songNote.position];
       this.spheres[idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
@@ -228,39 +209,6 @@ class GameView {
     })
   }
 
-  addMovingBeatLine(measure, noteInterval, lag) {
-    if (this.measures[this.measures.length - 1] < measure) {
-      this.measures.push(measure);
-      let onBeatLineMaterial =
-        new THREE.MeshBasicMaterial( { color: 0x999999});
-      let offBeatLineMaterial =
-        new THREE.MeshBasicMaterial( { color: 0x3b3b3b});
-      let beatLineGeometry = new THREE.CylinderGeometry(
-        .25, .25, (this.xPos[4] - this.xPos[0] + 50)
-      );
-      for (let t = 1; t < 9; t++ ) {
-        let time = lag + noteInterval * (
-          ((measure - 1) * beatsPerMeasure) + t
-        );
-        let idx = measure * beatsPerMeasure + t;
-        if (t % 2 === 0) {
-          this.beatLines[idx] =
-            new THREE.Mesh(beatLineGeometry, offBeatLineMaterial);
-        } else {
-          this.beatLines[idx] =
-            new THREE.Mesh(beatLineGeometry, onBeatLineMaterial);
-        }
-
-        setTimeout( () => {
-          this.scene.add(this.beatLines[idx]);
-          this.beatLines[idx].position.set(
-            0, this.yStartPoint, this.zStartPoint
-          );
-          this.beatLines[idx].rotateZ(Math.PI / 2);
-        }, time);
-      }
-    }
-  }
 
   sceneUpdate() {
     this.spheres.forEach(sphere => {
@@ -279,15 +227,6 @@ class GameView {
         }
       }
     });
-    this.beatLines.forEach(beatLine => {
-      if (beatLine) {
-        beatLine.position.y += this.note.yVel;
-        beatLine.position.z += this.note.zVel;
-        if (beatLine.position.z > this.zEndPoint) {
-          this.scene.remove(beatLine);
-        }
-      }
-    });
     // this.t += .01;
     // this.light.movingLights[0].position.x = 5 * Math.cos(this.t) + 0;
     // this.light.movingLights[0].position.y = 5 * Math.sin(this.t) + 0;
@@ -298,6 +237,8 @@ class GameView {
   }
 
   gameLoop() {
+    if (!this.isPlay) return;
+
     requestAnimationFrame(this.gameLoop.bind(this));
 
     this.sceneUpdate();

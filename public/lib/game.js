@@ -8,6 +8,8 @@ import GameNotes from './game_notes';
 import GameView from './game_view';
 import Instructions from './instructions';
 
+import jquery from '../vendor/jquery.min';
+
 class Game {
   constructor() {
     this.noteInterval = 237.8;
@@ -15,12 +17,14 @@ class Game {
     this.key = new Key();
     this.instructions = new Instructions();
     this.started = false;
+    this.beatmap = [];
 
+    document.getElementsByClassName('close-pause')[0].onclick = function(){
+      console.log("Retry !!! ")
+    }
     this.gameStartEl = document.getElementsByClassName('start')[0];
     this.createGameView();
     this.setupGame();
-     this.gameStartListener =
-      window.addEventListener("keypress", this.hitAToStart.bind(this));
     
   }
 
@@ -28,12 +32,16 @@ class Game {
     //il faut charger la musique sans la jouer + télécharger map
     //load musique
     this.music = new Audio(this.musicDelay);
+    this.getOsuFile();
+
+    this.gameStartListener =
+      window.addEventListener("keydown", this.hitAToStart.bind(this));
     
   }
 
   startGame() {
     this.addMusic();
-    this.gameView.addMovingNotes(this.noteInterval);
+    this.gameView.addMovingNotes(this.noteInterval, this.beatmap);
     this.gameStartEl.className = "start hidden";
     this.started = true;
   }
@@ -43,7 +51,35 @@ class Game {
       if (e.keyCode === 97 || e.keyCode === 65) {
         this.startGame();
       }
+
+    }else{
+      if (e.keyCode == 27){
+        console.log("vous avez appuyé sur échap")
+        document.getElementsByClassName('pause')[0].className="pause"
+        this.gameView.isPlay = false;
+        this.music.pauseMusic();
+        this.started = false;
+
+      }
     }
+    
+  }
+
+  getOsuFile(){
+    let osuData;
+    // AJAX request
+    jquery.ajax({
+      async: false,
+      type:'GET',
+      url: '/osu',
+      data: '',
+      success: function(response) {
+        osuData = JSON.parse(response);
+      }
+    })
+
+    this.beatmap = osuData;
+    
   }
 
   createGameView() {
@@ -80,7 +116,6 @@ class Game {
     this.music.startMusic();
     setTimeout(this.music.fadeOut.bind(this.music), 213000);
   }
-
 }
 
 export default Game;
