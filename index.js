@@ -142,7 +142,7 @@ app.get('/callback', function(req, res) {
             refresh_token: refresh_token
           }));*/
 
-        res.redirect('/game?' +
+        res.redirect('/game#' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token

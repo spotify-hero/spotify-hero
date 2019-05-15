@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('play_uri').onclick = () => {
     var uri = document.getElementById('input_uri').value;
     var deviceID = document.getElementById('input_device_id').value;
+    console.log("PLAY CALLBACK : uri = "+uri+"  device id = "+deviceID);
     spAPI.play(uri, deviceID);
   };
 

@@ -25,6 +25,8 @@
         refresh_token = params.refresh_token,
         error = params.error;
 
+      console.log(params);
+
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new Spotify.Player({
           name: 'Web Playback SDK Quick Start Player',
@@ -43,6 +45,7 @@
         // Ready
         player.addListener('ready', ({ device_id }) => {
           console.log('Ready with Device ID', device_id);
+          document.getElementById('input_device_id').value = device_id;
         });
 
         // Not Ready

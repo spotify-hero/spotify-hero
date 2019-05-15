@@ -126,21 +126,27 @@ class SpotifyAPI {
     var params = getHashParams();
     var access_token = params.access_token;
 
-    if (typeof uri === 'undefined' || typeof device_id === 'undefined') {
+    //if (uri == 'undefined' || device_id == 'undefined') {
       jquery.ajax({
         type: 'PUT',
-        url: 'https://api.spotify.com/v1/me/player/play',
+        url: 'https://api.spotify.com/v1/me/player/play?device_id'+device_id,
         headers: {
           'Authorization': 'Bearer ' + access_token
         },
-        data : "",
+        data : '{"context_uri":"'+uri+'"}',
         success: function(response) {
           console.log('play() successfully executed');
+        },
+        error: function(response) {
+          console.log('play() failed : ');
+          console.log(response.responseText);
         }
       });
-    } else {
-      console.log('Make a precise request');
-    }
+
+    //} else {
+    //  console.log("Error : uri="+uri+"  device_id="+device_id);
+    //  console.log('Make a precise request');
+    //}
   }
 
   search() {
