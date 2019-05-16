@@ -20,13 +20,9 @@ class Game {
     this.started = false;
     this.beatmap = [];
 
-    document.getElementsByClassName('retry-pause')[0].onclick = function(){
+    document.getElementsByClassName('close-pause')[0].onclick = function(){
       console.log("retry !!! ")
       document.location.reload(false);
-    }
-
-    document.getElementsByClassName('retry-pause')[0].onclick = function(){
-      console.log("record !!! ")
     }
 
     this.spAPI = new SpotifyAPI();
