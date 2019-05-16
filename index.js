@@ -63,7 +63,12 @@ app.get('/game', function(req, res) {
 app.get('/osu', function(req, res) {
   let textByLine = fs.readFileSync(__dirname + "/osu/map.osu").toString('utf-8').split('\n')
   res.end(osuParser.parser(textByLine));
+});
 
+app.get('/osu/:name', function(req, res) {
+  console.log('request for file: '+req.params.name+'.osu');
+  let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name+".osu").toString('utf-8').split('\n')
+  res.end(osuParser.parser(textByLine));
 });
 
 app.get('/music', function(req, res) {

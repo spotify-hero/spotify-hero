@@ -1,6 +1,7 @@
 import * as THREE from '../vendor/three.min';
 import PointerLockControls from '../vendor/PointerLockControls.js';
 import OrbitControls from '../vendor/OrbitControls.js';
+import jquery from '../vendor/jquery.min';
 
 import Key from './key';
 import Audio from './audio';
@@ -8,7 +9,6 @@ import GameNotes from './game_notes';
 import GameView from './game_view';
 import Instructions from './instructions';
 
-import jquery from '../vendor/jquery.min';
 
 class Game {
   constructor() {
@@ -68,7 +68,7 @@ class Game {
     jquery.ajax({
       async: false,
       type:'GET',
-      url: '/osu',
+      url: '/osu/7_rings',
       data: '',
       success: function(response) {
         osuData = JSON.parse(response);
@@ -110,7 +110,7 @@ class Game {
   }
 
   addMusic() {
-    this.music.startMusic();
+    //this.music.startMusic();
     setTimeout(this.music.fadeOut.bind(this.music), 213000);
   }
 }
