@@ -49,17 +49,35 @@ class Game {
   }
 
   startGame() {
-    
-    var spAPI = this.spAPI;
-    var uri = document.getElementById('input_uri').value;
-    var deviceID = document.getElementById('input_device_id').value;
-    console.log("PLAY CALLBACK : uri = "+uri+"  device id = "+deviceID);
-    spAPI.play(uri, deviceID);
-    
-    this.gameView.addMovingNotes(this.noteInterval, this.beatmap, -1000);
+    let delay = -800;
+
+    //on a défini 2 delay
+    let noteDelay;
+    let musicDelay;
+
+    if(delay<0){
+      musicDelay = Math.abs(delay);
+      noteDelay = 0
+    }else{
+      noteDelay = delay;
+      noteDelay = 0
+    }
+
+    this.gameView.addMovingNotes(this.noteInterval, this.beatmap, noteDelay);
     
     this.gameStartEl.className = "start hidden";
     this.started = true;
+    
+    var spotyAPI = this.spAPI
+    //code before the pause
+    setTimeout(function(){
+      //do what you need here
+      var uri = document.getElementById('input_uri').value;
+      var deviceID = document.getElementById('input_device_id').value;
+      console.log("PLAY CALLBACK : uri = "+uri+"  device id = "+deviceID);
+      spotyAPI.play(uri, deviceID);
+    }, musicDelay);
+    
   }
 
   hitAToStart(e) {
