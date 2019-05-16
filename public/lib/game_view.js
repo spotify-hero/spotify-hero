@@ -161,7 +161,7 @@ class GameView {
     });
   }
 
-  addMovingNotes(noteInterval, beatmap) {
+  addMovingNotes(noteInterval, beatmap, latency) {
     let noteMaterial;
 
     this.gameNotes = new GameNotes(
@@ -203,9 +203,9 @@ class GameView {
           this.xPos[songNote.position],
           (this.yStartPoint),
           (this.zStartPoint));
-        }, songNote.startTime
+        }, songNote.startTime + latency
         );
-      this.gameNotes.setNoteCheck(songNote.position, songNote.startTime);
+      this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
     })
   }
 

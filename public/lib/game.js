@@ -4,10 +4,11 @@ import OrbitControls from '../vendor/OrbitControls.js';
 import jquery from '../vendor/jquery.min';
 
 import Key from './key';
-import Audio from './audio';
 import GameNotes from './game_notes';
 import GameView from './game_view';
 import Instructions from './instructions';
+import SpotifyAPI from './SpotifyAPI';
+import {getHashParams, copyClipboard} from './functions';
 
 
 class Game {
@@ -18,6 +19,13 @@ class Game {
     this.instructions = new Instructions();
     this.started = false;
     this.beatmap = [];
+
+    document.getElementsByClassName('close-pause')[0].onclick = function(){
+      console.log("retry !!! ")
+      document.location.reload(false);
+    }
+
+    this.spAPI = new SpotifyAPI();
 
     this.gameStartEl = document.getElementsByClassName('start')[0];
     this.createGameView();
@@ -37,8 +45,15 @@ class Game {
   }
 
   startGame() {
-    this.addMusic();
-    this.gameView.addMovingNotes(this.noteInterval, this.beatmap);
+    
+    var spAPI = this.spAPI;
+    var uri = document.getElementById('input_uri').value;
+    var deviceID = document.getElementById('input_device_id').value;
+    console.log("PLAY CALLBACK : uri = "+uri+"  device id = "+deviceID);
+    spAPI.play(uri, deviceID);
+    
+    this.gameView.addMovingNotes(this.noteInterval, this.beatmap, 3500);
+    
     this.gameStartEl.className = "start hidden";
     this.started = true;
   }
@@ -54,7 +69,7 @@ class Game {
         console.log("vous avez appuyé sur échap")
         document.getElementsByClassName('pause')[0].className="pause"
         this.gameView.isPlay = false;
-        this.music.pauseMusic();
+        this.spAPI.pause();
         this.started = false;
 
       }
@@ -68,7 +83,7 @@ class Game {
     jquery.ajax({
       async: false,
       type:'GET',
-      url: '/osu/7_rings',
+      url: '/osu/californication',
       data: '',
       success: function(response) {
         osuData = JSON.parse(response);
