@@ -286,7 +286,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.close-pause {
+.retry-pause, .record-pause {
   color: white;
   display: flex;
   flex-direction: column;

@@ -20,9 +20,13 @@ class Game {
     this.started = false;
     this.beatmap = [];
 
-    document.getElementsByClassName('close-pause')[0].onclick = function(){
+    document.getElementsByClassName('retry-pause')[0].onclick = function(){
       console.log("retry !!! ")
       document.location.reload(false);
+    }
+
+    document.getElementsByClassName('record-pause')[0].onclick = function(){
+      console.log("record !!! ")
     }
 
     this.spAPI = new SpotifyAPI();
@@ -52,7 +56,7 @@ class Game {
     console.log("PLAY CALLBACK : uri = "+uri+"  device id = "+deviceID);
     spAPI.play(uri, deviceID);
     
-    this.gameView.addMovingNotes(this.noteInterval, this.beatmap, 3500);
+    this.gameView.addMovingNotes(this.noteInterval, this.beatmap, -1000);
     
     this.gameStartEl.className = "start hidden";
     this.started = true;
@@ -83,7 +87,7 @@ class Game {
     jquery.ajax({
       async: false,
       type:'GET',
-      url: '/osu/californication',
+      url: '/osu/warriyo_venom',
       data: '',
       success: function(response) {
         osuData = JSON.parse(response);

@@ -4,7 +4,4 @@ import jquery from '../vendor/jquery.min';
 
 document.addEventListener("DOMContentLoaded", () => {
   let game = new Game();
-  var spAPI = new SpotifyAPI();
-  console.log("Successfully loaded")
-
 });
