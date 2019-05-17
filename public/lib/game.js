@@ -45,7 +45,6 @@ class Game {
   setupGame(){
     //il faut charger la musique sans la jouer + télécharger map
     //load musique
-    this.music = new Audio(this.musicDelay);
     this.getOsuFile();
 
     this.gameStartListener =
