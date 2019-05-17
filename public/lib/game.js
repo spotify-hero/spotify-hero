@@ -29,6 +29,11 @@ class Game {
       console.log("record !!! ")
     }
 
+    document.getElementsByClassName('select-pause')[0].onclick = function(){
+      console.log("select !!! ")
+      window.location.href = '/select';
+    }
+
     this.spAPI = new SpotifyAPI();
 
     this.gameStartEl = document.getElementsByClassName('start')[0];

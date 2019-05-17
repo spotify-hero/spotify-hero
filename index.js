@@ -60,6 +60,12 @@ app.get('/game', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/game.html');
 });
 
+app.get('/select', function(req, res) {
+  res.status(200).sendFile(__dirname + '/public/select.html');
+});
+
+
+
 app.get('/osu', function(req, res) {
   let textByLine = fs.readFileSync(__dirname + "/osu/map.osu").toString('utf-8').split('\n')
   res.end(osuParser.parser(textByLine));
