@@ -21,8 +21,12 @@ var cookieParser  = require('cookie-parser');             // login is kept via a
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
 
 // OSU Parser part
-var fs = require('fs')
-var osuParser = require("./osuParser")
+var fs = require('fs');
+var osuParser = require("./osuParser");
+var files = fs.readdirSync('./osu');
+
+var sqlite3 = require('sqlite3').verbose();
+var dbHandler = require('./dbHandler');
 
 // API credentials from secured file
 var keysSpotify = require('./secu.json');
@@ -30,12 +34,18 @@ var client_id     = keysSpotify.cliend_id;
 var client_secret = keysSpotify.client_secret;
 var redirect_uri  = keysSpotify.redirect_uri;
 
-// Initiate server, static folder is /public, load cookieParser
+// Initiate server, static folder is /public, load cookieParser, connect to db
 var stateKey = 'spotify_auth_state';
 var app = express();
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 //   .use(cors())
+var db = new sqlite3.Database('./main.db', (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    console.log('Connected to the database.');
+});
 
 var generateRandomString = function(length) {
   var text = '';
@@ -60,28 +70,6 @@ app.get('/game', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/game.html');
 });
 
-app.get('/select', function(req, res) {
-  res.status(200).sendFile(__dirname + '/public/select.html');
-});
-
-
-
-app.get('/osu', function(req, res) {
-  let textByLine = fs.readFileSync(__dirname + "/osu/map.osu").toString('utf-8').split('\n')
-  res.end(osuParser.parser(textByLine));
-});
-
-app.get('/osu/:name', function(req, res) {
-  console.log('request for file: '+req.params.name+'.osu');
-  let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name+".osu").toString('utf-8').split('\n')
-  res.end(osuParser.parser(textByLine));
-});
-
-app.get('/music', function(req, res) {
-  res.sendFile(__dirname + '/mp3/music.mp3');
-});
-
-
 app.get('/spotify', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/spotify.html');
   //res.redirect('/login?from=index');
@@ -102,8 +90,56 @@ app.get('/login', function(req, res) {
     }));
 });
 
-app.get('/callback', function(req, res) {
+app.get('/select', function(req, res) {
+  res.status(200).sendFile(__dirname + '/public/select.html');
+});
 
+/****************************************************
+*        callbacks and JSON-feeding
+*****************************************************/
+app.get('/database/:name', function(req, res) {
+  dbHandler.selectAll(db, req.params.name, function(data) {
+      res.end(JSON.stringify(data));
+  });
+  //db.close();
+});
+
+/*app.get('/database/info/:name', function(req, res) {
+  dbHandler.info(db, req.params.name, function(data) {
+      res.end(JSON.stringify(data));
+  });
+  //db.close();
+});*/
+
+app.post('/database/:name', function(req, res) {
+  dbHandler.selectAll(db, req.params.name, function(data) {
+      res.end(JSON.stringify(data));
+  });
+  //db.close();
+});
+
+app.put('/database/:name', function(req, res) {
+  dbHandler.selectAll(db, req.params.name, function(data) {
+      res.end(JSON.stringify(data));
+  });
+  //db.close();
+});
+
+app.delete('/database/:name', function(req, res) {
+  dbHandler.selectAll(db, req.params.name, function(data) {
+      res.end(JSON.stringify(data));
+  });
+  //db.close();
+});
+
+app.get('/osu/:name', function(req, res) {
+  console.log('request for file: '+req.params.name+'.osu');
+  let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name+".osu").toString('utf-8').split('\n')
+  res.end(osuParser.parser(textByLine));
+});
+
+
+app.get('/spotify_cb', function(req, res) {
   // requests refresh and access tokens after checking the state parameter
   var code = req.query.code || null;
   var state = req.query.state || null;
@@ -153,10 +189,10 @@ app.get('/callback', function(req, res) {
             refresh_token: refresh_token
           }));*/
 
-        res.redirect('/game#' +
+        res.redirect('/spotify#' +
           querystring.stringify({
-            access_token: access_token,
-            refresh_token: refresh_token
+            access_token: access_token
+//            refresh_token: refresh_token
           }));
       } else {
         res.redirect('/#' +

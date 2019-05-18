@@ -44,7 +44,6 @@ insert into track values('spotify:track:3e9HZxeyfWwjeyPAMmWSSQ', 'thank_u_next')
 insert into track values('spotify:track:2DLrgv7HhJanCuD8L9uJLR', 'zenzenzense');
 ```
 
-
 7_rings.osu
 bang_bang.osu
 californication.osu
@@ -66,6 +65,22 @@ spotify:track:6fgbQt13JlpN59PytgTMsA
 spotify:track:1NeLwFETswx8Fzxl2AFl91
 spotify:track:3e9HZxeyfWwjeyPAMmWSSQ
 spotify:track:2DLrgv7HhJanCuD8L9uJLR
+
+
+##4. INSERT INTO
+```javascript
+let db_init = `INSERT INTO Track (TrackURI, Trackname, Trackartist, Trackcover, Trackdelay, OSUfile)
+VALUES("spotify:track:4BgJZJW9b24DEt3ONiAIQP", "Venom", "Warriyo", "", "-800", "warriyo_venom.osu");
+VALUES("spotify:track:6ocbgoVGwYJhOv1GgI9NsF", "7 Rings", "Ariana Grande", "", "0", "7_rings.osu");
+VALUES("spotify:track:48UPSzbZjgc449aqz8bxox", "Californication", "Red Hot Chili Peppers", "", "0", "californication.osu");
+`;
+db.run(db_init, function(err){
+  if (err) {
+      return console.log(err.message);
+  }
+  console.log("succes!");
+});
+```
 
 
 ##5. URIs d'albums

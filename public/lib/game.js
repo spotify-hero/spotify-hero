@@ -43,8 +43,6 @@ class Game {
   }
 
   setupGame(){
-    //il faut charger la musique sans la jouer + télécharger map
-    //load musique
     this.getOsuFile();
 
     this.gameStartListener =
@@ -72,14 +70,13 @@ class Game {
     this.gameStartEl.className = "start hidden";
     this.started = true;
     
-    var spotyAPI = this.spAPI
+    var spotyAPI = this.spAPI;
     //code before the pause
     setTimeout(function(){
-      //do what you need here
       var uri = document.getElementById('input_uri').value;
       var deviceID = document.getElementById('input_device_id').value;
       console.log("PLAY CALLBACK : uri = "+uri+"  device id = "+deviceID);
-      spotyAPI.play(uri, deviceID);
+      spotyAPI.play(uri, undefined);
     }, musicDelay);
     
   }
@@ -148,11 +145,6 @@ class Game {
       renderer, camera, scene, this.key, this.musicDelay
     );
     this.gameView.setup();
-  }
-
-  addMusic() {
-    //this.music.startMusic();
-    setTimeout(this.music.fadeOut.bind(this.music), 213000);
   }
 }
 

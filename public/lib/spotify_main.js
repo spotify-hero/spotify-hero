@@ -9,23 +9,17 @@ import {getHashParams, copyClipboard} from './functions';
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  main();
-  console.log("Successfully loaded");
-});
 
-
-/** MAIN FUNCTION IN THE PAGE
-* Does : - templating
-*        - get access tokens
-*        - setup onclick events
-*/
-function main() {
+  /********************************************
+  *  linking buttons to SpotifyAPI functions  *
+  *********************************************/
   var spAPI = new SpotifyAPI();
-  
   document.getElementById("button-pause").onclick = spAPI.pause;
-  document.getElementById("button-play").onclick = spAPI.play;
+  document.getElementById("button-play").onclick = spAPI.resume;
   document.getElementById("button-previous").onclick = spAPI.previous;
   document.getElementById("button-next").onclick = spAPI.next;
+  document.getElementById("keywords").onchange = spAPI.search;
+  document.getElementById("keywords_button").onclick = spAPI.search;
 
 
   /********************************************
@@ -82,7 +76,6 @@ function main() {
             });
           }
       });
-      console.log("chained AJAX requests executed successfully");
 
     } else {
         // render initial screen
@@ -90,4 +83,6 @@ function main() {
         jquery('#loggedin').hide();
     }
   }
-}
+
+  console.log("spotify_main.js successfully loaded");
+});

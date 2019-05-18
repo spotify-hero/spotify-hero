@@ -48,6 +48,27 @@ class SpotifyAPI {
     });
   }
 
+  resume() {
+    var params = getHashParams();
+    var access_token = params.access_token;
+
+    jquery.ajax({
+      type: 'PUT',
+      url: 'https://api.spotify.com/v1/me/player/play',
+      headers: {
+        'Authorization': 'Bearer ' + access_token
+      },
+      data : "",
+      success: (res) => {
+        console.log('resume() successfully executed');
+      },
+      fail: (res) => {
+        console.error('resume() failed :');
+        console.error(res.responseText);
+      }
+    });
+  }
+
   previous() {
     var params = getHashParams();
     var access_token = params.access_token;
@@ -138,8 +159,8 @@ class SpotifyAPI {
           console.log('play() successfully executed');
         },
         error: function(response) {
-          console.log('play() failed : ');
-          console.log(response.responseText);
+          console.error('play() failed : ');
+          console.error(response.responseText);
         }
       });
 
