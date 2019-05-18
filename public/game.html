@@ -12,20 +12,17 @@
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script>
       var params = (() => {
-        var hashParams = {};
-        var e, r = /([^&;=]+)=?([^&;]*)/g,
-            q = window.location.hash.substring(1);
-        while ( e = r.exec(q)) {
-           hashParams[e[1]] = decodeURIComponent(e[2]);
+        var qs = document.location.search.split('+').join(' ');
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
         }
-        return hashParams;
+        return params;
       })();
-
-      var access_token = params.access_token,
-        refresh_token = params.refresh_token,
-        error = params.error;
-
-      console.log(params);
+      
+      var access_token = params.access_token;
 
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new Spotify.Player({

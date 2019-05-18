@@ -104,13 +104,6 @@ app.get('/database/:name', function(req, res) {
   //db.close();
 });
 
-/*app.get('/database/info/:name', function(req, res) {
-  dbHandler.info(db, req.params.name, function(data) {
-      res.end(JSON.stringify(data));
-  });
-  //db.close();
-});*/
-
 app.post('/database/:name', function(req, res) {
   dbHandler.selectAll(db, req.params.name, function(data) {
       res.end(JSON.stringify(data));
@@ -133,8 +126,8 @@ app.delete('/database/:name', function(req, res) {
 });
 
 app.get('/osu/:name', function(req, res) {
-  console.log('request for file: '+req.params.name+'.osu');
-  let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name+".osu").toString('utf-8').split('\n')
+  console.log('request for file: '+req.params.name);
+  let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name).toString('utf-8').split('\n')
   res.end(osuParser.parser(textByLine));
 });
 
