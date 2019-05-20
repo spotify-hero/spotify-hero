@@ -3,57 +3,12 @@
   <head>
     <title>TC Hero</title>
     
-    <link rel="stylesheet" type="text/css" href="css/master.css">
+    <link rel="stylesheet" type="text/css" href="css/game.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
   </head>
   <body>
     <script type="text/javascript" src="/build/game-bundle.js"></script>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    <script>
-      var params = (() => {
-        var qs = document.location.search.split('+').join(' ');
-        var params = {},
-            tokens,
-            re = /[?&]?([^=]+)=([^&]*)/g;
-        while (tokens = re.exec(qs)) {
-            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-        }
-        return params;
-      })();
-      
-      var access_token = params.access_token;
-
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        const player = new Spotify.Player({
-          name: 'Web Playback SDK Quick Start Player',
-          getOAuthToken: cb => { cb(access_token); }
-        });
-
-        // Error handling
-        player.addListener('initialization_error', ({ message }) => { console.error(message); });
-        player.addListener('authentication_error', ({ message }) => { console.error(message); });
-        player.addListener('account_error', ({ message }) => { console.error(message); });
-        player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-        // Playback status updates
-        // player.addListener('player_state_changed', state => { console.log(state); });
-
-        // Ready
-        player.addListener('ready', ({ device_id }) => {
-          console.log('Ready with Device ID', device_id);
-          document.getElementById('input_device_id').value = device_id;
-        });
-
-        // Not Ready
-        player.addListener('not_ready', ({ device_id }) => {
-          console.log('Device ID has gone offline', device_id);
-        });
-
-        // Connect to the player!
-        player.connect();
-      };
-    </script>
 
     <div id="game-canvas">
       <div class="game-display">
