@@ -153,7 +153,7 @@ class Game {
 
     camera.position.z = 150;
 
-    let renderer = new THREE.WebGLRenderer();
+    let renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize( width, height );
     document.getElementById('game-canvas').appendChild( renderer.domElement );
 

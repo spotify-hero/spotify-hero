@@ -68,6 +68,8 @@ class GameView {
   backgroundSetup() {
     let backgroundGeometry = new THREE.BoxGeometry( 1920, 1080, 1000 );
     var texture = new THREE.TextureLoader().load( 'photos/stage.jpeg' );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.repeat.x = - 1;
     texture.minFilter = THREE.NearestFilter;
     let backgroundMaterials = [ "", "", "", "", "",
       new THREE.MeshPhongMaterial( {
@@ -213,7 +215,7 @@ class GameView {
             (this.zStartPoint));
           }, songNote.startTime + latency
           );
-        var res = this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
+        this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
       })
     }
   }
