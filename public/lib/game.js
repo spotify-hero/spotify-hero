@@ -8,7 +8,7 @@ import GameNotes from './game_notes';
 import GameView from './game_view';
 import Instructions from './instructions';
 import SpotifyAPI from './SpotifyAPI';
-import {getQueryParams} from './functions';
+import {getQueryParams, copyClipboard} from './functions';
 
 
 class Game {
@@ -26,7 +26,7 @@ class Game {
     }
 
     document.getElementsByClassName('record-pause')[0].onclick = function(){
-      console.log("record !!! ")
+      console.log("recordMode");
     }
 
     document.getElementsByClassName('select-pause')[0].onclick = function(){
@@ -43,15 +43,21 @@ class Game {
   }
 
   setupGame(){
+    //il faut charger la musique sans la jouer + télécharger map
+    //load musique
     this.getOsuFile();
 
-    this.gameStartListener =
-      window.addEventListener("keydown", this.hitAToStart.bind(this));
+    window.addEventListener("keydown", this.hitAToStart.bind(this));
+    window.addEventListener("touchstart", (e)=>{
+      if (!this.started) {
+        this.startGame();
+      }
+    })
     
   }
 
   startGame() {
-    let delay = -800;
+    let delay = getQueryParams().Trackdelay;
 
     //on a défini 2 delay
     let noteDelay;
@@ -59,18 +65,24 @@ class Game {
 
     if(delay<0){
       musicDelay = Math.abs(delay);
-      noteDelay = 0
+      noteDelay = 0;
     }else{
       noteDelay = delay;
-      noteDelay = 0
+      noteDelay = 0;
     }
 
     this.gameView.addMovingNotes(this.noteInterval, this.beatmap, noteDelay);
+
+    // Mode enregistrement !!!!
+
+    this.gameView.setStartTimeRecord();
+    this.gameView.addNoteRecord();
     
     this.gameStartEl.className = "start hidden";
     this.started = true;
-    var spotifyAPI = this.spAPI;
     
+    //code before the pause
+    var spotifyAPI = this.spAPI;
     setTimeout(function(){
       var uri = getQueryParams().TrackURI;
       var access_token = getQueryParams().access_token;
@@ -83,6 +95,7 @@ class Game {
     }, musicDelay);
     
   }
+
 
   hitAToStart(e) {
     if (!this.started) {
@@ -97,10 +110,10 @@ class Game {
         this.gameView.isPlay = false;
         this.spAPI.pause();
         this.started = false;
+      } else if (e.keyCode == 120 || e.keyCode == 88) {
 
       }
     }
-    
   }
 
   getOsuFile(){

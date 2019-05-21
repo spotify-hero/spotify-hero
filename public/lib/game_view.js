@@ -11,7 +11,9 @@ class GameView {
     this.key = key;
     this.musicDelay = musicDelay;
 
+    //gestion des modes
     this.isPlay =  true;
+    this.isRecord = false;
 
     this.note = {};
 
@@ -21,16 +23,21 @@ class GameView {
     this.yEndPoint = -75;
     this.xPos = [-45, -15, 15, 45];
 
+    //index pour tableau des sphères créées
+    this.idx = 0
+
     this.xRotation = -Math.atan(
       (this.zEndPoint - this.zStartPoint) / (this.yStartPoint - this.yEndPoint)
     );
 
+    //différents tableaux
     this.spheres = [];
     this.cylinders = [];
     this.beatLines = [];
+    this.recordMap = [];
 
-    this.t = 0;
-    this.measures = [0];
+    //gestion heure pour record
+    this.startTimeRecord = 0;
 
 
   }
@@ -168,47 +175,100 @@ class GameView {
       noteInterval, this.musicDelay, this.key
     );
 
-    beatmap.forEach((songNote, idx) => {
+    if (typeof beatmap !== 'undefined' && beatmap.length > 0) {
+      beatmap.forEach((songNote, idx) => {
 
-      noteMaterial = this.note.materials[songNote.position];
-      this.spheres[idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
+        noteMaterial = this.note.materials[songNote.position];
+        this.spheres[idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
 
-      if (songNote.duration > 0 ){
+        if (songNote.duration > 0 ){
 
-        let cylinderMaterial = this.note.materials[songNote.position];
-        let cylinderGeometry = new THREE.BoxGeometry(
-          this.note.radius*2.5,(songNote.duration/10 * this.note.vel),10
-        );
-        this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-        this.cylinders[idx].rotateX(this.xRotation);
-      }
-
-
-      //this.addMovingBeatLine(songNote.m, noteInterval, lag);
-
-      // POSITION & ADD TO SCENE NOTES & HOLDS & BeatLines
-      setTimeout( () => {
-        if (this.cylinders[idx]) {
-          let hold = songNote.duration/100 ;
-          this.cylinders[idx].hold = hold;
-          this.cylinders[idx].position.set(
-            this.xPos[songNote.position],
-            this.yStartPoint - hold * this.note.yVel,
-            this.zStartPoint - hold * this.note.zVel
+          let cylinderMaterial = this.note.materials[songNote.position];
+          let cylinderGeometry = new THREE.BoxGeometry(
+            this.note.radius*2.5,(songNote.duration/10 * this.note.vel),10
           );
-          this.scene.add(this.cylinders[idx]);
+          this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+          this.cylinders[idx].rotateX(this.xRotation);
         }
-        this.scene.add(this.spheres[idx]);
-        this.spheres[idx].position.set(
-          this.xPos[songNote.position],
-          (this.yStartPoint),
-          (this.zStartPoint));
-        }, songNote.startTime + latency
-        );
-      this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
-    })
+
+
+        //this.addMovingBeatLine(songNote.m, noteInterval, lag);
+
+        // POSITION & ADD TO SCENE NOTES & HOLDS & BeatLines
+        setTimeout( () => {
+          if (this.cylinders[idx]) {
+            let hold = songNote.duration/100 ;
+            this.cylinders[idx].hold = hold;
+            this.cylinders[idx].position.set(
+              this.xPos[songNote.position],
+              this.yStartPoint - hold * this.note.yVel,
+              this.zStartPoint - hold * this.note.zVel
+            );
+            this.scene.add(this.cylinders[idx]);
+          }
+          this.scene.add(this.spheres[idx]);
+          this.spheres[idx].position.set(
+            this.xPos[songNote.position],
+            (this.yStartPoint),
+            (this.zStartPoint));
+          }, songNote.startTime + latency
+          );
+        var res = this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
+      })
+    }
   }
 
+  addNoteRecord(){
+    this.isRecord = true
+    window.addEventListener('keydown', (e) => {
+      console.log(e.keyCode)
+      let noteMaterial;
+      let position;
+
+      switch(e.keyCode){
+        case this.key.pos[0]:
+          position = 0;
+          break;
+
+        case this.key.pos[1]:
+            position = 1;
+            break;
+
+        case this.key.pos[2]:
+            position = 2;
+            break;
+
+        case this.key.pos[3]:
+          position = 3;
+          break;
+      }
+
+      //on calcule start en millis
+      var endDate   = new Date();
+      var startTime = endDate.getTime() - this.startTimeRecord;
+
+      this.recordMap.push({
+        "position" : position,
+        "startTime": startTime,
+        "duration"  : 0
+      });
+
+      this.idx ++;
+
+      noteMaterial = this.note.materials[position];
+      this.spheres[this.idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
+      this.scene.add(this.spheres[this.idx]);
+      this.spheres[this.idx].position.set(
+        this.xPos[position],
+        (this.yEndPoint),
+        (this.zEndPoint));
+    });
+  }
+
+  setStartTimeRecord(){
+    let date = new Date()
+    this.startTimeRecord = date.getTime()
+  }
 
   sceneUpdate() {
     this.spheres.forEach(sphere => {
@@ -227,9 +287,26 @@ class GameView {
         }
       }
     });
-    // this.t += .01;
-    // this.light.movingLights[0].position.x = 5 * Math.cos(this.t) + 0;
-    // this.light.movingLights[0].position.y = 5 * Math.sin(this.t) + 0;
+  }
+
+  recordUpdate(){
+    this.spheres.forEach(sphere => {
+      sphere.position.y -= this.note.yVel;
+      sphere.position.z -= this.note.zVel;
+      if (sphere.position.z < this.zStartPoint) {
+        this.scene.remove(sphere);
+      }
+    });
+    this.cylinders.forEach(cylinder => {
+      if (cylinder) {
+        cylinder.position.y -= this.note.yVel;
+        cylinder.position.z -= this.note.zVel;
+        if (cylinder.position.z < (this.zStartPoint + cylinder.hold * this.note.zVel)) {
+          this.scene.remove(cylinder);
+        }
+      }
+    });
+
   }
 
   sceneRender() {
@@ -241,10 +318,14 @@ class GameView {
 
     requestAnimationFrame(this.gameLoop.bind(this));
 
-    this.sceneUpdate();
+    if (!this.isRecord){
+      this.sceneUpdate();
+    }else{
+      this.recordUpdate();
+    }
+
     this.sceneRender();
   }
-
 }
 
 export default GameView;

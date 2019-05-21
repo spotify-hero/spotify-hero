@@ -5,27 +5,74 @@ class Key {
   constructor() {
     this._pressed = {};
     this._pressedVisually = {};
+    this.started = false;
     this.pos = {
       0: 83,
       1: 68,
       2: 75,
       3: 76
     };
-    this.A = 83;  // songNote.pos: 1
-    this.S = 68;  // songNote.pos: 2
-    this.D = 75;  // songNote.pos: 3
-    this.F = 76;  // songNote.pos: 4
+    this.S = 83;  // songNote.pos: 1
+    this.D = 68;  // songNote.pos: 2
+    this.K = 75;  // songNote.pos: 3
+    this.L = 76;  // songNote.pos: 4
 
     this.addKeyListeners();
+
   }
 
   addKeyListeners() {
     window.addEventListener('keydown', (e) => {
-      this.onKeydown(e);
+      this.onKeydown(e.keyCode);
     });
     window.addEventListener('keyup', (e) => {
-      this.onKeyup(e);
+      this.onKeyup(e.keyCode);
     });
+
+    window.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      var touchlist = e.touches;
+      for (var i=0 ; i<touchlist.length; i++){
+        var x = touchlist[i].clientX/window.innerWidth;
+        this.onKeydown(this.getPosition(x));
+      }
+    });
+
+    window.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      var touchlist = e.changedTouches;
+      for (var i=0 ; i<touchlist.length; i++){
+        var x = touchlist[i].clientX/window.innerWidth;
+        this.onKeyup(this.getPosition(x));
+      }
+    });
+  }
+
+  getPosition(x){
+    if (x >= 0.10 && x <= 0.30) {
+      return this.pos[0];
+    }
+
+    if (x > 0.30 && x <= 0.50) {
+      return this.pos[1];
+    }
+
+    if (x > 0.50 && x <= 0.70) {
+      return this.pos[2];
+    }
+
+    if (x >= 0.70 && x <= 0.90) {
+      return this.pos[3];
+    }
+  }
+
+  touchStartHandler(){
+    if(e.touches) {
+      playerX = e.touches[0].pageX - canvas.offsetLeft ;
+      playerY = e.touches[0].pageY - canvas.offsetTop;
+      output.innerHTML = "Touch: "+ " x: " + playerX + ", y: " + playerY;
+      e.preventDefault();
+    }
   }
 
   isDown(keyCode) {
@@ -36,19 +83,19 @@ class Key {
     return this._pressedVisually[keyCode];
   }
 
-  onKeydown(e) {
-    if (e.keyCode == 27){
+  onKeydown(keyCode) {
+    if (keyCode == 27){
       //console.log("echap appuyé !!!");
     }
-    this._pressed[e.keyCode] = true;
-    this._pressedVisually[e.keyCode] = true;
+    this._pressed[keyCode] = true;
+    this._pressedVisually[keyCode] = true;
   }
 
-  onKeyup(e) {
-    delete this._pressedVisually[e.keyCode];
+  onKeyup(keyCode) {
+    delete this._pressedVisually[keyCode];
     let buffer = 300; // buffer for leniency
     setTimeout( () => {
-      delete this._pressed[e.keyCode];
+      delete this._pressed[keyCode];
     }, buffer);
   }
 
