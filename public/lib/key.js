@@ -18,7 +18,7 @@ class Key {
     this.L = 76;  // songNote.pos: 4
 
     this.addKeyListeners();
-    
+
   }
 
   addKeyListeners() {

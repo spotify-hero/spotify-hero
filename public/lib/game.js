@@ -8,7 +8,7 @@ import GameNotes from './game_notes';
 import GameView from './game_view';
 import Instructions from './instructions';
 import SpotifyAPI from './SpotifyAPI';
-import {getHashParams, copyClipboard} from './functions';
+import {getQueryParams, copyClipboard} from './functions';
 
 
 class Game {
@@ -57,7 +57,7 @@ class Game {
   }
 
   startGame() {
-    let delay = -800;
+    let delay = getQueryParams().Trackdelay;
 
     //on a défini 2 delay
     let noteDelay;
@@ -65,30 +65,33 @@ class Game {
 
     if(delay<0){
       musicDelay = Math.abs(delay);
-      noteDelay = 0
+      noteDelay = 0;
     }else{
       noteDelay = delay;
-      noteDelay = 0
+      noteDelay = 0;
     }
 
     this.gameView.addMovingNotes(this.noteInterval, this.beatmap, noteDelay);
 
     // Mode enregistrement !!!!
 
-    //this.gameView.setStartTimeRecord();
-    //this.gameView.addNoteRecord();
+    this.gameView.setStartTimeRecord();
+    this.gameView.addNoteRecord();
     
     this.gameStartEl.className = "start hidden";
     this.started = true;
     
-    var spotyAPI = this.spAPI
     //code before the pause
+    var spotifyAPI = this.spAPI;
     setTimeout(function(){
-      //do what you need here
-      var uri = document.getElementById('input_uri').value;
-      var deviceID = document.getElementById('input_device_id').value;
-      console.log("PLAY CALLBACK : uri = "+uri+"  device id = "+deviceID);
-      spotyAPI.play(uri, deviceID);
+      var uri = getQueryParams().TrackURI;
+      var access_token = getQueryParams().access_token;
+      if (uri) {
+        console.log('send request to play '+uri);
+        spotifyAPI.play(access_token, getQueryParams().TrackURI, null);
+      } else {
+        console.error('Cannot play : no spotify URI specified !')
+      }
     }, musicDelay);
     
   }
@@ -107,10 +110,10 @@ class Game {
         this.gameView.isPlay = false;
         this.spAPI.pause();
         this.started = false;
+      } else if (e.keyCode == 120 || e.keyCode == 88) {
 
       }
     }
-    
   }
 
   getOsuFile(){
@@ -119,7 +122,7 @@ class Game {
     jquery.ajax({
       async: false,
       type:'GET',
-      url: '/osu/warriyo_venom',
+      url: '/osu/'+getQueryParams().OSUfile,
       data: '',
       success: function(response) {
         osuData = JSON.parse(response);
@@ -158,11 +161,6 @@ class Game {
       renderer, camera, scene, this.key, this.musicDelay
     );
     this.gameView.setup();
-  }
-
-  addMusic() {
-    //this.music.startMusic();
-    setTimeout(this.music.fadeOut.bind(this.music), 213000);
   }
 }
 

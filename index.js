@@ -41,7 +41,7 @@ var app = express();
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser())
    .use(bodyParser.json())
-   .use(bodyParser.urlencoded({ extended: false })); 
+   .use(bodyParser.urlencoded({ extended: false }));
 //   .use(cors())
 process.setMaxListeners(0);
 var db = new sqlite3.Database('./main.db', (err) => {
@@ -120,7 +120,7 @@ app.post('/database/:name', function(req, res) {
   res.status(200).end(JSON.stringify(req.body));
 });
 
-app.put('/database/:name', function(req, res) {
+app.put('/database/:name/:primary_key', function(req, res) {
   dbHandler.selectAll(db, req.params.name, function(data) {
       res.end(JSON.stringify(data));
   });
@@ -182,11 +182,13 @@ app.get('/spotify_cb', function(req, res) {
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
           if(!error) {
-            inserts = [body.uri, body.display_name, body.country, body.images[0].url];
-            for (var i = 0; i<inserts.length; i++) {
-              inserts[i] = (inserts[i]==="")?'undefined':inserts[i];
-            }
-            dbHandler.insertOneInto(db, 'User', inserts, ()=> {
+            inserts = [{
+              'UserURI': body.uri,
+              'Username': body.display_name,
+              'Country': body.country,
+              'Picture': body.images[0].url
+            }];
+            dbHandler.insertInto(db, 'User', inserts, ()=> {
               console.log("Inserted into User with success !");
             });
           }

@@ -27,19 +27,19 @@ module.exports = {
     hitObject.forEach(function(element){
       if (element !== null){
         tab = element.match((/\d+\.\d+|\d+\b|\d+(?=\w)/g)||[])
-        
+
         if(tab){
           hitTab.push(tab.map(function (v) {return +v;}));
         }
       }
-      
+
     })
 
     let finalRes = [];
 
     hitTab.map(function(item) {
       let position;
-      
+
       if (item[0]<128) {
         position = 0;
       }else if (item[0]<256) {
@@ -56,7 +56,7 @@ module.exports = {
         duration = item[5] - item[2];
       }
 
-      finalRes.push({ 
+      finalRes.push({
         "position" : position,
         "startTime": item[2],
         "duration"  : duration

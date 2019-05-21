@@ -78,7 +78,7 @@ class GameNotes {
     this.streakEl.innerHTML = `Streak: ${this.streak}`;
     this.multiplierEl.innerHTML = `Multiplier: ${this.multiplier}X`;
     this.rockInputEl.value = this.rockInput;//('value', `${this.rockInput}`);
-    
+
     console.log(res)
 
   }

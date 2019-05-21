@@ -11,7 +11,7 @@ class GameView {
     this.key = key;
     this.musicDelay = musicDelay;
 
-    //gestion des modes 
+    //gestion des modes
     this.isPlay =  true;
     this.isRecord = false;
 
@@ -35,7 +35,7 @@ class GameView {
     this.cylinders = [];
     this.beatLines = [];
     this.recordMap = [];
-    
+
     //gestion heure pour record
     this.startTimeRecord = 0;
 
@@ -175,47 +175,47 @@ class GameView {
       noteInterval, this.musicDelay, this.key
     );
 
-    beatmap.forEach((songNote, idx) => {
+    if (typeof beatmap !== 'undefined' && beatmap.length > 0) {
+      beatmap.forEach((songNote, idx) => {
 
-      noteMaterial = this.note.materials[songNote.position];
-      this.spheres[idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
+        noteMaterial = this.note.materials[songNote.position];
+        this.spheres[idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
 
-      if (songNote.duration > 0 ){
+        if (songNote.duration > 0 ){
 
-        let cylinderMaterial = this.note.materials[songNote.position];
-        let cylinderGeometry = new THREE.BoxGeometry(
-          this.note.radius*2.5,(songNote.duration/10 * this.note.vel),10
-        );
-        this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-        this.cylinders[idx].rotateX(this.xRotation);
-      }
-
-
-      //this.addMovingBeatLine(songNote.m, noteInterval, lag);
-
-      // POSITION & ADD TO SCENE NOTES & HOLDS & BeatLines
-      setTimeout( () => {
-        if (this.cylinders[idx]) {
-          let hold = songNote.duration/100 ;
-          this.cylinders[idx].hold = hold;
-          this.cylinders[idx].position.set(
-            this.xPos[songNote.position],
-            this.yStartPoint - hold * this.note.yVel,
-            this.zStartPoint - hold * this.note.zVel
+          let cylinderMaterial = this.note.materials[songNote.position];
+          let cylinderGeometry = new THREE.BoxGeometry(
+            this.note.radius*2.5,(songNote.duration/10 * this.note.vel),10
           );
-          this.scene.add(this.cylinders[idx]);
+          this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+          this.cylinders[idx].rotateX(this.xRotation);
         }
-        this.scene.add(this.spheres[idx]);
-        this.spheres[idx].position.set(
-          this.xPos[songNote.position],
-          (this.yStartPoint),
-          (this.zStartPoint));
-        }, songNote.startTime + latency
-        );
-      var res = this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
-      
-      
-    })
+
+
+        //this.addMovingBeatLine(songNote.m, noteInterval, lag);
+
+        // POSITION & ADD TO SCENE NOTES & HOLDS & BeatLines
+        setTimeout( () => {
+          if (this.cylinders[idx]) {
+            let hold = songNote.duration/100 ;
+            this.cylinders[idx].hold = hold;
+            this.cylinders[idx].position.set(
+              this.xPos[songNote.position],
+              this.yStartPoint - hold * this.note.yVel,
+              this.zStartPoint - hold * this.note.zVel
+            );
+            this.scene.add(this.cylinders[idx]);
+          }
+          this.scene.add(this.spheres[idx]);
+          this.spheres[idx].position.set(
+            this.xPos[songNote.position],
+            (this.yStartPoint),
+            (this.zStartPoint));
+          }, songNote.startTime + latency
+          );
+        var res = this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
+      })
+    }
   }
 
   addNoteRecord(){
@@ -229,11 +229,11 @@ class GameView {
         case this.key.pos[0]:
           position = 0;
           break;
-        
+
         case this.key.pos[1]:
             position = 1;
             break;
-      
+
         case this.key.pos[2]:
             position = 2;
             break;
@@ -247,7 +247,7 @@ class GameView {
       var endDate   = new Date();
       var startTime = endDate.getTime() - this.startTimeRecord;
 
-      this.recordMap.push({ 
+      this.recordMap.push({
         "position" : position,
         "startTime": startTime,
         "duration"  : 0
@@ -262,7 +262,6 @@ class GameView {
         this.xPos[position],
         (this.yEndPoint),
         (this.zEndPoint));
-      
     });
   }
 
@@ -324,10 +323,9 @@ class GameView {
     }else{
       this.recordUpdate();
     }
-    
+
     this.sceneRender();
   }
-
 }
 
 export default GameView;
