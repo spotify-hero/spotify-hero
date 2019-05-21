@@ -25,14 +25,15 @@
   <script type="text/javascript" src="/build/spotify-bundle.js"></script>
   <script>
     var params = (() => {
-      var hashParams = {};
-      var e, r = /([^&;=]+)=?([^&;]*)/g,
-          q = window.location.hash.substring(1);
-      while ( e = r.exec(q)) {
-         hashParams[e[1]] = decodeURIComponent(e[2]);
+      var qs = document.location.search.split('+').join(' ');
+      var params = {},
+          tokens,
+          re = /[?&]?([^=]+)=([^&]*)/g;
+      while (tokens = re.exec(qs)) {
+          params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
       }
-      return hashParams;
-    })();
+    return params;
+  })();
 
     var access_token = params.access_token,
       refresh_token = params.refresh_token,
@@ -51,7 +52,7 @@
       player.addListener('playback_error', ({ message }) => { console.error(message); });
 
       // Playback status updates
-      // player.addListener('player_state_changed', state => { console.log(state); });
+      player.addListener('player_state_changed', state => { console.log(state); });
 
       // Ready
       player.addListener('ready', ({ device_id }) => {
@@ -78,7 +79,7 @@
 
       <!-- Blocs cachés par défaut, puis activés par jQuery -->
       <div id="login"> <!-- Avant login -->
-        <h1>This is an example of the Authorization Code flow</h1>
+        <h1>Start by linking your Spotify account</h1>
         <a href="/login" class="btn btn-primary">Log in with Spotify</a>
       </div>
 
@@ -87,7 +88,7 @@
         </div>
 
         <div id="searchbar">
-          <h3>Rechercher une musique/album/playlist: </h3>
+          <h3>Rechercher un artiste: </h3>
 
           <form action="javascript:void(0);" method="get" class="form-example">
             <div class="form-example">

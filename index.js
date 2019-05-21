@@ -19,6 +19,7 @@ var request       = require('request');
 //var cors        = require('cors');                      // not-necessary
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
+var bodyParser = require('body-parser')
 
 // OSU Parser part
 var fs = require('fs');
@@ -38,8 +39,11 @@ var redirect_uri  = keysSpotify.redirect_uri;
 var stateKey = 'spotify_auth_state';
 var app = express();
 app.use(express.static(__dirname + '/public'))
-   .use(cookieParser());
+   .use(cookieParser())
+   .use(bodyParser.json())
+   .use(bodyParser.urlencoded({ extended: false })); 
 //   .use(cors())
+process.setMaxListeners(0);
 var db = new sqlite3.Database('./main.db', (err) => {
     if (err) {
       console.error(err.message);
@@ -105,10 +109,15 @@ app.get('/database/:name', function(req, res) {
 });
 
 app.post('/database/:name', function(req, res) {
-  dbHandler.selectAll(db, req.params.name, function(data) {
-      res.end(JSON.stringify(data));
-  });
+  console.log('POST request detected !');
+  console.log(req.body);
+  dbHandler.insertInto(db, req.params.name, req.body, console.log);
+  //dbHandler.insertIntoTrack(db, req.body, function(data) {
+  //    console.log(req.body);
+  //    res.end(JSON.stringify(data));
+  //});
   //db.close();
+  res.status(200).end(JSON.stringify(req.body));
 });
 
 app.put('/database/:name', function(req, res) {
@@ -139,7 +148,7 @@ app.get('/spotify_cb', function(req, res) {
   var storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect('spotify/#' +
+    res.redirect('spotify?' +
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -164,7 +173,7 @@ app.get('/spotify_cb', function(req, res) {
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
 
-/*        var options = {
+        var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
@@ -172,23 +181,23 @@ app.get('/spotify_cb', function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          console.log(body);
-        });*/
+          if(!error) {
+            inserts = [body.uri, body.display_name, body.country, body.images[0].url];
+            for (var i = 0; i<inserts.length; i++) {
+              inserts[i] = (inserts[i]==="")?'undefined':inserts[i];
+            }
+            dbHandler.insertOneInto(db, 'User', inserts, ()=> {
+              console.log("Inserted into User with success !");
+            });
+          }
+        });
 
-        // we can also pass the token to the browser to make requests from there
-/*        res.redirect('/spotify#' +
-          querystring.stringify({
-            access_token: access_token,
-            refresh_token: refresh_token
-          }));*/
-
-        res.redirect('/spotify#' +
+        res.redirect('/spotify?' +
           querystring.stringify({
             access_token: access_token
-//            refresh_token: refresh_token
           }));
       } else {
-        res.redirect('/#' +
+        res.redirect('/?' +
           querystring.stringify({
             error: 'invalid_token'
           }));

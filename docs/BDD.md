@@ -9,30 +9,35 @@
 ##2. Génération
 ```sql
 CREATE TABLE Track(
-TrackURI TEXT PRIMARY KEY,
-Trackname TEXT NOT NULL,
-Trackartist TEXT NOT NULL,
-Trackcover TEXT NOT NULL,
-OSUfile TEXT NOT NULL
+TrackURI VARCHAR PRIMARY KEY NOT NULL CHECK (TrackURI <> ""),
+Trackname VARCHAR NOT NULL CHECK (Trackname <> ""),
+Trackartist VARCHAR NOT NULL CHECK (Trackartist <> ""),
+Trackcover VARCHAR NOT NULL CHECK (Trackcover <> ""),
+Trackdelay INTEGER NOT NULL CHECK (Trackdelay <> ""),
+OSUfile VARCHAR NOT NULL CHECK (OSUfile <> "")
+);
+
+CREATE TABLE User (
+UserURI VARCHAR PRIMARY KEY NOT NULL CHECK (UserURI <> ""),
+Username VARCHAR NOT NULL CHECK (Username <> ""),
+Country VARCHAR NOT NULL CHECK (Country <> ""),
+Picture VARCHAR NOT NULL CHECK (Picture <> "")
 );
 
 CREATE TABLE Score (
-Username TEXT NOT NULL,
-Timestamp TEXT NOT NULL,
-Scorevalue INTEGER NOT NULL,
-SpotifyURI TEXT NOT NULL,
-FOREIGN KEY(SpotifyURI) REFERENCES Track(TrackURI),
-PRIMARY KEY(Username, Timestamp)
+UserURI VARCHAR NOT NULL CHECK (UserURI <> ""),
+Timestamp VARCHAR NOT NULL CHECK (Timestamp <> ""),
+Scorevalue INTEGER NOT NULL CHECK (Scorevalue <> ""),
+TrackURI VARCHAR NOT NULL CHECK (TrackURI <> ""),
+FOREIGN KEY(TrackURI) REFERENCES Track(TrackURI),
+FOREIGN KEY(UserURI) REFERENCES User(UserURI),
+PRIMARY KEY(UserURI, Timestamp)
 );
 ```
 
 ##3. Valeurs
 ```sql
-CREATE TABLE Track(
-TrackURI TEXT PRIMARY KEY,
-OSUfile TEXT NOT NULL
-);
-
+spotify:track:4BgJZJW9b24DEt3ONiAIQP|Venom|Warriyo|https://i.scdn.co/image/58c8cab6d6fb96681086f6fdae3f88bf1cc6318a|-800|warriyo_venom.osu
 insert into track values('spotify:track:6ocbgoVGwYJhOv1GgI9NsF', '7_rings');
 insert into track values('spotify:track:1s2I9Q7zAE78m7aVZOq3ug', 'bang_bang');
 insert into track values('spotify:track:48UPSzbZjgc449aqz8bxox', 'californication');
@@ -87,3 +92,35 @@ db.run(db_init, function(err){
 spotify:album:6oX7kNKqj9dwNk8i4btVcF
 spotify:album:3jqQFIXUakuDXdhFVvI7Ko
 spotify:album:2fYhqwDWXjbpjaIJPEfKFw
+
+
+##6. dbdiagram.i
+```sql
+TABLE Track
+{
+  TrackURI text [pk]
+  Trackname text [not null]
+  Trackartist text [not null]
+  Trackcover text [not null]
+  Trackdelay int [not null]
+  OSUfile text [not null]
+}
+
+TABLE Score
+{
+  UserURI text [pk]
+  Timestamp text [pk]
+  Scorevalue int [not null]
+  SpotifyURI text [not null]
+}
+Ref: Score.UserURI >  User.UserURI
+Ref: Score.SpotifyURI > Track.TrackURI
+
+Table User
+{
+  UserURI text [pk]
+  Username text [not null]
+  Country text [not null]
+  Picture text [not null]
+}
+```
