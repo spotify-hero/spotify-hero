@@ -63,8 +63,6 @@
       // Ready
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
-        jquery('input_device_id').value = device_id;
-        console.log('Devide ID put in hidden input field');
       });
 
       // Not Ready
@@ -97,8 +95,8 @@
 
           <form action="javascript:void(0);" method="get" class="form-example">
             <div class="form-example">
-              <input type="text" name="keywords" id="keywords" onChange="search()" required>
-              <input type="button" value="Rechercher" >
+              <input type="text"   id="keywords" required>
+              <input type="button" id="keywords_button" value="Rechercher" >
             </div>
           </form>
 
@@ -119,6 +117,8 @@
         </div>
 
       </div>
+
+      <button style="position:fixed; top:600px; right:100px;" id="button-database"></button>
     </div>
       <!-------------------------------------------------------------------------->
 

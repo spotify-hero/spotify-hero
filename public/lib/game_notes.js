@@ -31,9 +31,7 @@ class GameNotes {
   }
 
   checkNote(position) {
-    var res = false;
     if (this.key.isDown(this.key.pos[position])) {
-      res = true
       if (this.streak === 30) {
         this.multiplier = 4;
       } else if (this.streak === 20) {
@@ -78,9 +76,6 @@ class GameNotes {
     this.streakEl.innerHTML = `Streak: ${this.streak}`;
     this.multiplierEl.innerHTML = `Multiplier: ${this.multiplier}X`;
     this.rockInputEl.value = this.rockInput;//('value', `${this.rockInput}`);
-    
-    console.log(res)
-
   }
 }
 

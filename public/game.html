@@ -8,25 +8,21 @@
     <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
   </head>
   <body>
-    <meta name="viewport" content="user-scalable=no">
     <script type="text/javascript" src="/build/game-bundle.js"></script>
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script>
       var params = (() => {
-        var hashParams = {};
-        var e, r = /([^&;=]+)=?([^&;]*)/g,
-            q = window.location.hash.substring(1);
-        while ( e = r.exec(q)) {
-           hashParams[e[1]] = decodeURIComponent(e[2]);
+        var qs = document.location.search.split('+').join(' ');
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
         }
-        return hashParams;
+        return params;
       })();
-
-      var access_token = params.access_token,
-        refresh_token = params.refresh_token,
-        error = params.error;
-
-      console.log(params);
+      
+      var access_token = params.access_token;
 
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new Spotify.Player({
@@ -141,7 +137,9 @@
       <div class="game-control-panel">
         <button class="open-instructions">How To Play</button>
         <button class="look-around">Look Around</button>
-        <button class="open-pause">Menu</button>
+        <button class="open-pause">Pause Game</button>
+        <button class="play-pause hidden">Pause Music</button>
+        <button class="mute">Mute</button>
       </div>
     </div>
     <div id="song"></div>

@@ -5,27 +5,28 @@ import Spotify from '../vendor/spotify-player.min';
 
 // import custom functions
 import SpotifyAPI from './SpotifyAPI';
-import {getHashParams, copyClipboard} from './functions';
+import {getHashParams, getQueryParams, copyClipboard} from './functions';
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  main();
-  console.log("Successfully loaded");
-});
 
+  var params = getHashParams();
+  var access_token = params.access_token,
+      refresh_token = params.refresh_token,
+      error = params.error;
 
-/** MAIN FUNCTION IN THE PAGE
-* Does : - templating
-*        - get access tokens
-*        - setup onclick events
-*/
-function main() {
+  /********************************************
+  *  linking buttons to SpotifyAPI functions  *
+  *********************************************/
   var spAPI = new SpotifyAPI();
-  
-  document.getElementById("button-pause").onclick = spAPI.pause;
-  document.getElementById("button-play").onclick = spAPI.play;
-  document.getElementById("button-previous").onclick = spAPI.previous;
-  document.getElementById("button-next").onclick = spAPI.next;
+  document.getElementById("button-pause").onclick = (()=>{spAPI.pause(access_token)});
+  document.getElementById("button-play").onclick = (()=>{spAPI.resume(access_token)});
+  document.getElementById("button-previous").onclick = (()=>{spAPI.previous(access_token)});
+  document.getElementById("button-next").onclick = (()=>{spAPI.next(access_token)});
+  document.getElementById("keywords").onchange = (()=>{spAPI.search('keywords', access_token)});
+  document.getElementById("keywords_button").onclick = (()=>{spAPI.search('keywords', access_token)});
+
+  document.getElementById('button-database').innerHTML = '<a href="/select?table=Track+Score&access_token='+access_token+'">Part 2 : Database</a>';
 
 
   /********************************************
@@ -37,12 +38,6 @@ function main() {
 
   var cpTemplate = Handlebars.compile(document.getElementById('currently-playing-template').innerHTML),
       cpPlaceholder = document.getElementById('currently-playing');
-
-  var params = getHashParams();
-
-  var access_token = params.access_token,
-      refresh_token = params.refresh_token,
-      error = params.error;
 
   if (error) {
     alert('There was an error during the authentication');
@@ -82,7 +77,6 @@ function main() {
             });
           }
       });
-      console.log("chained AJAX requests executed successfully");
 
     } else {
         // render initial screen
@@ -90,4 +84,6 @@ function main() {
         jquery('#loggedin').hide();
     }
   }
-}
+
+  console.log("spotify_main.js successfully loaded");
+});
