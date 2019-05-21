@@ -107,11 +107,16 @@ class Game {
       if (e.keyCode == 27){
         console.log("vous avez appuyé sur échap")
         document.getElementsByClassName('pause')[0].className="pause"
+        var access_token = getQueryParams().access_token;
         this.gameView.isPlay = false;
-        this.spAPI.pause();
+        this.spAPI.pause(access_token);
         this.started = false;
       } else if (e.keyCode == 120 || e.keyCode == 88) {
-
+        console.log("goooooo envoyer !!!!!")
+        console.log(this.gameView.recordMap);
+        
+        this.sendOsuFile(JSON.stringify(this.gameView.recordMap));
+        console.log("sent !")
       }
     }
   }
@@ -130,6 +135,20 @@ class Game {
     })
 
     this.beatmap = osuData;
+    
+  }
+
+  sendOsuFile(recordMap){
+    // AJAX request
+    jquery.ajax({
+      async: false,
+      type:'POST',
+      url: '/send_osu',
+      data: recordMap,
+      success: function(response) {
+        console.log(response);
+      }
+    })
     
   }
 

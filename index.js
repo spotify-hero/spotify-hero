@@ -140,6 +140,11 @@ app.get('/osu/:name', function(req, res) {
   res.end(osuParser.parser(textByLine));
 });
 
+app.post('/send_osu', function(req, res){
+  console.log("hey !!!!!")
+  console.log(req.body);
+})
+
 
 app.get('/spotify_cb', function(req, res) {
   // requests refresh and access tokens after checking the state parameter
