@@ -42,6 +42,36 @@ function copyClipboard(elementId) {
   }
 }
 
+
+/**
+* AJAX request to /database/table, parsing JSON and making it into an HTML table element
+* then inserting it before id with an h3 title
+*/
+function addJSONBeforeElement(id, array) {
+
+  let table = JSON.parse(array);
+
+  if (typeof table !== 'undefined' && table.length > 0) {
+    let titles = '';
+    titles = Object.keys(table[0]).join('</th><th>');
+    titles = '<tr><th>'+titles+'</th></tr>';
+
+    let data = '';
+    table.forEach((line)=>{
+      data += '<tr><td>'+Object.values(line).join('</td><td>')+'</td></tr>';
+    });
+
+    let tableElement = document.createElement("TABLE");
+    tableElement.border=1;
+    tableElement.innerHTML = titles+data;
+
+    let anchor = document.getElementById(id)
+    anchor.insertBefore(tableElement, anchor.childNodes[0]);
+    anchor.insertBefore(h3Element, anchor.childNodes[0]);
+  }
+}
+
+
 /**
 * AJAX request to /database/table, parsing JSON and making it into an HTML table element
 * then inserting it before id with an h3 title
@@ -141,4 +171,11 @@ function addTrackHTMLBeforeElement(id) {
     }
   });
 }
-export {getHashParams, copyClipboard, getQueryParams, addTableHTMLBeforeElement, addTrackHTMLBeforeElement};
+export {
+  getHashParams,
+  copyClipboard,
+  getQueryParams,
+  addTableHTMLBeforeElement,
+  addTrackHTMLBeforeElement,
+  addJSONBeforeElement
+};

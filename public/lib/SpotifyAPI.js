@@ -1,10 +1,11 @@
 import jquery from '../vendor/jquery.min';
+import {getQueryParams} from './functions';
 
 class SpotifyAPI {
 
   // Demande un nouvel acces_token (valable 1h seulement) grace au refresh token
   refresh() {
-    var params = getHashParams();
+    var params = getQueryParams();
 
     if (params.error) {
       alert('There was an error during the authentication');
@@ -166,14 +167,13 @@ class SpotifyAPI {
     };
 
     fetch(FETCH_URL, myOptions)
+
     .then(response => response.json())
-
       .then(json => {
-
-        //console.log(json);
         var artist = json.artists.items[0];
         FETCH_URL = `${ALBUM_URL}${artist.id}/top-tracks?country=FR&`
         fetch(FETCH_URL, myOptions)
+
         .then(response => response.json())
         .then(json => {
           var { tracks } = json;
@@ -184,10 +184,7 @@ class SpotifyAPI {
             var ele = document.createElement("img");
             ele.src = tracks[i].album.images[2].url;
             ele.style="margin: 10px"
-            ele.onclick = function jouer(album_uri) {
-
-              var params = getHashParams();
-              var access_token = params.access_token;
+/*            ele.onclick = function jouer(album_uri) {
 
               jquery.ajax({
                 type: 'PUT',
@@ -201,14 +198,40 @@ class SpotifyAPI {
                 }
               });
               console.log('onclick AJAX request executed');
-            }(tracks[i].album.uri);
+            }(tracks[i].album.uri);*/
             document.getElementById("pochettes").appendChild(ele);
           }
+
+          var inserts = [];
+          for (var i=0; i<5; i++) {
+            inserts[i] = {
+              "TrackURI" : tracks[i].uri,
+              "Trackname" : tracks[i].name,
+              "Trackartist" : tracks[i].artists[0].name,
+              "Trackcover" : tracks[i].album.images[2].url,
+              "Trackdelay" : 0,
+              "OSUfile" : 'undefined'
+            };
+          }
+
+          jquery.ajax({
+            type: 'POST',
+            url: '/database/track',
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify(inserts),
+            success: function(res) {
+              console.log("Successfully inserted into Track :");
+              console.log(inserts);
+            },
+            error: function(res) {
+              console.error("Could not insert into Track :");
+              console.error(inserts);
+            }
+          });
         });
-      });
+    });
 
-
-    setTimeout(function() {
+/*    setTimeout(function() {
       jquery.ajax({
         type: 'GET',
         url: 'https://api.spotify.com/v1/me/player/currently-playing',
@@ -226,7 +249,7 @@ class SpotifyAPI {
           document.getElementById('playing_populariry').innerHTML = response.item.popularity;
         }
       });
-    }, 1000);
+    }, 1000);*/
   }
 }
 

@@ -5,12 +5,12 @@ import Spotify from '../vendor/spotify-player.min';
 
 // import custom functions
 import SpotifyAPI from './SpotifyAPI';
-import {getHashParams, getQueryParams, copyClipboard} from './functions';
+import {getQueryParams, copyClipboard} from './functions';
 
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  var params = getHashParams();
+  var params = getQueryParams();
   var access_token = params.access_token,
       refresh_token = params.refresh_token,
       error = params.error;
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (field != null) {
               field.value = access_token;
             } else {
-              console.log('index.html:305 - Could not write in oauth-access')
+              console.log('spotify.html:305 - Could not write in oauth-access')
             }
 
             jquery('#login').hide();
@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
-                  //console.log(JSON.stringify(response));
                   cpPlaceholder.innerHTML = cpTemplate(response);
                 }
             });
