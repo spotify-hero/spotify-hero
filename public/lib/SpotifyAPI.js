@@ -1,6 +1,10 @@
 import jquery from '../vendor/jquery.min';
+import {getHashParams, copyClipboard} from './functions';
 
 class SpotifyAPI {
+  hello() {
+    console.log("Helllooooo");
+  }
 
   // Demande un nouvel acces_token (valable 1h seulement) grace au refresh token
   refresh() {
@@ -27,7 +31,10 @@ class SpotifyAPI {
     }
   }
 
-  pause(access_token) {
+  pause() {
+    var params = getHashParams();
+    var access_token = params.access_token;
+
     jquery.ajax({
       type: 'PUT',
       url: 'https://api.spotify.com/v1/me/player/pause',
@@ -41,25 +48,10 @@ class SpotifyAPI {
     });
   }
 
-  resume(access_token) {
-    jquery.ajax({
-      type: 'PUT',
-      url: 'https://api.spotify.com/v1/me/player/play',
-      headers: {
-        'Authorization': 'Bearer ' + access_token
-      },
-      data : "",
-      success: (res) => {
-        console.log('resume() successfully executed');
-      },
-      fail: (res) => {
-        console.error('resume() failed :');
-        console.error(res.responseText);
-      }
-    });
-  }
+  previous() {
+    var params = getHashParams();
+    var access_token = params.access_token;
 
-  previous(access_token) {
     jquery.ajax({
       type: 'POST',
       url: 'https://api.spotify.com/v1/me/player/previous',
@@ -93,7 +85,10 @@ class SpotifyAPI {
   }, 1000);
   }
 
-  next(access_token) {
+  next() {
+    var params = getHashParams();
+    var access_token = params.access_token;
+
     jquery.ajax({
       type: 'POST',
       url: 'https://api.spotify.com/v1/me/player/next',
@@ -127,11 +122,14 @@ class SpotifyAPI {
   }, 1000);
   }
 
-  play(access_token, uri, device_id) {
+  play(uri, device_id) {
+    var params = getHashParams();
+    var access_token = params.access_token;
+
     //if (uri == 'undefined' || device_id == 'undefined') {
       jquery.ajax({
         type: 'PUT',
-        url: ((device_id)?'https://api.spotify.com/v1/me/player/play?device_id'+device_id:'https://api.spotify.com/v1/me/player/play'),
+        url: 'https://api.spotify.com/v1/me/player/play?device_id'+device_id,
         headers: {
           'Authorization': 'Bearer ' + access_token
         },
@@ -140,8 +138,8 @@ class SpotifyAPI {
           console.log('play() successfully executed');
         },
         error: function(response) {
-          console.error('play() failed : ');
-          console.error(response.responseText);
+          console.log('play() failed : ');
+          console.log(response.responseText);
         }
       });
 
@@ -151,12 +149,15 @@ class SpotifyAPI {
     //}
   }
 
-  search(id, access_token) {
+  search() {
 
-    var keyword = document.getElementById(id).value;
+    var keyword = document.getElementById('keywords').value;
     var BASE_URL = 'https://api.spotify.com/v1/search?';
     var FETCH_URL = BASE_URL + 'q=' + keyword + '&type=artist&limit=1';
     var ALBUM_URL = 'https://api.spotify.com/v1/artists/';
+
+    var params = getHashParams();
+    var access_token = params.access_token;
 
     var myOptions = {
       method: 'GET',
