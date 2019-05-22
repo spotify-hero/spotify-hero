@@ -20,52 +20,61 @@
 </head>
 
 <body>
+  <script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("login-button").onclick = function() {
+      window.open("https://open.spotify.com");
+      window.location.href = '/login';
+    }
 
-    <!--------------------------------------------------------------------------------->
-    <!--                               NAVIGATION BAR                                -->
-    <!--------------------------------------------------------------------------------->
-    <div class="navbar navbar-inverse navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/"><img src="img/logo.png" width ="404" height= "564" alt="Logo"></a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/">Home</a></li>
-            <li><a href="docu.html">Documentation</a></li>
-          </ul>
-        </div><!--/.navbar-collapse -->
+  });
+  </script>
+
+  <!--------------------------------------------------------------------------------->
+  <!--                               NAVIGATION BAR                                -->
+  <!--------------------------------------------------------------------------------->
+  <div class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><img src="img/logo.png" width ="404" height= "564" alt="Logo"></a>
       </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/">Home</a></li>
+          <li><a href="docu.html">Documentation</a></li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
-    <!--------------------------------------------------------------------------------->
+  </div>
+  <!--------------------------------------------------------------------------------->
 
-    <!--Bloc principal-->
-    <section id="header">
-      <div class="container">
-        <div class="row header-text">
-          <div class="col-sm-8 pull-right text-right">
-           <div class="margin-100">
-            <a href="/login" class="btn btn-primary btn-lg">PLAY NOW</a>
-            <img class="spotify-img" src="img\sp.png" width ="100" height= "100">
+  <!--Bloc principal-->
+  <section id="header">
+    <div class="container">
+      <div class="row header-text">
+        <div class="col-sm-8 pull-right text-right">
+         <div class="margin-100">
+          <a id="login-button" class="btn btn-primary btn-lg">PLAY NOW</a>
+          <img class="spotify-img" src="img\sp.png" width ="100" height= "100">
 
-              <!-- Les 3 étapes -->
-              <div class="container_progressbar">
-               <ul class="progressbar">
-                   <li>Connect with Spotify</li>
-                   <li>Redirect the music in the game</li>
-                   <li>Play !</li>
-                </ul>
-              </div>
+            <!-- Les 3 étapes -->
+            <div class="container_progressbar">
+             <ul class="progressbar">
+                 <li>Connect with Spotify</li>
+                 <li>Redirect the music in the game</li>
+                 <li>Play !</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    </body>
+  </body>
 </html>

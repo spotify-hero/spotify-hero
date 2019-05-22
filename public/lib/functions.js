@@ -161,7 +161,7 @@ function addTrackHTMLBeforeElement(id) {
           h3Element.innerHTML = "Track";
 
           let tableElement = document.createElement("TABLE");
-          tableElement.border=1;
+          tableElement.border=0;
           tableElement.innerHTML = titles+data;
 
           let anchor = document.getElementById(id)

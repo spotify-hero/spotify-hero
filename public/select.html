@@ -1,25 +1,64 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>TC-Hero</title>
-    <link rel="stylesheet" href="css/select.css">
-    <meta charset="utf-8">
-  </head>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <title>TapTapHERO</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
 
-  <body>
+  <meta property="og:title" content="TapTap-Hero">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="taptap-hero.com">
+  <meta property="og:site_name" content="TapTap-Hero">
+  <meta property="og:description" content="Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !">
+
+  <!-- Favicon and stylesheets -->
+   <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/select.css">
+  <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
+
+</head>
+
+<body>
     <script type="text/javascript" src="/build/select-bundle.js"></script>
 
-    <h1>Select a song !</h1>
+    <!--------------------------------------------------------------------------------->
+    <!--                               NAVIGATION BAR                                -->
+    <!--------------------------------------------------------------------------------->
+    <div class="navbar navbar-reverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/">Home</a></li>
+            <li><a href="docu.html">Documentation</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+    <!--------------------------------------------------------------------------------->
 
-    <div class="wrap">
-      <div class="search">
-        <input type="text" class="searchTerm" placeholder="What do you feel like playing?">
-        <button type="submit" class="searchButton">
-          <i class="fa fa-search"></i>
-       </button>
-     </div>
-  </div>
 
-    <div id="anchor"></div>
-  </body>
+    <section>
+      <h1>Select a song !</h1>
+
+      <div class="wrap">
+        <div class="search">
+          <input type="text" class="searchTerm" placeholder="What do you feel like playing?">
+          <button type="submit" class="searchButton">
+            <i class="fa fa-search"></i>
+         </button>
+       </div>
+    </div>
+
+      <div id="anchor"></div>
+    </section>
+    </body>
 </html>
+

@@ -11,6 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
       addTableHTMLBeforeElement('anchor', table);
     }
   });
+/*
+  document.getElementByClassname('searchTerm').onclick;
+  searchButton
+  document.getElementsByClassName('retry-pause')[0].onclick = function(){
+    document.location.reload(false);
+  }*/
+
 
   console.log("Successfully loaded");
 });
