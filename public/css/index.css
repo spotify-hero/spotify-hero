@@ -332,6 +332,10 @@ p {
   right: 0;
 }
 
+.text-bloc {        /*utilisé dans la page de doc*/
+  padding-top: 50px;
+  padding-left:30px;
+}
 
 /* ==========================================================================
    Mobile styles
