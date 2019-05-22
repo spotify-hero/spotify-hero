@@ -2,6 +2,8 @@ import * as THREE from '../vendor/three.min';
 import ViewControls from './view_controls';
 import Light from './light';
 import GameNotes from './game_notes';
+import {getQueryParams} from './functions';
+
 
 class GameView {
   constructor(renderer, camera, scene, key, musicDelay) {
@@ -20,7 +22,7 @@ class GameView {
     this.zStartPoint = -500;
     this.zEndPoint = 0;
     this.yStartPoint = 50;
-    this.yEndPoint = -75;
+    this.yEndPoint = -110;
     this.xPos = [-45, -15, 15, 45];
 
     //index pour tableau des sphères créées
@@ -65,9 +67,11 @@ class GameView {
     });
   }
 
+
   backgroundSetup() {
-    let backgroundGeometry = new THREE.BoxGeometry( 1920, 1080, 1000 );
-    var texture = new THREE.TextureLoader().load( 'photos/stage.jpeg' );
+    console.log(getQueryParams().Trackcover);
+    let backgroundGeometry = new THREE.BoxGeometry( 900, 900, 1000 );
+    var texture = new THREE.TextureLoader().load(getQueryParams().Trackcover);
     texture.wrapS = THREE.RepeatWrapping;
     texture.repeat.x = - 1;
     texture.minFilter = THREE.NearestFilter;
@@ -116,7 +120,7 @@ class GameView {
     } );
     let board = new THREE.Mesh( boardGeometry, boardMaterial );
     board.rotateX(this.xRotation);
-    board.position.set(0, -15, -250);
+    board.position.set(0, -35, -245);
     this.scene.add( board ) ;
   }
 
@@ -243,7 +247,7 @@ class GameView {
         case this.key.pos[3]:
           position = 3;
           break;
-        
+
         default:
           position = 4;
       }

@@ -4,7 +4,7 @@ body {
 }
 
 .pause h1:hover{
-  color: green;
+  color: #33cccc;
 }
 
 #game-canvas {
