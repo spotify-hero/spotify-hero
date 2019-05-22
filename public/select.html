@@ -20,7 +20,24 @@
 </head>
 
 <body>
-    <script type="text/javascript" src="/build/select-bundle.js"></script>
+  <script type="text/javascript" src="/build/select-bundle.js"></script>
+  <script type="text/javascript">
+  function getQueryParams() {
+      var qs = document.location.search.split('+').join(' ');
+      var params = {},
+          tokens,
+          re = /[?&]?([^=]+)=([^&]*)/g;
+      while (tokens = re.exec(qs)) {
+          params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+      }
+      return params;
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("API_Spotify").onclick = function() {
+      window.location.href = '/spotify.html?access_token=' + getQueryParams().access_token;
+    }
+  });
+  </script>
 
     <!--------------------------------------------------------------------------------->
     <!--                               NAVIGATION BAR                                -->
@@ -38,6 +55,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/">Home</a></li>
             <li><a href="docu.html">Documentation</a></li>
+            <li><div id="API_Spotify">API Spotify</div></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -61,4 +79,3 @@
     </section>
     </body>
 </html>
-
