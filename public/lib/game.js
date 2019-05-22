@@ -32,12 +32,21 @@ class Game {
       window.location.href = '/select?table=track&access_token='+getQueryParams().access_token;
     }
 
+    
     this.spAPI = new SpotifyAPI();
-
+    
     this.gameStartEl = document.getElementsByClassName('start')[0];
     this.createGameView();
     this.setupGame();
-    
+
+    var spotifyAPI = this.spAPI;
+    document.getElementsByClassName('open-pause')[0].onclick = function(){
+      document.getElementsByClassName('pause')[0].className = "pause";
+      var access_token = getQueryParams().access_token;
+      spotifyAPI.pause(access_token);
+      this.started = false;
+    }
+
   }
 
   setupGame(){
