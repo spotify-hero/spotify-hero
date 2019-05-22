@@ -112,11 +112,8 @@ class Game {
         this.spAPI.pause(access_token);
         this.started = false;
       } else if (e.keyCode == 120 || e.keyCode == 88) {
-        console.log("goooooo envoyer !!!!!")
-        console.log(this.gameView.recordMap);
-        
         this.sendOsuFile(JSON.stringify(this.gameView.recordMap));
-        console.log("sent !")
+        console.log("file sent !")
       }
     }
   }
@@ -144,6 +141,7 @@ class Game {
       async: false,
       type:'POST',
       url: '/send_osu',
+      contentType: 'application/json',
       data: recordMap,
       success: function(response) {
         console.log(response);

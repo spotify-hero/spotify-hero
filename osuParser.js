@@ -62,6 +62,23 @@ module.exports = {
         "duration"  : duration
       });
     })
+
     return JSON.stringify(finalRes);
+  },
+
+  convertPosition(position){
+    if (position == 0){
+      return 60;
+    }
+    if (position == 1){
+      return 200;
+    }
+    if (position == 2){
+      return 300;
+    }
+    if (position == 3){
+      return 400;
+    }
   }
+
 };

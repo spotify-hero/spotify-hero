@@ -141,8 +141,22 @@ app.get('/osu/:name', function(req, res) {
 });
 
 app.post('/send_osu', function(req, res){
-  console.log("hey !!!!!")
-  console.log(req.body);
+  var recorded = req.body
+  var nom = "test"
+
+  fs.writeFile(__dirname + "/osu/" + nom + ".osu", "[HitObjects]\n", function (err) {
+    if (err) throw err;
+    console.log('File is created successfully.');
+  }); 
+
+  recorded.forEach(element => {
+    // 192,192,21777,1,0,0:0:0:0:
+    let line = osuParser.convertPosition(element.position) +","+element.position+","+element.startTime + ",1,0,0:0:0:0:\n"
+    fs.appendFile(__dirname + "/osu/" + nom + ".osu", line, function(err){
+      if (err) throw err;
+    })
+  });
+  res.send("success")
 })
 
 

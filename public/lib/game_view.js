@@ -243,17 +243,22 @@ class GameView {
         case this.key.pos[3]:
           position = 3;
           break;
+        
+        default:
+          position = 4;
       }
 
       //on calcule start en millis
       var endDate   = new Date();
       var startTime = endDate.getTime() - this.startTimeRecord;
 
-      this.recordMap.push({
-        "position" : position,
-        "startTime": startTime,
-        "duration"  : 0
-      });
+      if (position<4){
+        this.recordMap.push({
+          "position" : position,
+          "startTime": startTime,
+          "duration"  : 0
+        });
+      }
 
       this.idx ++;
 
