@@ -19,7 +19,14 @@ class Game {
     this.instructions = new Instructions();
     this.started = false;
     this.beatmap = [];
+    this.spAPI = new SpotifyAPI();
+    var spotifyAPI = this.spAPI;
 
+    this.gameStartEl = document.getElementsByClassName('start')[0];
+    this.createGameView();
+    this.setupGame();
+
+    
     document.getElementsByClassName('retry-pause')[0].onclick = function(){
       document.location.reload(false);
     }
@@ -32,14 +39,16 @@ class Game {
       window.location.href = '/select?table=track&access_token='+getQueryParams().access_token;
     }
 
-    
-    this.spAPI = new SpotifyAPI();
-    
-    this.gameStartEl = document.getElementsByClassName('start')[0];
-    this.createGameView();
-    this.setupGame();
+    document.getElementsByClassName('record-pause')[0].onclick = function(){
+      window.location.search += '&mode=record';
+    }
 
-    var spotifyAPI = this.spAPI;
+    document.getElementsByClassName('save-score')[0].onclick = function(){
+      var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
+      scoreTosave = scoreTosave.replace( /^\D+/g, '');
+      console.log("sauver le score : " +  scoreTosave)
+    }
+    
     document.getElementsByClassName('open-pause')[0].onclick = function(){
       document.getElementsByClassName('pause')[0].className = "pause";
       var access_token = getQueryParams().access_token;
