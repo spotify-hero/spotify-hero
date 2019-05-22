@@ -18,7 +18,7 @@ h1 {
     display: flex;
   }
 
-  .searchTerm {
+  #searchTerm {
     width: 100%;
     border: 3px solid #00B4CC;
     border-right: none;
@@ -29,11 +29,11 @@ h1 {
     color: #9DBFAF;
   }
 
-  .searchTerm:focus{
+  #searchTerm:focus{
     color: #00B4CC;
   }
 
-  .searchButton {
+  #searchButton {
     width: 40px;
     height: 36px;
     border: 1px solid #00B4CC;
