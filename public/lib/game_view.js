@@ -232,6 +232,15 @@ class GameView {
             this.xPos[songNote.position],
             (this.yStartPoint),
             (this.zStartPoint));
+
+            if(idx == beatmap.length){
+              console.log("fin du jeu !!!!!!")
+              var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
+              scoreTosave = scoreTosave.replace( /^\D+/g, '');
+              document.getElementsByClassName('end-game')[0].className="end-game"
+
+            }
+
           }, songNote.startTime + latency
           );
         this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
