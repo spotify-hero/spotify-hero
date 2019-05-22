@@ -3,6 +3,10 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.pause h1:hover{
+  color: green;
+}
+
 #game-canvas {
   position: relative;
   height: 100%;

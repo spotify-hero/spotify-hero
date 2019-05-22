@@ -152,6 +152,46 @@ class SpotifyAPI {
     //}
   }
 
+  searchOne(id, access_token) {
+    jquery.ajax({
+      type: 'GET',
+      url: 'https://api.spotify.com/v1/tracks/'+document.getElementById(id).value,
+      headers: {
+        'Authorization': 'Bearer ' + access_token
+      },
+      success: function(response) {
+        console.log('searchOne() successfully executed');
+
+        var inserts = [];
+        inserts[0] = {
+          "TrackURI" : response.uri,
+          "Trackname" : response.name,
+          "Trackartist" : response.artists[0].name,
+          "Trackcover" : response.album.images[0].url,
+          "Trackdelay" : 0,
+          "OSUfile" : 'undefined'
+        };
+
+        jquery.ajax({
+          type: 'POST',
+          url: '/database/track',
+          headers: {'Content-Type': 'application/json'},
+          data: JSON.stringify(inserts),
+          success: function(res) {
+            console.log("Successfully inserted into Track :");
+            console.log(inserts);
+          },
+          error: function(res) {
+            console.error("Could not insert into Track :");
+            console.error(inserts);
+          }
+        });
+
+      }
+    });
+  }
+
+
   search(id, access_token) {
 
     var keyword = document.getElementById(id).value;
@@ -182,7 +222,7 @@ class SpotifyAPI {
           // create album images
           for (var i=0; i<5; i++) {
             var ele = document.createElement("img");
-            ele.src = tracks[i].album.images[2].url;
+            ele.src = tracks[i].album.images[0].url;
             ele.style="margin: 10px"
 /*            ele.onclick = function jouer(album_uri) {
 

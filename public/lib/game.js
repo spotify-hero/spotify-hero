@@ -21,17 +21,15 @@ class Game {
     this.beatmap = [];
 
     document.getElementsByClassName('retry-pause')[0].onclick = function(){
-      console.log("retry !!! ")
       document.location.reload(false);
     }
 
     document.getElementsByClassName('record-pause')[0].onclick = function(){
-      console.log("recordMode");
+      window.location.search += '&mode=record';
     }
 
     document.getElementsByClassName('select-pause')[0].onclick = function(){
-      console.log("select !!! ")
-      window.location.href = '/select';
+      window.location.href = '/select?table=track&access_token='+getQueryParams().access_token;
     }
 
     this.spAPI = new SpotifyAPI();
@@ -74,9 +72,10 @@ class Game {
     this.gameView.addMovingNotes(this.noteInterval, this.beatmap, noteDelay);
 
     // Mode enregistrement !!!!
-
-    this.gameView.setStartTimeRecord();
-    this.gameView.addNoteRecord();
+    if (getQueryParams().mode === 'record') {
+      this.gameView.setStartTimeRecord();
+      this.gameView.addNoteRecord();
+    }
     
     this.gameStartEl.className = "start hidden";
     this.started = true;
@@ -107,20 +106,20 @@ class Game {
       if (e.keyCode == 27){
         console.log("vous avez appuyé sur échap")
         document.getElementsByClassName('pause')[0].className="pause"
+        var access_token = getQueryParams().access_token;
         this.gameView.isPlay = false;
-        this.spAPI.pause();
+        this.spAPI.pause(access_token);
         this.started = false;
-      } else if (e.keyCode == 120 || e.keyCode == 88) {
+      } else if (e.keyCode == 122 || e.keyCode == 90) {
 
-        var filename = getQueryParams().Trackartist.split(' ').join('');
-        filename += '_'+getQueryParams().Trackname.split(' ').join('')+'.osu';
-
-        jquery.ajax({
-          async: false,
-          type:'PUT',
-          url: '/database/'+getQueryParams().TrackURI,
-          data: JSON.stringify({ 'fields' : ['OSUfile'], 'data' : [filename] })
-        }).then(window.location.replace("/select?table=Track"));
+        if (getQueryParams().mode === 'record') {
+          var filename = getQueryParams().Trackartist.split(' ').join('');
+          filename += '_'+getQueryParams().Trackname.split(' ').join('')+'.osu';
+          this.sendOsuFile(filename, this.gameView.recordMap);
+          console.log("Recorded beatmap sent to server");
+        } else {
+          window.location.replace("/select?table=Track&access_token="+getQueryParams().access_token);
+        }
       }
     }
   }
@@ -135,10 +134,45 @@ class Game {
       data: '',
       success: function(response) {
         osuData = JSON.parse(response);
+        console.log('Successfully got file from server.');
+      },
+      error: function(response) {
+        console.log('ERROR : Could not get file from server !');
       }
     })
 
     this.beatmap = osuData;
+  }
+
+  sendOsuFile(filename, recordMap){
+    // AJAX request
+    jquery.ajax({
+      async: false,
+      type:'POST',
+      url: '/osu/'+filename,
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify(recordMap),
+      success: function(response) {
+
+        jquery.ajax({
+          async: false,
+          type:'PUT',
+          url: '/database/track/'+getQueryParams().TrackURI,
+          headers: {'Content-Type': 'application/json'},
+          data: JSON.stringify({0: "OSUfile = '"+filename+"'"}),
+          success: function(response) {
+            console.log('Chained AJAX successfull !');
+            window.location.replace("/select?table=Track&access_token="+getQueryParams().access_token);
+          },
+          error: function(response) {
+            document.location.reload(false);
+          }
+        });
+      },
+      error: function(response) {
+          document.location.reload(false);
+      }
+    })
     
   }
 
@@ -162,7 +196,7 @@ class Game {
 
     camera.position.z = 150;
 
-    let renderer = new THREE.WebGLRenderer();
+    let renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize( width, height );
     document.getElementById('game-canvas').appendChild( renderer.domElement );
 

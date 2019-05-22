@@ -68,6 +68,8 @@ class GameView {
   backgroundSetup() {
     let backgroundGeometry = new THREE.BoxGeometry( 1920, 1080, 1000 );
     var texture = new THREE.TextureLoader().load( 'photos/stage.jpeg' );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.repeat.x = - 1;
     texture.minFilter = THREE.NearestFilter;
     let backgroundMaterials = [ "", "", "", "", "",
       new THREE.MeshPhongMaterial( {
@@ -213,7 +215,7 @@ class GameView {
             (this.zStartPoint));
           }, songNote.startTime + latency
           );
-        var res = this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
+        this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
       })
     }
   }
@@ -241,17 +243,22 @@ class GameView {
         case this.key.pos[3]:
           position = 3;
           break;
+        
+        default:
+          position = 4;
       }
 
       //on calcule start en millis
       var endDate   = new Date();
       var startTime = endDate.getTime() - this.startTimeRecord;
 
-      this.recordMap.push({
-        "position" : position,
-        "startTime": startTime,
-        "duration"  : 0
-      });
+      if (position<4){
+        this.recordMap.push({
+          "position" : position,
+          "startTime": startTime,
+          "duration"  : 0
+        });
+      }
 
       this.idx ++;
 

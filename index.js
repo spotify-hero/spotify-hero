@@ -102,6 +102,7 @@ app.get('/select', function(req, res) {
 *        callbacks and JSON-feeding
 *****************************************************/
 app.get('/database/:name', function(req, res) {
+  console.log('DB request : GET '+req.params.name);
   dbHandler.selectAll(db, req.params.name, function(data) {
       res.end(JSON.stringify(data));
   });
@@ -109,17 +110,17 @@ app.get('/database/:name', function(req, res) {
 });
 
 app.post('/database/:name', function(req, res) {
-  console.log('POST request detected !');
+  console.log('DB request : POST to '+req.params.name);
   console.log(req.body);
   dbHandler.insertInto(db, req.params.name, req.body, console.log);
   res.status(200).end(JSON.stringify(req.body));
 });
 
 app.put('/database/:name/:primary_key', function(req, res) {
-  console.log('PUT request detected !');
- // dbHandler.selectAll(db, req.params.name, function(data) {
- //     res.end(JSON.stringify(data));
-  //});
+  console.log('DB request : PUT in '+req.params.name +': '+req.body["0"]);
+ dbHandler.updateTrackFields(db, req.params.name, req.params.primary_key, req.body["0"], function(data) {
+     res.status(200).end(JSON.stringify(data));
+  });
   //db.close();
 });
 
@@ -131,10 +132,37 @@ app.delete('/database/:name/:primary_key', function(req, res) {
 });
 
 app.get('/osu/:name', function(req, res) {
-  console.log('request for file: '+req.params.name);
-  let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name+".osu").toString('utf-8').split('\n')
-  res.end(osuParser.parser(textByLine));
+  console.log('Request for file: '+req.params.name);
+  let filename = __dirname + "/osu/"+req.params.name;
+  fs.stat(filename, (err, stat) => {
+    if(err == null) {
+      let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name).toString('utf-8').split('\n');
+      res.status(200).end(osuParser.parser(textByLine));
+    } else {
+      console.log('Error: file not found '+filename);
+      res.status(404).end("File not found !");
+    }
+  });
 });
+
+app.post('/osu/:name', function(req, res){
+  var recorded = req.body;
+  var nom = req.params.name;
+
+  fs.writeFile(__dirname + "/osu/" + nom, "[HitObjects]\n", function (err) {
+    if (err) throw err;
+    console.log('File '+nom+' was created successfully');
+  }); 
+
+  recorded.forEach(element => {
+    var newPos = osuParser.convertPosition(element.position)
+    let line = newPos +"," + newPos + "," + element.startTime + ",1,0,0:0:0:0:\n"
+    fs.appendFile(__dirname + "/osu/" + nom, line, function(err){
+      if (err) throw err;
+    })
+  });
+  res.status(200).end("");
+})
 
 
 app.get('/spotify_cb', function(req, res) {
