@@ -1,31 +1,68 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>TC-Hero</title>
-    <link rel="stylesheet" href="css/index.css">
-    <meta charset="utf-8">
-  </head>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <title>TapTapHERO</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
 
-  <body>
-    <h1>TC-Hero</h1>
+  <meta property="og:title" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="">
+	<meta property="og:site_name" content="">
+	<meta property="og:description" content="">
 
-    <h3>Download and build</h3>
-    <code>$ git clone https://github.com/gforien/TC-Hero.git<br>
-      $ cd TC-Hero<br>
-      $ virtualenv launch_dir<br>
-      $ source launch_dir/bin/activate<br>
-      $ pip install nodeenv<br>
-      $ nodeenv -p<br>
-      $ npm install<br/>
-      $ # add secu.json to folder<br>
-      $ npm start</code>
-    <div>
-      <ul>
-        <li class="active"><a href="/"> Accueil </a></li>
-        <li><a href="/login"> Spotify </a></li>
-        <li><a href="game.html"> Jeu </a></li>
-        <li><a href="docu.html"> Documentation de notre projet </a></li>
-      </ul>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/index.css"> 
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
+
+</head>
+
+<body>
+
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="img/logo.png" width ="404" height= "564" alt="Logo"></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/">Home</a></li>
+            <li><a href="docu.html">Documentation</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
     </div>
-  </body>
+
+    <!--Bloc principal-->
+    <section id="header">
+      <div class="container">
+        <div class="row header-text">
+          <div class="col-sm-8 pull-right text-right">
+           <div class="margin-100">
+            <a href="/login" class="btn btn-primary btn-lg">PLAY NOW</a>
+            <img class="spotify-img" src="img\sp.png" width ="100" height= "100">
+
+              <!-- Les 3 étapes -->
+              <div class="container_progressbar">
+               <ul class="progressbar">
+                   <li>Connect with Spotify</li>
+                   <li>Redirect the music in the game</li>
+                   <li>Play !</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </body>
 </html>

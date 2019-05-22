@@ -1,14 +1,395 @@
-body {
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
+/*!
+ * Perth
+ * PSD Created by Peter Finlan http://dribbble.com/peterfinlan
+ *
+ * Coding by Theme Armada
+ * Visit us for more Bootstrap themes at: http://www.themearmada.com
+ * Handcrafted with love in Atlanta!
+ */
+
+/* ==========================================================================
+   Global styles
+   ========================================================================== */
+h1 {
+  font-family: 'Lato', sans-serif;
 }
 
-#onglets 
-{
-    float : left;
-    height : 21px; /* à modifier suivant la taille de la police pour centrer le texte dans l'onglet */
-    background-color: #F4F9FD;
-    margin : 2px 2px 0 2px !important;  /* Pour les navigateurs autre que IE */
-    margin : 1px 2px 0 2px;  /* Pour IE  */
-    border : 1px solid #9EA0A1;
+h2, h3, p, .navbar-nav {
+  font-family: 'Lato', sans-serif;
+}
+
+
+
+h1 {
+  font-size: 80px;
+  color: #FFFFFF;
+}
+
+
+h2 {
+  font-size: 60px;
+}
+
+h3 {
+  font-size: 30px;
+  font-weight: 300;
+  color: #132860;
+}
+
+p {
+  color: #7e7e7e;
+  font-size: 16px;
+}
+
+
+/*-------------------Margins----------------*/
+.margin-0 {
+    margin-bottom: 0 !important;
+}
+.margin-10 {
+    margin-bottom: 10px !important;
+}
+.margin-15 {
+    margin-bottom: 15px !important;
+}
+.margin-20 {
+    margin-bottom: 20px !important;
+}
+.margin-30 {
+    margin-bottom: 30px !important;
+}
+.margin-40 {
+    margin-bottom: 40px !important;
+}
+.margin-50 {
+    margin-bottom: 50px !important;
+}
+.margin-60 {
+    margin-bottom: 60px !important;
+}
+.margin-70 {
+    margin-bottom: 70px !important;
+}
+.margin-80 {
+    margin-bottom: 80px !important;
+}
+.margin-90 {
+    margin-bottom: 90px !important;
+}
+.margin-100 {
+    margin-bottom: 100px !important;
+}
+
+
+
+/*-------------------Buttons----------------*/
+.btn {
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.btn-lg {
+    border-radius: 2px;
+    font-size: 70px;
+    line-height: 1.33;
+    padding: 14px 22px;
+}
+
+.btn-primary {
+    background-color: transparent;
+    border-radius: 20px;
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+    background-color: #ffffff;
+    border-color: #FFFFFF;
+    color: #545454;
+
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border-color: #007aab;
+    color: #007aab;
+}
+
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .open .dropdown-toggle.btn-secondary {
+    background-color: #4eacdd;
+    border-color: #4eacdd;
+    color: #ffffff;
+
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+
+
+/* ==========================================================================
+   Navigation styles
+   ========================================================================== */
+.navbar-inverse {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.navbar-brand {
+    padding: 0px;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #33cccc;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: rgba(0, 0, 0, 0);
+    border: 0px;
+    box-shadow: 0 0px 0 rgba(0, 0, 0, 0.0) inset;
+}
+
+
+/* ==========================================================================
+   Main styles
+   ========================================================================== */
+#header {
+  /*background-color: #99ccff   33cccc 0099cc;*/
+
+  background-color: #33cccc;
+  height: 650px;
+  overflow: hidden;
+}
+
+#docu {
+  /*background-color: #99ccff   33cccc 0099cc;*/
+
+  background-color: #d6f5f5;
+  height: 800px;
+  overflow: hidden;
+}
+
+.docu-text{
+  color: #7d7d7d;
+}
+
+.header-text {
+  padding-top: 175px;
+}
+
+.header-img {
+/* For IE8 and earlier */
+  /*margin-top: -100px;*/
+}
+
+.spotify-img{}
+
+.numberCircle {
+  border-radius: 50%;
+  /* remove if you don't care about IE8 */
+  width: 36px;
+  height: 36px;
+  padding: 20px 0;
+  font-size: 30px;
+  background: transparent;
+  border: 1px solid #7e7e7e;
+  color: #7e7e7e;
+  text-align: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: 100px 300px;
+  grid-gap: 10px;
+  /*background-color: #2196F3;*/
+  padding: 10px;
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+  border-radius: 20px;
+}
+
+
+ /* code progress bar*/
+.container_progressbar {
+    width: 850px;
+    min-height: 200px;  /*taille totale du bloc inférieur*/
+    margin: 100px auto;
+    margin-left: 120px;
+}
+.progressbar {
+    counter-reset: step;
+}
+.progressbar li {
+    list-style-type: none;
+    width: 25%;
+    float: left;
+    font-size: 20px;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+}
+.progressbar li:before {
+    width: 50px;
+    height: 50px;
+    content: counter(step);
+    counter-increment: step;
+    line-height: 50px;
+    border: 2px solid #99ffcc;
+    display: block;
+    text-align: center;
+    margin: 0 auto 10px auto;
+    border-radius: 50%;
+    background-color: transparent;
+}
+.progressbar li:after {
+    width: 100%;
+    height: 2px;
+    content: '';
+    position: absolute;
+    background-color: #00cc66;
+    top: 15px;
+    left: -50%;
+    z-index: -1;
+}
+
+.progressbar li:first-child:after {
+    content: none;
+}
+
+
+#main1 {
+  background: #f4f4f4;
+  padding-top: 20px; /* espace depuis le bloc du haut*/
+  min-height: 500px; /*taille totale du bloc*/
+  overflow: hidden;
+  height: auto;
+}
+
+.main1-img {
+  position: absolute;
+  right: 0;
+}
+
+
+/* ==========================================================================
+   Mobile styles
+   ========================================================================== */
+/* Landscape phones and down */
+@media (max-width: 480px) {
+
+.header-img {
+  position: absolute;
+  margin-left: -120px;
+  left:0;
+}
+
+#main1 {
+   padding-bottom: 170px;
+}
+
+.navbar-nav {
+  text-align: right;
+}
+
+.main2-img {
+    margin-left: 150px;
+    margin-top: 360px;
+    width: 100%;
+    max-width: 600px;
+}
+
+}
+
+/* Landscape phone to portrait tablet */
+@media (min-width: 481px) and (max-width: 767px) {
+
+.header-img {
+  position: absolute;
+  margin-left: -30px;
+  left:0;
+}
+
+#main1 {
+  padding-bottom: 170px;
+}
+
+.navbar-nav {
+  text-align: right;
+}
+
+.main2-img {
+    margin-left: 150px;
+    margin-top: 260px;
+    width: 100%;
+    max-width: 600px;
+}
+
+}
+
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 991px) {
+
+.main2-img {
+    margin-left: -550px;
+
+}
+
+
+}
+
+
+
+/* Desktops and laptops */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+.main2-img {
+    margin-left: -400px;
+
+}
+
+}
+
+
+
+/* Large screens */
+@media (min-width: 1200px) and (max-width: 3000px) {
+
 }
