@@ -112,22 +112,18 @@ app.post('/database/:name', function(req, res) {
   console.log('POST request detected !');
   console.log(req.body);
   dbHandler.insertInto(db, req.params.name, req.body, console.log);
-  //dbHandler.insertIntoTrack(db, req.body, function(data) {
-  //    console.log(req.body);
-  //    res.end(JSON.stringify(data));
-  //});
-  //db.close();
   res.status(200).end(JSON.stringify(req.body));
 });
 
 app.put('/database/:name/:primary_key', function(req, res) {
-  dbHandler.selectAll(db, req.params.name, function(data) {
-      res.end(JSON.stringify(data));
-  });
+  console.log('PUT request detected !');
+ // dbHandler.selectAll(db, req.params.name, function(data) {
+ //     res.end(JSON.stringify(data));
+  //});
   //db.close();
 });
 
-app.delete('/database/:name', function(req, res) {
+app.delete('/database/:name/:primary_key', function(req, res) {
   dbHandler.selectAll(db, req.params.name, function(data) {
       res.end(JSON.stringify(data));
   });
@@ -136,7 +132,7 @@ app.delete('/database/:name', function(req, res) {
 
 app.get('/osu/:name', function(req, res) {
   console.log('request for file: '+req.params.name);
-  let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name).toString('utf-8').split('\n')
+  let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name+".osu").toString('utf-8').split('\n')
   res.end(osuParser.parser(textByLine));
 });
 

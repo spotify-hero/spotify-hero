@@ -112,6 +112,15 @@ class Game {
         this.started = false;
       } else if (e.keyCode == 120 || e.keyCode == 88) {
 
+        var filename = getQueryParams().Trackartist.split(' ').join('');
+        filename += '_'+getQueryParams().Trackname.split(' ').join('')+'.osu';
+
+        jquery.ajax({
+          async: false,
+          type:'PUT',
+          url: '/database/'+getQueryParams().TrackURI,
+          data: JSON.stringify({ 'fields' : ['OSUfile'], 'data' : [filename] })
+        }).then(window.location.replace("/select?table=Track"));
       }
     }
   }
