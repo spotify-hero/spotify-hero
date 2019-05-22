@@ -150,8 +150,8 @@ app.post('/send_osu', function(req, res){
   }); 
 
   recorded.forEach(element => {
-    // 192,192,21777,1,0,0:0:0:0:
-    let line = osuParser.convertPosition(element.position) +","+element.position+","+element.startTime + ",1,0,0:0:0:0:\n"
+    var newPos = osuParser.convertPosition(element.position)
+    let line = newPos +"," + newPos + "," + element.startTime + ",1,0,0:0:0:0:\n"
     fs.appendFile(__dirname + "/osu/" + nom + ".osu", line, function(err){
       if (err) throw err;
     })
