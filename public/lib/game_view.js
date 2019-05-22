@@ -69,9 +69,21 @@ class GameView {
 
 
   backgroundSetup() {
-    console.log(getQueryParams().Trackcover);
-    let backgroundGeometry = new THREE.BoxGeometry( 900, 900, 1000 );
+    let coverGeometry = new THREE.BoxGeometry( 800, 800, 985 );
     var texture = new THREE.TextureLoader().load(getQueryParams().Trackcover);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.repeat.x = - 1;
+    texture.minFilter = THREE.NearestFilter;
+    let coverMaterials = [ "", "", "", "", "",
+      new THREE.MeshPhongMaterial( {
+        map: texture,
+        side: THREE.DoubleSide
+      } )
+    ];
+
+
+    let backgroundGeometry = new THREE.BoxGeometry( 2000, 1000, 1000 );
+    var texture = new THREE.TextureLoader().load('photos/selectbackground.jpg');
     texture.wrapS = THREE.RepeatWrapping;
     texture.repeat.x = - 1;
     texture.minFilter = THREE.NearestFilter;
@@ -83,13 +95,16 @@ class GameView {
     ];
 
     let backgroundMaterial = new THREE.MeshFaceMaterial( backgroundMaterials );
+    let coverMaterial = new THREE.MeshFaceMaterial( coverMaterials );
 
     this.light = new Light(this.scene);
     this.light.addLights();
     // this.light.addMovingLights();
 
     let background = new THREE.Mesh( backgroundGeometry, backgroundMaterial );
+    let cover = new THREE.Mesh( coverGeometry, coverMaterial );
     this.scene.add( background );
+    this.scene.add( cover );
 
     // LINES (STRINGS)
     this.lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFFFFF });
