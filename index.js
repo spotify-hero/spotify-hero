@@ -124,12 +124,12 @@ app.put('/database/:name/:primary_key', function(req, res) {
   //db.close();
 });
 
-app.delete('/database/:name/:primary_key', function(req, res) {
+/*app.delete('/database/:name/:primary_key', function(req, res) {
   dbHandler.selectAll(db, req.params.name, function(data) {
       res.end(JSON.stringify(data));
   });
   //db.close();
-});
+});*/
 
 app.get('/osu/:name', function(req, res) {
   console.log('Request for file: '+req.params.name);
@@ -218,8 +218,9 @@ app.get('/spotify_cb', function(req, res) {
           }
         });
 
-        res.redirect('/spotify?' +
+        res.redirect('/select?' +
           querystring.stringify({
+            table: "track",
             access_token: access_token
           }));
       } else {

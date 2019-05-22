@@ -1,12 +1,16 @@
 # Requêtes à la BDD SQL
 
-##1. Tables
+##1. Basics
 ```sql
 > .tables                       -- print tables
 > .schema TABLE                 -- print table composition
 ```
+```bash
+$ sqlite3 main.db .schema > docs/schema.sql
+$ sqlite3 main.db .dump > docs/dump.sql
+```
 
-##2. Génération
+##2. Génération de la table
 ```sql
 CREATE TABLE Track(
 TrackURI VARCHAR PRIMARY KEY NOT NULL CHECK (TrackURI <> ""),
@@ -35,66 +39,8 @@ PRIMARY KEY(UserURI, Timestamp)
 );
 ```
 
-##3. Valeurs
-```sql
-spotify:track:4BgJZJW9b24DEt3ONiAIQP|Venom|Warriyo|https://i.scdn.co/image/58c8cab6d6fb96681086f6fdae3f88bf1cc6318a|-800|warriyo_venom.osu
-insert into track values('spotify:track:6ocbgoVGwYJhOv1GgI9NsF', '7_rings');
-insert into track values('spotify:track:1s2I9Q7zAE78m7aVZOq3ug', 'bang_bang');
-insert into track values('spotify:track:48UPSzbZjgc449aqz8bxox', 'californication');
-insert into track values('spotify:track:5mEqD00bdFcsiVd0MfvEeF', 'dream_lantern');
-insert into track values('spotify:track:40YcuQysJ0KlGQTeGUosTC', 'me_myself_and_i');
-insert into track values('spotify:track:6fgbQt13JlpN59PytgTMsA', 'snow');
-insert into track values('spotify:track:1NeLwFETswx8Fzxl2AFl91', 'something_about_us');
-insert into track values('spotify:track:3e9HZxeyfWwjeyPAMmWSSQ', 'thank_u_next');
-insert into track values('spotify:track:2DLrgv7HhJanCuD8L9uJLR', 'zenzenzense');
-```
 
-7_rings.osu
-bang_bang.osu
-californication.osu
-dream_lantern.osu
-map.osu
-me_myself_and_i.osu
-snow.osu
-something_about_us.osu
-thank_u_next.osu
-zenzenzense.osu
-
-spotify:track:6ocbgoVGwYJhOv1GgI9NsF
-spotify:track:1s2I9Q7zAE78m7aVZOq3ug
-spotify:track:48UPSzbZjgc449aqz8bxox
-spotify:track:5mEqD00bdFcsiVd0MfvEeF
-map
-spotify:track:40YcuQysJ0KlGQTeGUosTC
-spotify:track:6fgbQt13JlpN59PytgTMsA
-spotify:track:1NeLwFETswx8Fzxl2AFl91
-spotify:track:3e9HZxeyfWwjeyPAMmWSSQ
-spotify:track:2DLrgv7HhJanCuD8L9uJLR
-
-
-##4. INSERT INTO
-```javascript
-let db_init = `INSERT INTO Track (TrackURI, Trackname, Trackartist, Trackcover, Trackdelay, OSUfile)
-VALUES("spotify:track:4BgJZJW9b24DEt3ONiAIQP", "Venom", "Warriyo", "", "-800", "warriyo_venom.osu");
-VALUES("spotify:track:6ocbgoVGwYJhOv1GgI9NsF", "7 Rings", "Ariana Grande", "", "0", "7_rings.osu");
-VALUES("spotify:track:48UPSzbZjgc449aqz8bxox", "Californication", "Red Hot Chili Peppers", "", "0", "californication.osu");
-`;
-db.run(db_init, function(err){
-  if (err) {
-      return console.log(err.message);
-  }
-  console.log("succes!");
-});
-```
-
-
-##5. URIs d'albums
-spotify:album:6oX7kNKqj9dwNk8i4btVcF
-spotify:album:3jqQFIXUakuDXdhFVvI7Ko
-spotify:album:2fYhqwDWXjbpjaIJPEfKFw
-
-
-##6. dbdiagram.i
+##6. dbdiagram.io
 ```sql
 TABLE Track
 {

@@ -27,6 +27,7 @@ Country VARCHAR NOT NULL CHECK (Country <> ""),
 Picture VARCHAR NOT NULL CHECK (Picture <> "")
 );
 INSERT INTO "User" VALUES('spotify:user:11133957842','Gabriel Forien','FR','https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/60669502_3222224824458217_8356717657373802496_n.jpg?_nc_cat=108&_nc_ht=scontent.xx&oh=3a118fe8147b9da76ef2b6e51b4e9743&oe=5D9D342B');
+INSERT INTO "User" VALUES('spotify:user:9fe55lgmzzjfc1fi778jp3lrh','Cécile','FR','https://profile-images.scdn.co/images/userprofile/default/dbc988fae1944eeb4daab4b472ac0269115493bc');
 CREATE TABLE Score (
 UserURI VARCHAR NOT NULL CHECK (UserURI <> ""),
 Timestamp VARCHAR NOT NULL CHECK (Timestamp <> ""),
