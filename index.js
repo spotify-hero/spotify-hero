@@ -215,14 +215,15 @@ app.get('/spotify_cb', function(req, res) {
             dbHandler.insertInto(db, 'User', inserts, ()=> {
               console.log("Inserted into User with success !");
             });
+            res.redirect('/select?' +
+              querystring.stringify({
+                table: "track",
+                userURI : body.uri,
+                access_token: access_token
+              }));
           }
         });
 
-        res.redirect('/select?' +
-          querystring.stringify({
-            table: "track",
-            access_token: access_token
-          }));
       } else {
         res.redirect('/?' +
           querystring.stringify({

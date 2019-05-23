@@ -30,7 +30,7 @@ INSERT INTO "User" VALUES('spotify:user:11133957842','Gabriel Forien','FR','http
 INSERT INTO "User" VALUES('spotify:user:9fe55lgmzzjfc1fi778jp3lrh','Cécile','FR','https://profile-images.scdn.co/images/userprofile/default/dbc988fae1944eeb4daab4b472ac0269115493bc');
 CREATE TABLE Score (
 UserURI VARCHAR NOT NULL CHECK (UserURI <> ""),
-Timestamp VARCHAR NOT NULL CHECK (Timestamp <> ""),
+Timestamp DATETIME NOT NULL DEFAULT (GETDATE()),
 Scorevalue INTEGER NOT NULL CHECK (Scorevalue <> ""),
 TrackURI VARCHAR NOT NULL CHECK (TrackURI <> ""),
 FOREIGN KEY(TrackURI) REFERENCES Track(TrackURI),

@@ -59,6 +59,7 @@ function filterList(inputId, tableId){
 /**
 * AJAX request to /database/table, parsing JSON and making it into an HTML table element
 * then inserting it before id with an h3 title
+* This is just a base function, it is not used as such
 */
 function addTableHTMLBeforeElement(id, tableName) {
 
@@ -105,7 +106,7 @@ function addTrackHTMLBeforeElement(id) {
       url: '/database/track',
       success: function(array) {
         let table = JSON.parse(array);
-        let baseLink = '/game?access_token='+getQueryParams().access_token;
+        let baseLink = '/game?UserURI='+getQueryParams().UserURI+'&access_token='+getQueryParams().access_token;
 
         if (typeof table !== 'undefined' && table.length > 0) {
           let titles = '';

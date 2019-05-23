@@ -30,7 +30,7 @@ Picture VARCHAR NOT NULL CHECK (Picture <> "")
 
 CREATE TABLE Score (
 UserURI VARCHAR NOT NULL CHECK (UserURI <> ""),
-Timestamp VARCHAR NOT NULL CHECK (Timestamp <> ""),
+Timestamp DATETIME NOT NULL DEFAULT (GETDATE()),
 Scorevalue INTEGER NOT NULL CHECK (Scorevalue <> ""),
 TrackURI VARCHAR NOT NULL CHECK (TrackURI <> ""),
 FOREIGN KEY(TrackURI) REFERENCES Track(TrackURI),

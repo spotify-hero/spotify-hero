@@ -46,7 +46,29 @@ class Game {
     document.getElementsByClassName('save-score')[0].onclick = function(){
       var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
       scoreTosave = scoreTosave.replace( /^\D+/g, '');
-      console.log("sauver le score : " +  scoreTosave )
+
+/*      inserts = [];
+      inserts.push({
+        'userURI' : getQueryParams().userURI,
+        'Timestamp' : '',
+        'ScoreValue' : scoreTosave,
+        'TrackURI' : getQueryParams().TrackURI
+      });
+
+      jquery.ajax({
+        type: 'POST',
+        url: '/database/score',
+        headers: {'Content-Type': 'application/json'},
+        data: JSON.stringify(inserts),
+        success: function(res) {
+          console.log("Successfully inserted into Track :");
+          console.log(inserts);
+        },
+        error: function(res) {
+          console.error("Could not insert into Track :");
+          console.error(inserts);
+        }
+      });*/
     }
     
     document.getElementsByClassName('open-pause')[0].onclick = function(){
@@ -136,7 +158,7 @@ class Game {
           this.sendOsuFile(filename, this.gameView.recordMap);
           console.log("Recorded beatmap sent to server");
         } else {
-          window.location.replace("/select?table=Track&access_token="+getQueryParams().access_token);
+          window.location.replace("/select?table=Track"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token);
         }
       }
     }
