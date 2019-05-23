@@ -40,6 +40,7 @@ class SpotifyAPI {
         console.log('pause() successfully executed');
       }
     });
+    this.updateCurrentPlaying(access_token);
   }
 
   resume(access_token) {
@@ -58,6 +59,7 @@ class SpotifyAPI {
         console.error(res.responseText);
       }
     });
+    this.updateCurrentPlaying(access_token);
   }
 
   previous(access_token) {
@@ -72,26 +74,29 @@ class SpotifyAPI {
         console.log('previous() successfully executed');
       }
     });
+    this.updateCurrentPlaying(access_token);
+  }
 
-  setTimeout(function() {
-    jquery.ajax({
-      type: 'GET',
-      url: 'https://api.spotify.com/v1/me/player/currently-playing',
-      headers: {
-        'Authorization': 'Bearer ' + access_token
-      },
-      success: function(response) {
-        //console.log(response);
-        document.getElementById('playing_album').src = response.item.album.images[0].url;
-        document.getElementById('is_playing').innerHTML = response.is_playing;
-        document.getElementById('playing_title').innerHTML = response.item.name;
-        document.getElementById('playing_id').innerHTML = response.item.id;
-        document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
-        document.getElementById('playing_progress').innerHTML = response.progress_ms;
-        document.getElementById('playing_populariry').innerHTML = response.item.popularity;
-      }
-    });
-  }, 1000);
+  updateCurrentPlaying(access_token) {
+    setTimeout(function() {
+      jquery.ajax({
+        type: 'GET',
+        url: 'https://api.spotify.com/v1/me/player/currently-playing',
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+          //console.log(response);
+          document.getElementById('playing_album').src = response.item.album.images[0].url;
+          document.getElementById('is_playing').innerHTML = response.is_playing;
+          document.getElementById('playing_title').innerHTML = response.item.name;
+          document.getElementById('playing_id').innerHTML = response.item.id;
+          document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
+          document.getElementById('playing_progress').innerHTML = response.progress_ms;
+          document.getElementById('playing_populariry').innerHTML = response.item.popularity;
+        }
+      });
+    }, 1000);
   }
 
   next(access_token) {
@@ -106,50 +111,27 @@ class SpotifyAPI {
         console.log('next() successfully executed');
       }
     });
-
-  setTimeout(function() {
-    jquery.ajax({
-      type: 'GET',
-      url: 'https://api.spotify.com/v1/me/player/currently-playing',
-      headers: {
-        'Authorization': 'Bearer ' + access_token
-      },
-      success: function(response) {
-        //console.log(response);
-        document.getElementById('playing_album').src = response.item.album.images[0].url;
-        document.getElementById('is_playing').innerHTML = response.is_playing;
-        document.getElementById('playing_title').innerHTML = response.item.name;
-        document.getElementById('playing_id').innerHTML = response.item.id;
-        document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
-        document.getElementById('playing_progress').innerHTML = response.progress_ms;
-        document.getElementById('playing_populariry').innerHTML = response.item.popularity;
-      }
-    });
-  }, 1000);
+    this.updateCurrentPlaying(access_token);
   }
 
   play(access_token, uri, device_id) {
-    //if (uri == 'undefined' || device_id == 'undefined') {
-      jquery.ajax({
-        type: 'PUT',
-        url: ((device_id)?'https://api.spotify.com/v1/me/player/play?device_id'+device_id:'https://api.spotify.com/v1/me/player/play'),
-        headers: {
-          'Authorization': 'Bearer ' + access_token
-        },
-        data : '{"uris": ["'+uri+'"]}',
-        success: function(response) {
-          console.log('play() successfully executed');
-        },
-        error: function(response) {
-          console.error('play() failed : ');
-          console.error(response.responseText);
-        }
-      });
 
-    //} else {
-    //  console.log("Error : uri="+uri+"  device_id="+device_id);
-    //  console.log('Make a precise request');
-    //}
+    jquery.ajax({
+      type: 'PUT',
+      url: ((device_id)?'https://api.spotify.com/v1/me/player/play?device_id'+device_id:'https://api.spotify.com/v1/me/player/play'),
+      headers: {
+        'Authorization': 'Bearer ' + access_token
+      },
+      data : '{"uris": ["'+uri+'"]}',
+      success: function(response) {
+        console.log('play() successfully executed');
+      },
+      error: function(response) {
+        console.error('play() failed : ');
+        console.error(response.responseText);
+      }
+    });
+    this.updateCurrentPlaying(access_token);
   }
 
   searchOne(id, access_token) {

@@ -71,7 +71,6 @@ function addJSONBeforeElement(id, array) {
   }
 }
 
-
 export {
   getHashParams,
   copyClipboard,
