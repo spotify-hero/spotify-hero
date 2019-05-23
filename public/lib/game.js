@@ -44,9 +44,10 @@ class Game {
     }
 
     document.getElementsByClassName('save-score')[0].onclick = function(){
+      var pseudo = document.getElementById("pseudo").value
       var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
       scoreTosave = scoreTosave.replace( /^\D+/g, '');
-      console.log("sauver le score : " +  scoreTosave)
+      console.log("sauver le score : " +  scoreTosave + " de " + pseudo)
     }
     
     document.getElementsByClassName('open-pause')[0].onclick = function(){

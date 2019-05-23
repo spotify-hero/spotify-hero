@@ -185,7 +185,7 @@ body {
   text-align: center;
 }
 
-.instructions {
+.instructions, .end-game {
   position: absolute;
   background: rgba(0, 0, 0, .90);
   top: 0;
@@ -290,7 +290,27 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.retry-pause, .record-pause, .select-pause, .save-score {
+#pseudo {
+  padding-top : 50 px;
+  width: 100%;
+  border: 3px solid #00B4CC;
+  border-right: none;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+.input-name{
+  width: 30%;
+  position: absolute;
+  padding: 20px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.retry-pause, .record-pause, .select-pause, .save-score, .result-score, .congrat {
   color: white;
   display: flex;
   flex-direction: column;

@@ -233,10 +233,11 @@ class GameView {
             (this.yStartPoint),
             (this.zStartPoint));
 
-            if(idx == beatmap.length){
+            if(idx == 6){
               console.log("fin du jeu !!!!!!")
               var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
               scoreTosave = scoreTosave.replace( /^\D+/g, '');
+              document.getElementsByClassName('result-score')[0].innerHTML = "Your score : " + scoreTosave;
               document.getElementsByClassName('end-game')[0].className="end-game"
 
             }
