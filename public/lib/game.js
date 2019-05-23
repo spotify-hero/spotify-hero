@@ -109,12 +109,12 @@ class Game {
       noteDelay = 0;
     }
 
-    this.gameView.addMovingNotes(this.noteInterval, this.beatmap, noteDelay);
-
     // Mode enregistrement !!!!
     if (getQueryParams().mode === 'record') {
       this.gameView.setStartTimeRecord();
       this.gameView.addNoteRecord();
+    }else{
+      this.gameView.addMovingNotes(this.noteInterval, this.beatmap, noteDelay);
     }
     
     this.gameStartEl.className = "start hidden";
@@ -141,26 +141,26 @@ class Game {
       if (e.keyCode === 97 || e.keyCode === 65) {
         this.startGame();
       }
+    }
 
-    }else{
-      if (e.keyCode == 27){
-        console.log("vous avez appuyé sur échap")
-        document.getElementsByClassName('pause')[0].className="pause"
-        var access_token = getQueryParams().access_token;
-        this.gameView.isPlay = false;
-        this.spAPI.pause(access_token);
-        this.started = false;
-      } else if (e.keyCode == 122 || e.keyCode == 90) {
+    if (e.keyCode == 27){
+      console.log("vous avez appuyé sur échap")
+      document.getElementsByClassName('pause')[0].className="pause"
+      var access_token = getQueryParams().access_token;
+      this.gameView.isPlay = false;
+      this.spAPI.pause(access_token);
+      this.started = false;
+    } else if (e.keyCode == 122 || e.keyCode == 90) {
 
-        if (getQueryParams().mode === 'record') {
-          var filename = getQueryParams().Trackartist.split(' ').join('');
-          filename += '_'+getQueryParams().Trackname.split(' ').join('')+'.osu';
-          this.sendOsuFile(filename, this.gameView.recordMap);
-          console.log("Recorded beatmap sent to server");
-        } else {
-          window.location.replace("/select?table=Track"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token);
-        }
+      if (getQueryParams().mode === 'record') {
+        var filename = getQueryParams().Trackartist.split(' ').join('');
+        filename += '_'+getQueryParams().Trackname.split(' ').join('')+'.osu';
+        this.sendOsuFile(filename, this.gameView.recordMap);
+        console.log("Recorded beatmap sent to server");
+      } else {
+        window.location.replace("/select?table=Track"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token);
       }
+      
     }
   }
 
