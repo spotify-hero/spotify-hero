@@ -1,3 +1,4 @@
+﻿
 # Présentation générale
 Notre jeu est largement inspiré de Guitar Hero ou encore Osu (mode osu!mania).
 
@@ -37,3 +38,4 @@ Notre objectif à long terme étant de faire fonctionner le jeu sur mobile : cho
 ### EventListener
 * KeyPress/KeyDown
 * TouchEvent
+
