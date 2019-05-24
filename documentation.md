@@ -12,7 +12,10 @@ Notre jeu est compatible avec la plupart des appareils disposant d'un navigateur
 
 Back-End            |  Front-end
 :-------------------------:|:-------------------------:
-![NodeJS](https://nodejs.org/static/images/logo.svg =150x)  ![SQLite](https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/SQLite370.svg/1920px-SQLite370.svg.png =160x)|  ![jquery](https://fortimelp.fr/274-large_default/formation-jquery-3-jours.jpg =180x)![enter image description here](https://upload.wikimedia.org/wikipedia/commons/4/40/Three.js_logo.png)| 
+![NodeJS](https://nodejs.org/static/images/logo.svg =150x)
+![SQLite](https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/SQLite370.svg/1920px-SQLite370.svg.png =160x)
+|![jquery](https://fortimelp.fr/274-large_default/formation-jquery-3-jours.jpg =180x)
+![enter image description here](https://upload.wikimedia.org/wikipedia/commons/4/40/Three.js_logo.png) 
 
 ## Schéma global
 ```mermaid
