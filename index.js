@@ -36,6 +36,10 @@ var client_id     = process.env.cliend_id;
 var client_secret = process.env.client_secret;
 var redirect_uri  = process.env.redirect_uri;
 
+console.log("client id : " + client_id);
+console.log("redirect_uri : " + redirect_uri);
+
+
 // Initiate server, static folder is /public, load cookieParser, connect to db
 var stateKey = 'spotify_auth_state';
 var app = express();
@@ -260,5 +264,5 @@ app.get('/refresh_token', function(req, res) {
 });
 
 app.listen(PORT, function() {
-  console.log('Listening on port 8888');
+  console.log('Listening on port ' + PORT);
 });
