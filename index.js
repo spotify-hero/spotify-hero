@@ -32,7 +32,7 @@ var sqlite3 = require('sqlite3').verbose();
 var dbHandler = require('./dbHandler');
 
 // API credentials from secured file
-var client_id     = process.env.cliend_id;
+var client_id     = process.env.client_id;
 var client_secret = process.env.client_secret;
 var redirect_uri  = process.env.redirect_uri;
 
