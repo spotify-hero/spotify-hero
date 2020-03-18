@@ -19,7 +19,9 @@ var request       = require('request');
 //var cors        = require('cors');                      // not-necessary
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+
+const PORT = process.env.PORT || 8888;
 
 // OSU Parser part
 var fs = require('fs');
@@ -257,6 +259,6 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-app.listen(8888, function() {
+app.listen(PORT, function() {
   console.log('Listening on port 8888');
 });
