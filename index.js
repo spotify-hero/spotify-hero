@@ -29,9 +29,9 @@ var sqlite3 = require('sqlite3').verbose();
 var dbHandler = require('./dbHandler');
 
 // API credentials from secured file
-var client_id     = process.env.client_id;
-var client_secret = process.env.client_secret;
-var redirect_uri  = process.env.redirect_uri;
+var client_id     = process.env.CLIENT_ID;
+var client_secret = process.env.CLIENT_SECRET;
+var redirect_uri  = process.env.REDIRECT_URI;
 
 // Initiate server, static folder is /public, load cookieParser, connect to db
 var stateKey = 'spotify_auth_state';
