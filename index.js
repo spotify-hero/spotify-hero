@@ -34,7 +34,9 @@ var dbHandler = require('./dbHandler');
 // API credentials from secured file
 var client_id     = process.env.client_id;
 var client_secret = process.env.client_secret;
-var redirect_uri  = process.env.redirect_uri;
+var domain_name = process.env.domain_name;
+
+var redirect_uri  = domain_name + ":" + process.env.PORT + "/spotify_cb";
 
 console.log("client id : " + client_id);
 console.log("redirect_uri : " + redirect_uri);
