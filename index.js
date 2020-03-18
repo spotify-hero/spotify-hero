@@ -10,13 +10,11 @@
 @authors Cécile POUPON - Antoine BALLIET - Gabriel FORIEN
 */
 
-
 /*************************************
 *            depedencies
 **************************************/
 var express       = require('express');
 var request       = require('request');
-//var cors        = require('cors');                      // not-necessary
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
 var bodyParser = require('body-parser');
@@ -26,7 +24,6 @@ const PORT = process.env.PORT || 8888;
 // OSU Parser part
 var fs = require('fs');
 var osuParser = require("./osuParser");
-var files = fs.readdirSync('./osu');
 
 var sqlite3 = require('sqlite3').verbose();
 var dbHandler = require('./dbHandler');
@@ -35,10 +32,6 @@ var dbHandler = require('./dbHandler');
 var client_id     = process.env.client_id;
 var client_secret = process.env.client_secret;
 var redirect_uri  = process.env.redirect_uri;
-
-console.log("client id : " + client_id);
-console.log("redirect_uri : " + redirect_uri);
-
 
 // Initiate server, static folder is /public, load cookieParser, connect to db
 var stateKey = 'spotify_auth_state';
@@ -65,7 +58,6 @@ var generateRandomString = function(length) {
   }
   return text;
 };
-
 
 
 /*************************************
