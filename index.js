@@ -10,27 +10,26 @@
 @authors Cécile POUPON - Antoine BALLIET - Gabriel FORIEN
 */
 
-
 /*************************************
 *            depedencies
 **************************************/
 var express       = require('express');
 var request       = require('request');
-//var cors        = require('cors');                      // not-necessary
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+
+const PORT = process.env.PORT || 8888;
 
 // OSU Parser part
 var fs = require('fs');
 var osuParser = require("./osuParser");
-var files = fs.readdirSync('./osu');
 
 var sqlite3 = require('sqlite3').verbose();
 var dbHandler = require('./dbHandler');
 
 // API credentials from secured file
-var client_id     = process.env.cliend_id;
+var client_id     = process.env.client_id;
 var client_secret = process.env.client_secret;
 var redirect_uri  = process.env.redirect_uri;
 
@@ -61,7 +60,6 @@ var generateRandomString = function(length) {
 };
 
 
-
 /*************************************
 *            routes definitions
 **************************************/
@@ -81,7 +79,7 @@ app.get('/spotify', function(req, res) {
 app.get('/login', function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-  var scope = 'user-read-recently-played user-top-read user-library-modify user-library-read playlist-read-private playlist-modify-public playlist-modify-private playlist-read-collaborative user-read-email user-read-birthdate user-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming user-follow-read user-follow-modify';
+  var scope = 'user-read-recently-played user-top-read user-library-modify user-library-read playlist-read-private playlist-modify-public playlist-modify-private playlist-read-collaborative user-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming user-follow-read user-follow-modify';
 
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
@@ -257,6 +255,6 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-app.listen(8888, function() {
-  console.log('Listening on port 8888');
+app.listen(PORT, function() {
+  console.log('Listening on port ' + PORT);
 });

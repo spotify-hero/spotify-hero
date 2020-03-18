@@ -11,10 +11,12 @@
     "express": "^4.17.0",
     "fs": "0.0.1-security",
     "request": "^2.88.0",
-    "sqlite3": "^4.0.8"
+    "sqlite3": "^4.0.8",
+    "webpack": "^4.31.0"
   },
   "scripts": {
-    "start": "(webpack --watch &) && nodemon index.js",
+    "build" : "webpack",
+    "start": "node index.js",
     "test": "mocha"
   },
   "devDependencies": {
@@ -22,7 +24,6 @@
     "jshint": "^2.10.2",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.0",
-    "webpack": "^4.31.0",
     "webpack-cli": "^3.3.2"
   }
 }
