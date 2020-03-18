@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>TC Hero</title>
-    
+
     <link rel="stylesheet" type="text/css" href="css/game.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
@@ -11,78 +11,13 @@
     <meta name="viewport" content="user-scalable=no">
     <script type="text/javascript" src="/build/game-bundle.js"></script>
 
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    <script>
-      var params = (() => {
-        var hashParams = {};
-        var e, r = /([^&;=]+)=?([^&;]*)/g,
-            q = window.location.hash.substring(1);
-        while ( e = r.exec(q)) {
-           hashParams[e[1]] = decodeURIComponent(e[2]);
-        }
-        return hashParams;
-      })();
-
-      var access_token = params.access_token,
-        refresh_token = params.refresh_token,
-        error = params.error;
-
-      console.log(params);
-
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        const player = new Spotify.Player({
-          name: 'Web Playback SDK Quick Start Player',
-          getOAuthToken: cb => { cb(access_token); }
-        });
-
-        // Error handling
-        player.addListener('initialization_error', ({ message }) => { console.error(message); });
-        player.addListener('authentication_error', ({ message }) => { console.error(message); });
-        player.addListener('account_error', ({ message }) => { console.error(message); });
-        player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-        // Playback status updates
-        // player.addListener('player_state_changed', state => { console.log(state); });
-
-        // Ready
-        player.addListener('ready', ({ device_id }) => {
-          console.log('Ready with Device ID', device_id);
-          document.getElementById('input_device_id').value = device_id;
-        });
-
-        // Not Ready
-        player.addListener('not_ready', ({ device_id }) => {
-          console.log('Device ID has gone offline', device_id);
-        });
-
-        // Connect to the player!
-        player.connect();
-      };
-    </script>
-
-
     <div id="game-canvas">
       <div class="game-display">
-        <div class="header">
-          <p class="creator">Created by <span>Jay Schwartz</span></p>
-          <h1 class="title">TC Hero</h1>
-        </div>
 
         <div class="game-details">
           <div class="game-details-left">
             <h1 class="score">Score: 0</h1>
             <h1 class="max-streak">Max Streak: 0</h1>
-          </div>
-
-          <div class="player-spotify">
-            <h1 class="title" style="padding:0;"> Spotify Player</h1>
-            <div>
-              <form action="javascript:void(0);" class="form-example">
-                <input type ="text" id="input_device_id" style="display:none;" >
-                <input type ="text" id="input_uri" value="spotify:track:4BgJZJW9b24DEt3ONiAIQP" required>
-                <input type ="button" id="play_uri" value="&#9658;">
-              </form>
-            </div>
           </div>
 
           <div class="game-details-right">
@@ -92,7 +27,7 @@
         </div>
 
         <div class="game-start">
-          <h1 class="start">PRESS "A" TO START</h1>
+          <h1 class="start">PRESS "A" TO START<br>PRESS "Z" TO QUIT</h1>
         </div>
 
         <div class="instructions hidden">
@@ -126,6 +61,21 @@
           <div class="record-pause">
             <h1>RECORD</h1>
           </div>
+        </div>
+
+        <div class="end-game hidden">
+
+            <div class="congrat">
+              <h1>Congratulations, you've finished this track !</h1>
+            </div>
+
+            <div class="result-score">
+              <h1>Your final score : </h1>
+            </div>
+
+            <div class="save-score">
+              <h1>Save my score !</h1>
+            </div>
         </div>
 
         <div class="game-progress">

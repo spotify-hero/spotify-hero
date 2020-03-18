@@ -1,12 +1,149 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
+﻿<!DOCTYPE html>
+<html>
+
+<head>
     <meta charset="utf-8">
-    <title>Documentation de notre projet</title>
-  </head>
-  <body>
-    <h1> Documentation de notre projet </h1>
-    <div>
-      <p> Gabi et Antoine on fait des trucs ... j'ai pas de ouf compris, mais le jeu est cool.</p>
-  </body>
+    <title>TapTapHERO</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+  
+    <meta property="og:title" content="TapTap-Hero">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="taptap-hero.com">
+    <meta property="og:site_name" content="TapTap-Hero">
+    <meta property="og:description" content="Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !">
+  
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+  <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
+</head>
+
+<body class="stackedit">
+    <div class="navbar navbar-reverse navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/">Home</a></li>
+              <li><a href="docu.html">Documentation</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+
+
+  <div class="stackedit__html"><h1 id="présentation-générale">Présentation générale</h1>
+<p>Notre jeu est largement inspiré de <a href="https://www.guitarhero.com/fr/">Guitar Hero</a> ou encore <a href="https://osu.ppy.sh/home">osu!</a> (mode osu!mania).</p>
+<p>Quelques différences de fonctionnement cependant :</p>
+<ul>
+<li>
+<p>Utiliser les plateforme de <strong>streaming</strong> musicales (uniquement Spotify pour l’instant) : on rend ainsi la partie jeu indépendante de la partie audio. L’utilisateur joue sa musique sur sa plateforme de streaming en arrière-plan, et il joue des notes de la map synchronisée sur notre application.</p>
+</li>
+<li>
+<p>On dispose d’un mode <strong>« Enregistrement »</strong> qui permet à un utilisateur de créer sa propre map associée à la musique. Et d’un mode <strong>« Jouer »</strong> qui fonctionne lorsqu’un utilisateur écoute une musique déjà existante dans la base de données.</p>
+</li>
+</ul>
+<p>Notre jeu est compatible avec la plupart des appareils disposant d’un navigateur internet et surtout bénéficie d’une bibliothèque musicale légale très large grâce à Spotify.</p>
+<h1 id="technologies-utilisées">Technologies utilisées</h1>
+
+<table>
+<thead>
+<tr>
+<th align="center">Back-End</th>
+<th align="center">Front-end</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><img src="https://nodejs.org/static/images/logo.svg" alt="NodeJS" width="150">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/SQLite370.svg/1920px-SQLite370.svg.png" alt="SQLite" width="160"></td>
+<td align="center"><img src="https://fortimelp.fr/274-large_default/formation-jquery-3-jours.jpg" alt="jquery" width="180"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Three.js_logo.png" alt="enter image description here"></td>
+</tr>
+</tbody>
+</table><h2 id="schéma-global">Schéma global</h2>
+<div class="mermaid"><svg xmlns="http://www.w3.org/2000/svg" id="mermaid-svg-kWIwH2Mr6lhYOyav" width="100%" style="max-width: 394.25px;" viewBox="0 0 394.25 375.140625"><g transform="translate(-12, -12)"><g class="output"><g class="clusters"></g><g class="edgePaths"><g class="edgePath" style="opacity: 1;"><path class="path" d="M192.79188368055554,72.5L132.265625,113.75L132.265625,155" marker-end="url(#arrowhead2412)" style="fill:none"></path><defs><marker id="arrowhead2412" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M269.82530381944446,72.5L330.3515625,113.75L330.3515625,155" marker-end="url(#arrowhead2413)" style="fill:none"></path><defs><marker id="arrowhead2413" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath" style="opacity: 1;"><path class="path" d="M330.3515625,207.5L330.3515625,232.5L330.8515625,258" marker-end="url(#arrowhead2414)" style="fill:none"></path><defs><marker id="arrowhead2414" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(132.265625,113.75)" style="opacity: 1;"><g transform="translate(-61.9375,-16.25)" class="label"><foreignObject width="123.88671875" height="32.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Requêtes SQL</span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(330.3515625,113.75)" style="opacity: 1;"><g transform="translate(-67.8984375,-16.25)" class="label"><foreignObject width="135.80078125" height="32.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel">Envoie contenu</span></div></foreignObject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span class="edgeLabel"></span></div></foreignObject></g></g></g><g class="nodes"><g class="node" id="A" transform="translate(231.30859375,46.25)" style="opacity: 1;"><rect rx="0" ry="0" x="-79.96875" y="-26.25" width="159.9375" height="52.5"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-69.96875,-16.25)"><foreignObject width="139.94140625" height="32.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Serveur NodeJS</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="B" transform="translate(132.265625,181.25)"><rect rx="5" ry="5" x="-112.265625" y="-26.25" width="224.53125" height="52.5"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-102.265625,-16.25)"><foreignObject width="204.53125" height="32.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Base de données locale</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="C" transform="translate(330.3515625,181.25)"><rect rx="5" ry="5" x="-35.8203125" y="-26.25" width="71.640625" height="52.5"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-25.8203125,-16.25)"><foreignObject width="51.640625" height="32.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Client</div></foreignObject></g></g></g><g class="node" style="opacity: 1;" id="D" transform="translate(330.3515625,318.3203125)"><polygon points="60.8203125,0 121.640625,-60.8203125 60.8203125,-121.640625 0,-60.8203125" rx="5" ry="5" transform="translate(-60.8203125,60.8203125)"></polygon><g class="label" transform="translate(0,0)"><g transform="translate(-31.328125,-16.25)"><foreignObject width="62.65625" height="32.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Spotify</div></foreignObject></g></g></g></g></g></g></svg></div>
+<h1 id="authentification-et-connexion-à-spotify">Authentification et connexion à Spotify</h1>
+<h1 id="gestion-de-la-base-de-donnée">Gestion de la base de donnée</h1>
+<h2 id="structure">Structure</h2>
+<p>Nous avons mis en place les 3 tables suivantes :</p>
+<p>L’utilisateur est identifié de manière unique par le UserURI <strong>donné par l’authentification Spotify</strong>, et les morceaux par leurs TrackURI donné par la <strong>base de donnée de Spotify</strong>. Ainsi:</p>
+<ul>
+<li>
+<p>La table <strong>Score</strong> permet à l’utilisateur d’enregistrer son score sur le morceau qu’il vient de jouer à la fin de la partie, son nouveau score remplaçant l’ancien sur le même morceau.</p>
+</li>
+<li>
+<p>La table <strong>User</strong> a servi principalement à faire des tests lors de l’intégration de Spotify à notre projet, nous n’avons pas cherché à intégrer plus en détail les informations de l’utilisateur dans le jeu.</p>
+</li>
+<li>
+<p>La table <strong>Track</strong> est la plus importante de notre projet, elle permet pour l’instant de stocker une seule beatmap par morceau, mais nous prévoyons en amélioration future de pouvoir associer plusieurs par morceau. Le Trackdelay est un paramètre que nous devons rentrer à la main, Trackname, Trackartist et Trackcover sont fournis par Spotify. Et enfin, les OSUfiles (beatmap) peuvent être soit importés manuellement depuis le site de OSU, soit créés grâce à notre interface de création de beatmap.</p>
+</li>
+</ul>
+<h2 id="gestion">Gestion</h2>
+<p>La gestion de ces tables est assurée par le moteur SQlite : il n’y a pas de serveur faisant des requêtes à la base de données. <strong>On fait des requêtes SQL sur un fichier local</strong>. Cette méthode est plus simple car on a alors simplement un fichier “main.db” à manipuler.</p>
+<p>Les requêtes sont faites à l’URL, mais pour plus de sécurité elles ne sont pas passées simplement au format SQL. Le front-end fait en des requêtes GET POST ou PUT qui sont traitées par un fichier back-end : “dbHandler.js”. C’est ce fichier qui assure la sécurité de notre base de données. Il récupère les requêtes, et avant de les transformer en requêtes SQL <strong>il s’assure qu’elles soient formulées correctement</strong>, par exemple qu’il ne manque aucun élément. Cela empêche un minimum que des données fausses soient rentrées dans notre base. Malgré ces précautions, la base de données n’est pas protégée contre les injections SQL.</p>
+<h1 id="reprise-dun-interface-graphique-existant--js-hero">Reprise d’un interface graphique existant : JS-HERO</h1>
+<p>Afin de partir d’une base graphique existante solide nous avons choisi d’utiliser le projet de Jay Schwartz : <a href="https://github.com/jyschwrtz/JS-Hero">JS-Hero</a></p>
+<p>Il tire profit de la librairie 3D three.js performante et simple d’utilisation. Le rendu est calculé en local et permet une utilisation relativement légère de la puissance de calcul.</p>
+<p>Notre objectif à long terme étant de faire fonctionner le jeu sur mobile : chose, en partie, déjà possible.</p>
+
+<table>
+<thead>
+<tr>
+<th>JS Hero</th>
+<th>TC Hero</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="https://raw.githubusercontent.com/jyschwrtz/guitar-hero-design/master/photos/game_play.png" alt="Interface de JS-Hero" width="400"></td>
+<td><img src="https://raw.githubusercontent.com/jyschwrtz/guitar-hero-design/master/photos/game_play.png" alt="Interface de TC-Hero" width="400"></td>
+</tr>
+</tbody>
+</table><p>Enfin voici les différents pages correspondantes au menu et à l’écran pause de notre jeu :</p>
+<p>Et le rendu actuel sur mobile :</p>
+<h2 id="objets-graphiques">Objets graphiques</h2>
+<p>La scène three.js se compose essentiellement de :</p>
+<ul>
+<li><strong>texture 2D</strong> construite à partir de la pochette de l’album de l’artiste écouté</li>
+<li><strong>BoxGeometry</strong> qui constituent l’ensemble des éléments animés (notes et touches)</li>
+</ul>
+<p>On utilise largement la fonction <code>setTimeout()</code> afin de faire apparaître les notes en temps voulu à l’écran.</p>
+<h2 id="actions-utilisateurs">Actions utilisateurs</h2>
+<h3 id="eventlistener">EventListener</h3>
+<ul>
+<li>KeyPress/KeyDown :  pour gérer les événements clavier.</li>
+<li>TouchEvent : dédié aux écrans tactiles: on parvient à récupérer le tableau contenant toutes les positions appuyées simultanément pas l’utilisateur grâce au <em>multitouch</em>.</li>
+</ul>
+<h3 id="vérification-des-notes-jouées">Vérification des notes jouées</h3>
+<p>On stocke en permanence un tableau contenant les dernières touches pressées dans les 300ms précédents. Ce fonctionnement nous permet de vérifier avec une certaine persistance la réussite ou non d’une note en autorisant une latence.</p>
+<h1 id="utilisation-dun-format-de-fichier-existant--osu-file-format">Utilisation d’un format de fichier existant : osu! File Format</h1>
+<p>Fournir une grande quantité de contenu est indispensable pour notre jeu. C’est pourquoi nous avons choisi de le rendre compatible avec un format de fichier très utilisé : <a href="https://osu.ppy.sh/help/wiki/osu!_File_Formats/Osu_(file_format)">Osu File Format</a>. Ceci nous permet de pouvoir <strong>importer des partitions déjà crées pour ce jeu</strong>. Ces dernières contiennent notamment des objets appelés <em>HitObjects</em> qui sont écrits dans les fichiers sous la forme :</p>
+<pre><code>x,y,time,type,hitSound,endTime:addition
+</code></pre>
+<p>Seules ces lignes nous intéressent. Afin de réduire les échanges de données entre le client et le serveur et ne pas avoir de fichier à stocker sur le client, nous avons développé un <em>parser</em> qui renvoie un tableau contenant les notes sous le format JSON :</p>
+<pre><code>{"position" :  position, "startTime":  startTime, "duration" : duration }
+</code></pre>
+<p>Afin de passer d’un format à l’autre on utilise la méthode <code>parser(txt)</code> de <strong>osuParser.js</strong>. Cette méthode est appelée côté serveur car c’est lui qui stocke les fichiers <code>.osu</code>.</p>
+<h1 id="gestion-du-code-et-management-déquipe">Gestion du code et management d’équipe</h1>
+<h2 id="github">GitHub</h2>
+<p>La fonctionnalité de « <em>versioning</em> » proposée par Git nous a été indispensable tout au long du projet afin que chacun puisse faire part de ses ajouts au projets en explicitant clairement les changements.</p>
+<p>Au total nous en sommes à plus d’une centaine de commit et chacun a pu suivre l’évolution du projet en temps réel.</p>
+<h2 id="webpack">WebPack</h2>
+<p>Réduire au maximum la dépendance entre les fichiers était une vraie nécessité pour ce projet. En effet, nous avons largement utilisé le caractère <em>orienté objet</em> de Javascript côté client pour la réalisation des différentes fonctions :</p>
+<ul>
+<li>Détection des notes jouées</li>
+<li>Création de la scene three.js</li>
+<li>Ajout des éléments graphiques (lumières, notes, touches…)</li>
+<li>Connexion à Spotify et gestion des actions</li>
+<li>Requêtes au serveur pour récupérer/envoyer des données</li>
+</ul>
+<p>Ainsi, chaque module pouvait être amélioré indépendamment en limitant les conflits et les opérations de gestion des collision avec <code>git stash</code>.</p>
+</div>
+</body>
+
 </html>

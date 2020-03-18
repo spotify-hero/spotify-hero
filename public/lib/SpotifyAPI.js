@@ -40,6 +40,7 @@ class SpotifyAPI {
         console.log('pause() successfully executed');
       }
     });
+    this.updateCurrentPlaying(access_token);
   }
 
   resume(access_token) {
@@ -58,6 +59,7 @@ class SpotifyAPI {
         console.error(res.responseText);
       }
     });
+    this.updateCurrentPlaying(access_token);
   }
 
   previous(access_token) {
@@ -72,26 +74,29 @@ class SpotifyAPI {
         console.log('previous() successfully executed');
       }
     });
+    this.updateCurrentPlaying(access_token);
+  }
 
-  setTimeout(function() {
-    jquery.ajax({
-      type: 'GET',
-      url: 'https://api.spotify.com/v1/me/player/currently-playing',
-      headers: {
-        'Authorization': 'Bearer ' + access_token
-      },
-      success: function(response) {
-        //console.log(response);
-        document.getElementById('playing_album').src = response.item.album.images[0].url;
-        document.getElementById('is_playing').innerHTML = response.is_playing;
-        document.getElementById('playing_title').innerHTML = response.item.name;
-        document.getElementById('playing_id').innerHTML = response.item.id;
-        document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
-        document.getElementById('playing_progress').innerHTML = response.progress_ms;
-        document.getElementById('playing_populariry').innerHTML = response.item.popularity;
-      }
-    });
-  }, 1000);
+  updateCurrentPlaying(access_token) {
+    setTimeout(function() {
+      jquery.ajax({
+        type: 'GET',
+        url: 'https://api.spotify.com/v1/me/player/currently-playing',
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+          //console.log(response);
+          document.getElementById('playing_album').src = response.item.album.images[0].url;
+          document.getElementById('is_playing').innerHTML = response.is_playing;
+          document.getElementById('playing_title').innerHTML = response.item.name;
+          document.getElementById('playing_id').innerHTML = response.item.id;
+          document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
+          document.getElementById('playing_progress').innerHTML = response.progress_ms;
+          document.getElementById('playing_populariry').innerHTML = response.item.popularity;
+        }
+      });
+    }, 1000);
   }
 
   next(access_token) {
@@ -106,51 +111,68 @@ class SpotifyAPI {
         console.log('next() successfully executed');
       }
     });
+    this.updateCurrentPlaying(access_token);
+  }
 
-  setTimeout(function() {
+  play(access_token, uri, device_id) {
+
+    jquery.ajax({
+      type: 'PUT',
+      url: ((device_id)?'https://api.spotify.com/v1/me/player/play?device_id'+device_id:'https://api.spotify.com/v1/me/player/play'),
+      headers: {
+        'Authorization': 'Bearer ' + access_token
+      },
+      data : '{"uris": ["'+uri+'"]}',
+      success: function(response) {
+        console.log('play() successfully executed');
+      },
+      error: function(response) {
+        console.error('play() failed : ');
+        console.error(response.responseText);
+      }
+    });
+    this.updateCurrentPlaying(access_token);
+  }
+
+  searchOne(id, access_token) {
     jquery.ajax({
       type: 'GET',
-      url: 'https://api.spotify.com/v1/me/player/currently-playing',
+      url: 'https://api.spotify.com/v1/tracks/'+document.getElementById(id).value,
       headers: {
         'Authorization': 'Bearer ' + access_token
       },
       success: function(response) {
-        //console.log(response);
-        document.getElementById('playing_album').src = response.item.album.images[0].url;
-        document.getElementById('is_playing').innerHTML = response.is_playing;
-        document.getElementById('playing_title').innerHTML = response.item.name;
-        document.getElementById('playing_id').innerHTML = response.item.id;
-        document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
-        document.getElementById('playing_progress').innerHTML = response.progress_ms;
-        document.getElementById('playing_populariry').innerHTML = response.item.popularity;
+        console.log('searchOne() successfully executed');
+
+        var inserts = [];
+        inserts[0] = {
+          "TrackURI" : response.uri,
+          "Trackname" : response.name,
+          "Trackartist" : response.artists[0].name,
+          "Trackcover" : response.album.images[0].url,
+          "Trackdelay" : 0,
+          "OSUfile" : 'undefined'
+        };
+
+        jquery.ajax({
+          type: 'POST',
+          url: '/database/track',
+          headers: {'Content-Type': 'application/json'},
+          data: JSON.stringify(inserts),
+          success: function(res) {
+            console.log("Successfully inserted into Track :");
+            console.log(inserts);
+          },
+          error: function(res) {
+            console.error("Could not insert into Track :");
+            console.error(inserts);
+          }
+        });
+
       }
     });
-  }, 1000);
   }
 
-  play(access_token, uri, device_id) {
-    //if (uri == 'undefined' || device_id == 'undefined') {
-      jquery.ajax({
-        type: 'PUT',
-        url: ((device_id)?'https://api.spotify.com/v1/me/player/play?device_id'+device_id:'https://api.spotify.com/v1/me/player/play'),
-        headers: {
-          'Authorization': 'Bearer ' + access_token
-        },
-        data : '{"uris": ["'+uri+'"]}',
-        success: function(response) {
-          console.log('play() successfully executed');
-        },
-        error: function(response) {
-          console.error('play() failed : ');
-          console.error(response.responseText);
-        }
-      });
-
-    //} else {
-    //  console.log("Error : uri="+uri+"  device_id="+device_id);
-    //  console.log('Make a precise request');
-    //}
-  }
 
   search(id, access_token) {
 
@@ -182,7 +204,7 @@ class SpotifyAPI {
           // create album images
           for (var i=0; i<5; i++) {
             var ele = document.createElement("img");
-            ele.src = tracks[i].album.images[2].url;
+            ele.src = tracks[i].album.images[0].url;
             ele.style="margin: 10px"
 /*            ele.onclick = function jouer(album_uri) {
 

@@ -13,31 +13,13 @@
   <meta property="og:description" content="Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !">
 
   <!-- Favicon and stylesheets -->
-   <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/select.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/index.css">
   <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
 
 </head>
 
 <body>
-  <script type="text/javascript" src="/build/select-bundle.js"></script>
-  <script type="text/javascript">
-  function getQueryParams() {
-      var qs = document.location.search.split('+').join(' ');
-      var params = {},
-          tokens,
-          re = /[?&]?([^=]+)=([^&]*)/g;
-      while (tokens = re.exec(qs)) {
-          params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-      }
-      return params;
-  }
-  document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("API_Spotify").onclick = function() {
-      window.location.href = '/spotify.html?access_token=' + getQueryParams().access_token;
-    }
-  });
-  </script>
 
     <!--------------------------------------------------------------------------------->
     <!--                               NAVIGATION BAR                                -->
@@ -55,27 +37,25 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/">Home</a></li>
             <li><a href="docu.html">Documentation</a></li>
-            <li><div id="API_Spotify">API Spotify</div></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
     </div>
     <!--------------------------------------------------------------------------------->
 
+    <!--Bloc principal-->
+    <section id="docu">
+      <div class="docu-text">
+        <h2>Documentation de notre projet</h2>
 
-    <section>
-      <h1>Select a song !</h1>
+        <div class="text-bloc">
+          <h3>Formalisation et manipulation d’une base de données </h3>
+          <img src="photos\db.png">
+        </div>
 
-      <div class="wrap">
-        <div class="search">
-          <input type="text" id="searchTerm" placeholder="What do you feel like playing?">
-          <button type="submit" id="searchButton">
-            <i class="fa fa-search"></i>
-         </button>
-       </div>
-    </div>
 
-      <div id="anchor"></div>
+
     </section>
+
     </body>
 </html>

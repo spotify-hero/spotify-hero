@@ -3,6 +3,10 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.pause h1:hover{
+  color: #33cccc;
+}
+
 #game-canvas {
   position: relative;
   height: 100%;
@@ -181,7 +185,7 @@ body {
   text-align: center;
 }
 
-.instructions {
+.instructions, .end-game {
   position: absolute;
   background: rgba(0, 0, 0, .90);
   top: 0;
@@ -271,7 +275,7 @@ body {
   background: orange;
 }
 
-.pause {
+.pause, .end-game {
   position: absolute;
   background: rgba(0, 0, 0, .90);
   top: 0;
@@ -286,7 +290,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.retry-pause, .record-pause, .select-pause {
+.retry-pause, .record-pause, .select-pause, .save-score, .result-score, .congrat {
   color: white;
   display: flex;
   flex-direction: column;
@@ -294,11 +298,11 @@ body {
   justify-content: flex-start;
 }
 
-.close-pause h1:hover {
+.close-pause h1:hover, .save-score h1:hover {
   cursor: pointer;
 }
 
-.close-pause h1 {
+.close-pause h1, .save-score h1{
   font-size: 50px;
   font-weight: 700;
   margin-bottom: 10px;

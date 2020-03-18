@@ -2,6 +2,8 @@ import * as THREE from '../vendor/three.min';
 import ViewControls from './view_controls';
 import Light from './light';
 import GameNotes from './game_notes';
+import {getQueryParams} from './functions';
+
 
 class GameView {
   constructor(renderer, camera, scene, key, musicDelay) {
@@ -11,7 +13,7 @@ class GameView {
     this.key = key;
     this.musicDelay = musicDelay;
 
-    //gestion des modes 
+    //gestion des modes
     this.isPlay =  true;
     this.isRecord = false;
 
@@ -20,7 +22,7 @@ class GameView {
     this.zStartPoint = -500;
     this.zEndPoint = 0;
     this.yStartPoint = 50;
-    this.yEndPoint = -75;
+    this.yEndPoint = -110;
     this.xPos = [-45, -15, 15, 45];
 
     //index pour tableau des sphères créées
@@ -35,7 +37,7 @@ class GameView {
     this.cylinders = [];
     this.beatLines = [];
     this.recordMap = [];
-    
+
     //gestion heure pour record
     this.startTimeRecord = 0;
 
@@ -65,9 +67,25 @@ class GameView {
     });
   }
 
+
   backgroundSetup() {
-    let backgroundGeometry = new THREE.BoxGeometry( 1920, 1080, 1000 );
-    var texture = new THREE.TextureLoader().load( 'photos/stage.jpeg' );
+    let coverGeometry = new THREE.BoxGeometry( 800, 800, 985 );
+    var texture = new THREE.TextureLoader().load(getQueryParams().Trackcover);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.repeat.x = - 1;
+    texture.minFilter = THREE.NearestFilter;
+    let coverMaterials = [ "", "", "", "", "",
+      new THREE.MeshPhongMaterial( {
+        map: texture,
+        side: THREE.DoubleSide
+      } )
+    ];
+
+
+    let backgroundGeometry = new THREE.BoxGeometry( 2000, 1000, 1000 );
+    var texture = new THREE.TextureLoader().load('photos/selectbackground.jpg');
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.repeat.x = - 1;
     texture.minFilter = THREE.NearestFilter;
     let backgroundMaterials = [ "", "", "", "", "",
       new THREE.MeshPhongMaterial( {
@@ -77,13 +95,16 @@ class GameView {
     ];
 
     let backgroundMaterial = new THREE.MeshFaceMaterial( backgroundMaterials );
+    let coverMaterial = new THREE.MeshFaceMaterial( coverMaterials );
 
     this.light = new Light(this.scene);
     this.light.addLights();
     // this.light.addMovingLights();
 
     let background = new THREE.Mesh( backgroundGeometry, backgroundMaterial );
+    let cover = new THREE.Mesh( coverGeometry, coverMaterial );
     this.scene.add( background );
+    this.scene.add( cover );
 
     // LINES (STRINGS)
     this.lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFFFFF });
@@ -114,7 +135,7 @@ class GameView {
     } );
     let board = new THREE.Mesh( boardGeometry, boardMaterial );
     board.rotateX(this.xRotation);
-    board.position.set(0, -15, -250);
+    board.position.set(0, -35, -245);
     this.scene.add( board ) ;
   }
 
@@ -175,47 +196,57 @@ class GameView {
       noteInterval, this.musicDelay, this.key
     );
 
-    beatmap.forEach((songNote, idx) => {
+    if (typeof beatmap !== 'undefined' && beatmap.length > 0) {
+      beatmap.forEach((songNote, idx) => {
 
-      noteMaterial = this.note.materials[songNote.position];
-      this.spheres[idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
+        noteMaterial = this.note.materials[songNote.position];
+        this.spheres[idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
 
-      if (songNote.duration > 0 ){
+        if (songNote.duration > 0 ){
 
-        let cylinderMaterial = this.note.materials[songNote.position];
-        let cylinderGeometry = new THREE.BoxGeometry(
-          this.note.radius*2.5,(songNote.duration/10 * this.note.vel),10
-        );
-        this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-        this.cylinders[idx].rotateX(this.xRotation);
-      }
-
-
-      //this.addMovingBeatLine(songNote.m, noteInterval, lag);
-
-      // POSITION & ADD TO SCENE NOTES & HOLDS & BeatLines
-      setTimeout( () => {
-        if (this.cylinders[idx]) {
-          let hold = songNote.duration/100 ;
-          this.cylinders[idx].hold = hold;
-          this.cylinders[idx].position.set(
-            this.xPos[songNote.position],
-            this.yStartPoint - hold * this.note.yVel,
-            this.zStartPoint - hold * this.note.zVel
+          let cylinderMaterial = this.note.materials[songNote.position];
+          let cylinderGeometry = new THREE.BoxGeometry(
+            this.note.radius*2.5,(songNote.duration/10 * this.note.vel),10
           );
-          this.scene.add(this.cylinders[idx]);
+          this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+          this.cylinders[idx].rotateX(this.xRotation);
         }
-        this.scene.add(this.spheres[idx]);
-        this.spheres[idx].position.set(
-          this.xPos[songNote.position],
-          (this.yStartPoint),
-          (this.zStartPoint));
-        }, songNote.startTime + latency
-        );
-      var res = this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
-      
-      
-    })
+
+
+        //this.addMovingBeatLine(songNote.m, noteInterval, lag);
+
+        // POSITION & ADD TO SCENE NOTES & HOLDS & BeatLines
+        setTimeout( () => {
+          if (this.cylinders[idx]) {
+            let hold = songNote.duration/100 ;
+            this.cylinders[idx].hold = hold;
+            this.cylinders[idx].position.set(
+              this.xPos[songNote.position],
+              this.yStartPoint - hold * this.note.yVel,
+              this.zStartPoint - hold * this.note.zVel
+            );
+            this.scene.add(this.cylinders[idx]);
+          }
+          this.scene.add(this.spheres[idx]);
+          this.spheres[idx].position.set(
+            this.xPos[songNote.position],
+            (this.yStartPoint),
+            (this.zStartPoint));
+
+            if(idx == beatmap.length-1){
+              console.log("fin du jeu !!!!!!")
+              var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
+              scoreTosave = scoreTosave.replace( /^\D+/g, '');
+              document.getElementsByClassName('result-score')[0].innerHTML = "Your score : " + scoreTosave;
+              document.getElementsByClassName('end-game')[0].className="end-game"
+
+            }
+
+          }, songNote.startTime + latency
+          );
+        this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
+      })
+    }
   }
 
   addNoteRecord(){
@@ -229,11 +260,11 @@ class GameView {
         case this.key.pos[0]:
           position = 0;
           break;
-        
+
         case this.key.pos[1]:
             position = 1;
             break;
-      
+
         case this.key.pos[2]:
             position = 2;
             break;
@@ -241,17 +272,22 @@ class GameView {
         case this.key.pos[3]:
           position = 3;
           break;
+
+        default:
+          position = 4;
       }
 
       //on calcule start en millis
       var endDate   = new Date();
       var startTime = endDate.getTime() - this.startTimeRecord;
 
-      this.recordMap.push({ 
-        "position" : position,
-        "startTime": startTime,
-        "duration"  : 0
-      });
+      if (position<4){
+        this.recordMap.push({
+          "position" : position,
+          "startTime": startTime,
+          "duration"  : 0
+        });
+      }
 
       this.idx ++;
 
@@ -262,7 +298,6 @@ class GameView {
         this.xPos[position],
         (this.yEndPoint),
         (this.zEndPoint));
-      
     });
   }
 
@@ -324,10 +359,9 @@ class GameView {
     }else{
       this.recordUpdate();
     }
-    
+
     this.sceneRender();
   }
-
 }
 
 export default GameView;

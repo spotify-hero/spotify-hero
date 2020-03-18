@@ -26,6 +26,15 @@ module.exports = {
     });
   },
 
+  /**
+  * insert an array of values into any table of the database
+  * VALUES must be in this form :
+  * [
+  *     { TrackURI : 'spotify:track:LKJ32L23KJ4', Name : 'Pookie', Artist : 'Nakamura'},
+  *     { TrackURI : 'spotify:track:j9p8dik639b', Name : 'Bouyon', Artist : 'Booba'},
+  *     { TrackURI : 'spotify:track:LKJ32L23KJ4', Name : 'Uprising', Artist : 'Muse'}
+  * ]
+  */
   insertInto: function(db, table, values, callback) {
     if (typeof values !== 'undefined' && values.length > 0 && table !== "") {
       // base query
@@ -54,18 +63,27 @@ module.exports = {
 
   },
 
-  insertOneInto: function(db, table, values, callback) {
-    let query = 'INSERT INTO '+table;
+  insertFieldsInto: function(db, table, fields, values, callback) {
+    if (typeof values !== 'undefined' && values.length > 0 && table !== "" && typeof fields !== 'undefined' && fields.length > 0) {
 
-    query+=" VALUES('"+values.join("','")+"');";
+      let query = 'INSERT INTO '+table+'VALUES(';
 
-    db.run(query, [], (err, rows) => {
-      if (err) {
-        console.error(err);
-      } else {
-        callback();
-      }
-    });
+      query+= fields.join(', ')+') '
+      // concat all values to query like this ('val1', 'val2'), ('val3', 'val4'),
+      values.forEach((line)=>{
+        query+=" ('"+Object.values(line).join("','")+"'),";
+      });
+      // replace last , with ;
+      query = query.substring(0, query.length-1) + ';';
+
+      db.run(query, [], (err, rows) => {
+        if (err) {
+          console.error(err);
+        } else {
+          callback();
+        }
+      });
+    }
   },
 
   insertManyIntoTrack: function(db, values, callback) {
@@ -83,5 +101,22 @@ module.exports = {
       }
     });
   },
+
+  updateTrackFields: function(db, table, primary_key, update, callback) {
+    if (primary_key !== "" && table !== "" && update !== "") {
+
+      let query = "UPDATE "+table+" SET "+update+" WHERE TrackURI ='"+primary_key+"'";
+
+      //console.log(query);
+
+      db.run(query, [], (err, rows) => {
+        if (err) {
+          console.error(err);
+        } else {
+          callback();
+        }
+      });
+    }
+  }
 
 }

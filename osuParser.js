@@ -5,8 +5,8 @@ module.exports = {
 
     let hitObject = []
 
-    versionNb = textByLine[0].match( /\d+/g ).join([])
-    console.log("OsuFileFormat Version : " + versionNb)
+    //versionNb = textByLine[0].match( /\d+/g ).join([])
+    //console.log("OsuFileFormat Version : " + versionNb)
 
     //on cherche première occurence de HitObject
     for (const[i, element] of textByLine.entries()){
@@ -27,19 +27,19 @@ module.exports = {
     hitObject.forEach(function(element){
       if (element !== null){
         tab = element.match((/\d+\.\d+|\d+\b|\d+(?=\w)/g)||[])
-        
+
         if(tab){
           hitTab.push(tab.map(function (v) {return +v;}));
         }
       }
-      
+
     })
 
     let finalRes = [];
 
     hitTab.map(function(item) {
       let position;
-      
+
       if (item[0]<128) {
         position = 0;
       }else if (item[0]<256) {
@@ -56,12 +56,29 @@ module.exports = {
         duration = item[5] - item[2];
       }
 
-      finalRes.push({ 
+      finalRes.push({
         "position" : position,
         "startTime": item[2],
         "duration"  : duration
       });
     })
+
     return JSON.stringify(finalRes);
+  },
+
+  convertPosition(position){
+    if (position == 0){
+      return 60;
+    }
+    if (position == 1){
+      return 200;
+    }
+    if (position == 2){
+      return 300;
+    }
+    if (position == 3){
+      return 400;
+    }
   }
+
 };
