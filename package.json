@@ -14,7 +14,7 @@
     "sqlite3": "^4.0.8"
   },
   "scripts": {
-    "start": "(webpack --watch &) && nodemon index.js",
+    "start": "node index.js",
     "test": "mocha"
   },
   "devDependencies": {
