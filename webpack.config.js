@@ -1,11 +1,14 @@
 const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
+  mode: 'development',
 
   entry: {
-    game: "./public/lib/game_main.js",
-    spotify: "./public/lib/spotify_main.js",
-    select: "./public/lib/select_main.js"
+    index: "./public/js/index.js",
+    game: "./public/js/game.js",
+    spotify: "./public/js/spotify.js",
+    select: "./public/js/select.js",
   },
 
   output: {
@@ -13,5 +16,46 @@ module.exports = {
     filename: "[name]-bundle.js"
   },
 
-  mode: 'development'
+  module: {
+    rules: [
+
+      // include stylesheets
+      { test: /\.(sa|sc|c)ss$/,
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: "css-loader" },
+          {
+            loader: "sass-loader",
+            options: { implementation: require("sass") }
+          }
+        ]
+      },
+
+      // includes images
+      { test: /\.(png|jpe?g|gif|svg)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: { outputPath: 'images' }
+          }
+        ]
+      },
+
+      // includes fonts
+      { test: /\.(woff|woff2|ttf|otf|eot)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: { outputPath: 'images' }
+          }
+        ]
+      }
+    ]
+  },
+
+  plugins: [
+    new MiniCssExtractPlugin({
+        filename: "[name]-bundle.css"
+    })
+  ]
 };

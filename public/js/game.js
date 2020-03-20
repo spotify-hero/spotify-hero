@@ -1,15 +1,21 @@
-import * as THREE from '../vendor/three.min';
-import PointerLockControls from '../vendor/PointerLockControls.js';
-import OrbitControls from '../vendor/OrbitControls.js';
-import jquery from '../vendor/jquery.min';
+import * as THREE from '../lib/three.min';
+import PointerLockControls from '../lib/PointerLockControls';
+import OrbitControls from '../lib/OrbitControls';
+import jquery from '../lib/jquery.min';
+import Key from '../lib/key';
+import GameNotes from '../lib/game_notes';
+import GameView from '../lib/game_view';
+import Instructions from '../lib/instructions';
+import SpotifyAPI from '../lib/SpotifyAPI';
+import { getQueryParams, copyClipboard } from '../lib/functions';
 
-import Key from './key';
-import GameNotes from './game_notes';
-import GameView from './game_view';
-import Instructions from './instructions';
-import SpotifyAPI from './SpotifyAPI';
-import {getQueryParams, copyClipboard} from './functions';
 
+import '../css/game.scss';
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  let game = new Game();
+});
 
 class Game {
   constructor() {
@@ -246,5 +252,3 @@ class Game {
     this.gameView.setup();
   }
 }
-
-export default Game;

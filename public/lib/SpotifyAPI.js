@@ -1,7 +1,7 @@
-import jquery from '../vendor/jquery.min';
-import {getQueryParams} from './functions';
+import jquery from './jquery.min';
+import { getQueryParams } from './functions';
 
-class SpotifyAPI {
+export default class SpotifyAPI {
 
   // Demande un nouvel acces_token (valable 1h seulement) grace au refresh token
   refresh() {
@@ -274,5 +274,3 @@ class SpotifyAPI {
     }, 1000);*/
   }
 }
-
-export default SpotifyAPI;

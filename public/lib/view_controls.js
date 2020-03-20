@@ -1,5 +1,5 @@
-import * as THREE from '../vendor/three.min';
-import OrbitControls from '../vendor/OrbitControls.js';
+import * as THREE from './three.min';
+import OrbitControls from './OrbitControls.js';
 
 class ViewControls {
   constructor(camera, renderer) {

@@ -1,12 +1,11 @@
 // import librairies
-import jquery from '../vendor/jquery.min';
-import Handlebars from '../vendor/handlebars.min';
-import Spotify from '../vendor/spotify-player.min';
+import jquery from '../lib/jquery.min';
+import Handlebars from '../lib/handlebars.min';
+import Spotify from '../lib/spotify-player.min';
+import SpotifyAPI from '../lib/SpotifyAPI';
+import { getQueryParams, copyClipboard } from '../lib/functions';
 
-// import custom functions
-import SpotifyAPI from './SpotifyAPI';
-import {getQueryParams, copyClipboard} from './functions';
-
+import '../css/spotify.scss';
 
 document.addEventListener("DOMContentLoaded", () => {
 

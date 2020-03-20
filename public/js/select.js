@@ -1,5 +1,7 @@
-import jquery from '../vendor/jquery.min';
-import {getQueryParams} from './functions';
+import jquery from '../lib/jquery.min';
+import { getQueryParams } from '../lib/functions';
+
+import '../css/select.scss';
 
 document.addEventListener("DOMContentLoaded", () => {
   let array = getQueryParams().table.split(' ');

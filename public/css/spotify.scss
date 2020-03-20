@@ -1,0 +1,21 @@
+@import '../lib/nav.scss';
+
+/*********************
+VARIABLES
+**********************/
+$link-color:white;
+$link-hover:#00aedb;
+$link-vertical-padding:15px;      //Controls Menu top & bottom padding
+$link-horizontal-padding:20px;    //Contols Menu left & right padding
+$menu-background: #353535;        //Control Menu Color Scheme
+
+
+#login, #loggedin{
+  display: none;
+}
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 500px;
+}

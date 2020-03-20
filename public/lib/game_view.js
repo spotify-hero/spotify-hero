@@ -1,8 +1,8 @@
-import * as THREE from '../vendor/three.min';
+import * as THREE from './three.min';
 import ViewControls from './view_controls';
 import Light from './light';
 import GameNotes from './game_notes';
-import {getQueryParams} from './functions';
+import { getQueryParams } from './functions';
 
 
 class GameView {
