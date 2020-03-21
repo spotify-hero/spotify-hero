@@ -28,14 +28,13 @@ class Game {
     this.spAPI = new SpotifyAPI();
     var spotifyAPI = this.spAPI;
 
+    this.audioMode = getQueryParams().audio;
+
     this.gameStartEl = document.getElementsByClassName('start')[0];
     this.createGameView();
     this.setupGame();
 
-    this.audioMode = undefined;
-    this.access_token = undefined;
 
-    
     document.getElementsByClassName('retry-pause')[0].onclick = function(){
       document.location.reload(false);
     }
@@ -93,12 +92,7 @@ class Game {
     //il faut charger la musique sans la jouer + télécharger map
     //load musique
     this.getOsuFile();
-
-    this.audioMode = getQueryParams().audio;
-
-    if (this.audioMode == "track"){
-      this.access_token = getQueryParams().access_token;
-    }
+    console.log("audio mode : " + this.audioMode);
 
     window.addEventListener("keydown", this.hitAToStart.bind(this));
     window.addEventListener("touchstart", (e)=>{
@@ -110,7 +104,6 @@ class Game {
   }
 
   startGame() {
-
     // Mode enregistrement !!!!
     if (getQueryParams().mode === 'record') {
       this.gameView.setStartTimeRecord();
@@ -119,31 +112,29 @@ class Game {
       this.gameView.addMovingNotes(this.noteInterval, this.beatmap, 0);
     }
 
-    this.playMusic()
-    
-    this.gameStartEl.className = "start hidden";
-    this.started = true;
-    
-  }
-
-  playMusic(){
-
     let musicDelay = Math.abs(getQueryParams().Trackdelay);
 
     if (this.audioMode == "track"){
+
+      console.log("cookie");
+      console.log("uri" + getQueryParams().TrackURI);
+
       //code before the pause
       var spotifyAPI = this.spAPI;
       setTimeout(function(){
         var uri = getQueryParams().TrackURI;
         if (uri) {
+          let access_token = getQueryParams().access_token;
           console.log('send request to play '+uri);
-          spotifyAPI.play(this.access_token, getQueryParams().TrackURI, null);
+          spotifyAPI.play(access_token, getQueryParams().TrackURI, null);
         } else {
           console.error('Cannot play : no spotify URI specified !')
         }
       }, musicDelay);
-
     }
+
+    this.gameStartEl.className = "start hidden";
+    this.started = true;
   }
 
 
