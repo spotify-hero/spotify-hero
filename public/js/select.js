@@ -7,11 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let array = getQueryParams().table.split(' ');
 
   array.forEach((table)=> {
-    if (table.toLowerCase() == 'track') {
-      addTrackHTMLBeforeElement('anchor');
-    } else {
-      addTableHTMLBeforeElement('anchor', table);
-    }
+    addTrackHTMLBeforeElement('anchor', table);
   });
 
   document.getElementById('searchTerm').onchange = (()=>{filterList('searchTerm', "track_table")});
@@ -57,7 +53,6 @@ function filterList(inputId, tableId){
   }
 }
 
-
 /**
 * AJAX request to /database/table, parsing JSON and making it into an HTML table element
 * then inserting it before id with an h3 title
@@ -101,14 +96,21 @@ function addTableHTMLBeforeElement(id, tableName) {
 * Same as addTableHTMLBeforeElement but for the database table 'track' only
 * Allows to insert links and images for specific elements
 */
-function addTrackHTMLBeforeElement(id) {
-
+function addTrackHTMLBeforeElement(id, tableName) {
   jquery.ajax({
       type:'GET',
-      url: '/database/track',
+      url: '/database/' + tableName,
       success: function(array) {
+
         let table = JSON.parse(array);
-        let baseLink = '/game?UserURI='+getQueryParams().UserURI+'&access_token='+getQueryParams().access_token;
+        let data = {audio : tableName};
+
+        if (tableName == "track"){
+          data.UserURI = getQueryParams().UserURI;
+          data.access_token = getQueryParams().access_token;
+        }
+
+        let baseLink = "/game?" + encodeQueryData(data);
 
         if (typeof table !== 'undefined' && table.length > 0) {
           let titles = '';
@@ -124,7 +126,7 @@ function addTrackHTMLBeforeElement(id) {
             lineStr = '';
 
             Object.keys(line).forEach((key)=> {
-              if (key==='TrackURI') {
+              if (key==="TrackURI" || key=="Filename") {
                 link = '<a href="'+baseLink;
                 Object.keys(line).forEach((key)=> {
                   link += '&'+encodeURIComponent(key)+"="+encodeURIComponent(line[key]);
@@ -145,7 +147,7 @@ function addTrackHTMLBeforeElement(id) {
           });
 
           let h3Element = document.createElement("H3");
-          h3Element.innerHTML = "Track";
+          h3Element.innerHTML = tableName;
 
           let tableElement = document.createElement("TABLE");
           tableElement.border=0;
@@ -158,4 +160,11 @@ function addTrackHTMLBeforeElement(id) {
       }
     }
   });
+}
+
+function encodeQueryData(data) {
+  const ret = [];
+  for (let d in data)
+    ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+  return ret.join('&');
 }
