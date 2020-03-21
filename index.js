@@ -123,7 +123,7 @@ app.put('/database/:name/:primary_key', function(req, res) {
 });*/
 
 app.get('/osu/:name', function(req, res) {
-  console.log('Request for file: '+req.params.name);
+  console.log('Request for osu file: '+req.params.name);
   let filename = __dirname + "/osu/"+req.params.name;
   fs.stat(filename, (err, stat) => {
     if(err == null) {
@@ -153,7 +153,20 @@ app.post('/osu/:name', function(req, res){
     })
   });
   res.status(200).end("");
-})
+});
+
+app.get('/mp3/:name', function(req, res) {
+  console.log('Request for mp3 file : '+req.params.name);
+  let filename = __dirname + "/mp3/"+req.params.name;
+  fs.stat(filename, (err, stat) => {
+    if(err == null) {
+      res.status(200).sendFile(__dirname + "/mp3/"+req.params.name);
+    } else {
+      console.log('Error: file not found '+filename);
+      res.status(404).end("File not found !");
+    }
+  });
+});
 
 
 app.get('/spotify_cb', function(req, res) {
