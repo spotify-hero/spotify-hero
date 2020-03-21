@@ -272,3 +272,5 @@ var generateRandomString = function(length) {
   }
   return text;
 };
+
+module.exports = addTwoNumbers;
