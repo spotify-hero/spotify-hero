@@ -259,7 +259,7 @@ app.listen(PORT, function() {
 /****************************************************
 *                 custom functions
 *****************************************************/
-function addTwoNumbers(a,b) {
+export function addTwoNumbers(a,b) {
   return a+b;
 }
 
