@@ -31,7 +31,7 @@ Trackdelay INTEGER NOT NULL CHECK (Trackdelay <> ""),
 OSUfile VARCHAR NOT NULL CHECK (OSUfile <> "")
 );
 
-INSERT INTO "MP3" VALUES('magic.mp3', 'Magic', 'Nhato', 0, 'nhato_magic.osu');
+INSERT INTO "MP3" VALUES('magic.mp3', 'Magic', 'Nhato', 1500, 'nhato_magic.osu');
 
 CREATE TABLE User (
 UserURI VARCHAR PRIMARY KEY NOT NULL CHECK (UserURI <> ""),

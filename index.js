@@ -160,7 +160,12 @@ app.get('/mp3/:name', function(req, res) {
   let filename = __dirname + "/mp3/"+req.params.name;
   fs.stat(filename, (err, stat) => {
     if(err == null) {
-      res.status(200).sendFile(__dirname + "/mp3/"+req.params.name);
+      let returnData = {};
+      fs.readFile(__dirname + "/mp3/"+req.params.name, function(err, file){
+        let base64File = new Buffer(file, 'binary').toString('base64');
+        returnData.fileContent = base64File;
+        res.json(returnData);
+      });
     } else {
       console.log('Error: file not found '+filename);
       res.status(404).end("File not found !");

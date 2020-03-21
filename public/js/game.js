@@ -133,6 +133,30 @@ class Game {
       }, musicDelay);
     }
 
+    if (this.audioMode == "mp3"){
+      console.log("mp3 ! ");
+      console.log(getQueryParams().Filename);
+
+      jquery.ajax({
+        async: false,
+        type:'GET',
+        url: '/mp3/'+getQueryParams().Filename,
+        data: '',
+        success: function(response) {
+          console.log('Successfully got file from server.');
+          console.log(response);
+
+          let audio = new Audio();
+          audio.src = 'data:audio/mp3;base64,' + response.fileContent;
+          audio.load();
+          audio.play();
+        },
+        error: function(response) {
+          console.log('ERROR : Could not get file from server !');
+        }
+      })  
+    }
+
     this.gameStartEl.className = "start hidden";
     this.started = true;
   }
