@@ -32,6 +32,9 @@ class Game {
     this.createGameView();
     this.setupGame();
 
+    this.audioMode = undefined;
+    this.access_token = undefined;
+
     
     document.getElementsByClassName('retry-pause')[0].onclick = function(){
       document.location.reload(false);
@@ -91,6 +94,12 @@ class Game {
     //load musique
     this.getOsuFile();
 
+    this.audioMode = getQueryParams().audio;
+
+    if (this.audioMode == "track"){
+      this.access_token = getQueryParams().access_token;
+    }
+
     window.addEventListener("keydown", this.hitAToStart.bind(this));
     window.addEventListener("touchstart", (e)=>{
       if (!this.started) {
@@ -101,44 +110,40 @@ class Game {
   }
 
   startGame() {
-    let delay = getQueryParams().Trackdelay;
-
-    //on a défini 2 delay
-    let noteDelay;
-    let musicDelay;
-
-    if(delay<0){
-      musicDelay = Math.abs(delay);
-      noteDelay = 0;
-    }else{
-      noteDelay = delay;
-      noteDelay = 0;
-    }
 
     // Mode enregistrement !!!!
     if (getQueryParams().mode === 'record') {
       this.gameView.setStartTimeRecord();
       this.gameView.addNoteRecord();
     }else{
-      this.gameView.addMovingNotes(this.noteInterval, this.beatmap, noteDelay);
+      this.gameView.addMovingNotes(this.noteInterval, this.beatmap, 0);
     }
+
+    this.playMusic()
     
     this.gameStartEl.className = "start hidden";
     this.started = true;
     
-    //code before the pause
-    var spotifyAPI = this.spAPI;
-    setTimeout(function(){
-      var uri = getQueryParams().TrackURI;
-      var access_token = getQueryParams().access_token;
-      if (uri) {
-        console.log('send request to play '+uri);
-        spotifyAPI.play(access_token, getQueryParams().TrackURI, null);
-      } else {
-        console.error('Cannot play : no spotify URI specified !')
-      }
-    }, musicDelay);
-    
+  }
+
+  playMusic(){
+
+    let musicDelay = Math.abs(getQueryParams().Trackdelay);
+
+    if (this.audioMode == "track"){
+      //code before the pause
+      var spotifyAPI = this.spAPI;
+      setTimeout(function(){
+        var uri = getQueryParams().TrackURI;
+        if (uri) {
+          console.log('send request to play '+uri);
+          spotifyAPI.play(this.access_token, getQueryParams().TrackURI, null);
+        } else {
+          console.error('Cannot play : no spotify URI specified !')
+        }
+      }, musicDelay);
+
+    }
   }
 
 
@@ -169,6 +174,7 @@ class Game {
       
     }
   }
+
 
   getOsuFile(){
     let osuData;
