@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let game = new Game();
 });
 
+
+let audio;
+
 class Game {
   constructor() {
     this.noteInterval = 237.8;
@@ -29,6 +32,7 @@ class Game {
     var spotifyAPI = this.spAPI;
 
     this.audioMode = getQueryParams().audio;
+
 
     this.gameStartEl = document.getElementsByClassName('start')[0];
     this.createGameView();
@@ -44,7 +48,7 @@ class Game {
     }
 
     document.getElementsByClassName('select-pause')[0].onclick = function(){
-      window.location.href = '/select?table=track&access_token='+getQueryParams().access_token;
+      window.location.href = '/select?table=track%20mp3&access_token='+getQueryParams().access_token;
     }
 
     document.getElementsByClassName('record-pause')[0].onclick = function(){
@@ -81,8 +85,16 @@ class Game {
     
     document.getElementsByClassName('open-pause')[0].onclick = function(){
       document.getElementsByClassName('pause')[0].className = "pause";
-      var access_token = getQueryParams().access_token;
-      spotifyAPI.pause(access_token);
+      if (audioMode == "track"){
+        var access_token = getQueryParams().access_token;
+        spotifyAPI.pause(access_token);
+      }
+
+      else{
+        audio.pause();
+      }
+
+
       this.started = false;
     }
 
@@ -93,6 +105,30 @@ class Game {
     //load musique
     this.getOsuFile();
     console.log("audio mode : " + this.audioMode);
+
+    if (this.audioMode == "mp3"){
+      console.log("mp3 ! ");
+      console.log(getQueryParams().Filename);
+
+      jquery.ajax({
+        async: false,
+        type:'GET',
+        url: '/mp3/'+getQueryParams().Filename,
+        data: '',
+        success: function(response) {
+          console.log('Successfully got file from server.');
+          console.log(response);
+
+          audio = new Audio();
+          audio.src = 'data:audio/mp3;base64,' + response.fileContent;
+          audio.load();
+
+        },
+        error: function(response) {
+          console.log('ERROR : Could not get file from server !');
+        }
+      })  
+    }
 
     window.addEventListener("keydown", this.hitAToStart.bind(this));
     window.addEventListener("touchstart", (e)=>{
@@ -134,27 +170,7 @@ class Game {
     }
 
     if (this.audioMode == "mp3"){
-      console.log("mp3 ! ");
-      console.log(getQueryParams().Filename);
-
-      jquery.ajax({
-        async: false,
-        type:'GET',
-        url: '/mp3/'+getQueryParams().Filename,
-        data: '',
-        success: function(response) {
-          console.log('Successfully got file from server.');
-          console.log(response);
-
-          let audio = new Audio();
-          audio.src = 'data:audio/mp3;base64,' + response.fileContent;
-          audio.load();
-          audio.play();
-        },
-        error: function(response) {
-          console.log('ERROR : Could not get file from server !');
-        }
-      })  
+      audio.play();
     }
 
     this.gameStartEl.className = "start hidden";
@@ -171,11 +187,19 @@ class Game {
 
     if (e.keyCode == 27){
       console.log("vous avez appuyé sur échap")
+      if (this.audioMode == "track"){
+        var access_token = getQueryParams().access_token;
+        this.spAPI.pause(access_token);
+      }
+
+      if (this.audioMode == "mp3"){
+        audio.pause();
+      }
+
       document.getElementsByClassName('pause')[0].className="pause"
-      var access_token = getQueryParams().access_token;
       this.gameView.isPlay = false;
-      this.spAPI.pause(access_token);
       this.started = false;
+
     } else if (e.keyCode == 122 || e.keyCode == 90) {
 
       if (getQueryParams().mode === 'record') {
@@ -184,7 +208,7 @@ class Game {
         this.sendOsuFile(filename, this.gameView.recordMap);
         console.log("Recorded beatmap sent to server");
       } else {
-        window.location.replace("/select?table=Track"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token);
+        window.location.replace("/select?table=track%20mp3"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token);
       }
       
     }
@@ -229,7 +253,7 @@ class Game {
           data: JSON.stringify({0: "OSUfile = '"+filename+"'"}),
           success: function(response) {
             console.log('Chained AJAX successfull !');
-            window.location.replace("/select?table=Track&access_token="+getQueryParams().access_token);
+            window.location.replace("/select?table=track%20mp3&access_token="+getQueryParams().access_token);
           },
           error: function(response) {
             document.location.reload(false);
