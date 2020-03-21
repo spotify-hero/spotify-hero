@@ -16,13 +16,13 @@
   <link rel="stylesheet" href="build/index-bundle.css">
   <script type="text/javascript" src="build/index-bundle.js"></script>
   <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
-
 </head>
 
 <body>
   <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("login-button").onclick = function() {
+      window.open("https://open.spotify.com");
       window.location.href = '/login';
     }
 
