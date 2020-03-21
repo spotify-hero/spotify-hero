@@ -5,4 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = '/login';
   }
 
+  document.getElementById("try-button").onclick = function() {
+    window.location.href = '/select?table=mp3'
+  }
 });
