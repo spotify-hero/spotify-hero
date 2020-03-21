@@ -221,7 +221,7 @@ app.get('/spotify_cb', function(req, res) {
             });
             res.redirect('/select?' +
               querystring.stringify({
-                table: "track",
+                table: "track mp3",
                 userURI : body.uri,
                 access_token: access_token
               }));
@@ -285,3 +285,5 @@ var generateRandomString = function(length) {
   }
   return text;
 };
+
+module.exports = addTwoNumbers;

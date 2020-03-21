@@ -86,14 +86,7 @@ export default class SpotifyAPI {
           'Authorization': 'Bearer ' + access_token
         },
         success: function(response) {
-          //console.log(response);
-          document.getElementById('playing_album').src = response.item.album.images[0].url;
-          document.getElementById('is_playing').innerHTML = response.is_playing;
-          document.getElementById('playing_title').innerHTML = response.item.name;
-          document.getElementById('playing_id').innerHTML = response.item.id;
-          document.getElementById('playing_artist').innerHTML = response.item.artists[0].name;
-          document.getElementById('playing_progress').innerHTML = response.progress_ms;
-          document.getElementById('playing_populariry').innerHTML = response.item.popularity;
+          console.log(response);
         }
       });
     }, 1000);
