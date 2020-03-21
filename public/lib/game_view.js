@@ -83,7 +83,7 @@ class GameView {
 
 
     let backgroundGeometry = new THREE.BoxGeometry( 2000, 1000, 1000 );
-    var texture = new THREE.TextureLoader().load('photos/selectbackground.jpg');
+    var texture = new THREE.TextureLoader().load('img/selectbackground.jpg');
     texture.wrapS = THREE.RepeatWrapping;
     texture.repeat.x = - 1;
     texture.minFilter = THREE.NearestFilter;
