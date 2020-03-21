@@ -6,6 +6,14 @@ Trackcover VARCHAR NOT NULL CHECK (Trackcover <> ""),
 Trackdelay INTEGER NOT NULL CHECK (Trackdelay <> ""),
 OSUfile VARCHAR NOT NULL CHECK (OSUfile <> "")
 );
+CREATE TABLE MP3(
+Filename VARCHAR PRIMARY KEY NOT NULL CHECK (Filename <> ""),
+Trackname VARCHAR NOT NULL CHECK (Trackname <> ""),
+Trackartist VARCHAR NOT NULL CHECK (Trackartist <> ""),
+Trackcover VARCHAR (Trackcover <> ""),
+Trackdelay INTEGER NOT NULL CHECK (Trackdelay <> ""),
+OSUfile VARCHAR NOT NULL CHECK (OSUfile <> "")
+);
 CREATE TABLE User (
 UserURI VARCHAR PRIMARY KEY NOT NULL CHECK (UserURI <> ""),
 Username VARCHAR NOT NULL CHECK (Username <> ""),
