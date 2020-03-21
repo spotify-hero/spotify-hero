@@ -1,14 +1,15 @@
 /*
- ______   ______     ______   ______   ______     ______      __  __     ______     ______     ______
-/\__  _\ /\  __ \   /\  == \ /\__  _\ /\  __ \   /\  == \    /\ \_\ \   /\  ___\   /\  == \   /\  __ \
-\/_/\ \/ \ \  __ \  \ \  _-/ \/_/\ \/ \ \  __ \  \ \  _-/    \ \  __ \  \ \  __\   \ \  __<   \ \ \/\ \
-   \ \_\  \ \_\ \_\  \ \_\      \ \_\  \ \_\ \_\  \ \_\       \ \_\ \_\  \ \_____\  \ \_\ \_\  \ \_____\
-    \/_/   \/_/\/_/   \/_/       \/_/   \/_/\/_/   \/_/        \/_/\/_/   \/_____/   \/_/ /_/   \/_____/
+ ______     ______   ______     ______   __     ______   __  __              __  __     ______     ______     ______    
+/\  ___\   /\  == \ /\  __ \   /\__  _\ /\ \   /\  ___\ /\ \_\ \    ______  /\ \_\ \   /\  ___\   /\  == \   /\  __ \   
+\ \___  \  \ \  _-/ \ \ \/\ \  \/_/\ \/ \ \ \  \ \  __\ \ \____ \  |\_____\  \ \  __ \  \ \  __\   \ \  __<   \ \ \/\ \  
+ \/\_____\  \ \_\    \ \_____\    \ \_\  \ \_\  \ \_\    \/\_____\ \|_____|   \ \_\ \_\  \ \_____\  \ \_\ \_\  \ \_____\ 
+  \/_____/   \/_/     \/_____/     \/_/   \/_/   \/_/     \/_____/             \/_/\/_/   \/_____/   \/_/ /_/   \/_____/ 
 
-@version 0.1.0
+@version 0.2.0
 @license CC-BY-NC-SA 4.0
-@authors Cécile POUPON - Antoine BALLIET - Gabriel FORIEN
+@authors Antoine BALLIET - Gabriel FORIEN
 */
+
 
 /*************************************
 *            depedencies
@@ -17,16 +18,18 @@ var express       = require('express');
 var request       = require('request');
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
 var querystring   = require('querystring');               // stringify json dictionnaries to make requests
-var bodyParser = require('body-parser');
+var bodyParser    = require('body-parser');
+var handlebars    = require('handlebars');
 
-const PORT = process.env.PORT || 8888;
+const PORT        = process.env.PORT || 8888;
 
 // OSU Parser part
-var fs = require('fs');
-var osuParser = require("./osuParser");
+var fs            = require('file-system');
+var osuParser     = require("./osuParser");
 
-var sqlite3 = require('sqlite3').verbose();
-var dbHandler = require('./dbHandler');
+// database part
+var sqlite3       = require('sqlite3').verbose();
+var dbHandler     = require('./dbHandler');
 
 // API credentials from secured file
 var client_id     = process.env.CLIENT_ID;
@@ -40,7 +43,7 @@ app.use(express.static(__dirname + '/public'))
    .use(cookieParser())
    .use(bodyParser.json())
    .use(bodyParser.urlencoded({ extended: false }));
-//   .use(cors())
+
 process.setMaxListeners(0);
 var db = new sqlite3.Database('./main.db', (err) => {
     if (err) {
@@ -49,20 +52,11 @@ var db = new sqlite3.Database('./main.db', (err) => {
     console.log('Connected to the database.');
 });
 
-var generateRandomString = function(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
 
 
-/*************************************
-*            routes definitions
-**************************************/
+/*****************************************************
+*                routes definitions
+******************************************************/
 app.get('/', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/index.html');
 });
@@ -73,7 +67,6 @@ app.get('/game', function(req, res) {
 
 app.get('/spotify', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/spotify.html');
-  //res.redirect('/login?from=index');
 });
 
 app.get('/login', function(req, res) {
@@ -95,8 +88,9 @@ app.get('/select', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/select.html');
 });
 
+
 /****************************************************
-*        callbacks and JSON-feeding
+*             callbacks and JSON-feeding
 *****************************************************/
 app.get('/database/:name', function(req, res) {
   console.log('DB request : GET '+req.params.name);
@@ -259,6 +253,22 @@ app.listen(PORT, function() {
   console.log('Listening on port ' + PORT);
 });
 
+
+
+
+/****************************************************
+*                 custom functions
+*****************************************************/
 function addTwoNumbers(a,b) {
   return a+b;
 }
+
+var generateRandomString = function(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
