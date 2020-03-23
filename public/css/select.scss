@@ -14,6 +14,11 @@ h1 {
   margin-bottom: 50px;
 }
 
+h2 {
+  font-family: sans-serif;
+  font-size: small;
+}
+
 .search {
   width: 100%;
   position: relative;
@@ -84,6 +89,83 @@ h1 {
   background-color: #33cccc;
   color: white;
 }
+
+.card {
+  width: 300px;
+  margin:0px auto;
+  float: left;
+  
+  background-color:white;
+  box-shadow: 0px 5px 20px #555;
+ 
+  a {
+   color: #333;
+     text-decoration:none;
+  }
+  
+  &:hover {  
+    .card-image {
+      img {
+         width: 330px;
+         filter:grayscale(0);
+      }  
+    }
+  }
+  
+}
+
+.card-image {
+
+  height: 300px;
+  
+  position:relative;
+  overflow:hidden;
+  
+  img {
+    width: 300px;
+    
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    filter: grayscale(1);
+    
+    transition-property: filter width;
+    transition-duration: .3s; 
+  }
+ 
+}
+
+.card-body {
+  text-align:center; 
+  padding: 10px 10px; 
+  box-sizing: border-box;
+}
+
+.card-date {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.card-title, .card-exceprt {
+   font-family: 'Playfair Display', serif;
+}
+
+.card-date, .card-title {
+  text-align:center;
+  text-transform:uppercase;
+  font-weight: bold;
+}
+
+.card-date, .card-excerpt {
+  color: #777;
+}
+
+.container {
+  align-items: center;
+  margin-top: 5%;
+}
+
 
 #anchor {
   display: hidden;

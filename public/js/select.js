@@ -61,67 +61,56 @@ function filterList(inputId, tableId){
 */
 function addTrackHTMLBeforeElement(id, tableName) {
   jquery.ajax({
-      type:'GET',
-      url: '/database/' + tableName,
-      success: function(array) {
+    type:'GET',
+    url: '/database/' + tableName,
+    success: function(array) {
 
-        let table = JSON.parse(array);
-        let data = {audio : tableName};
+      let table = JSON.parse(array);
+      let data = {audio : tableName};
 
-        if (tableName == "track"){
-          data.UserURI = getQueryParams().UserURI;
-          data.access_token = getQueryParams().access_token;
-        }
+      if (tableName == "track"){
+        data.UserURI = getQueryParams().UserURI;
+        data.access_token = getQueryParams().access_token;
+      }
 
-        let baseLink = "/game?" + encodeQueryData(data);
+      let baseLink = "/game?" + encodeQueryData(data);
 
-        if (typeof table !== 'undefined' && table.length > 0) {
-          let titles = '';
-          titles = Object.keys(table[0]).join('</th><th>');
-          titles = '<tr><th>'+titles+'</th></tr>';
+      if (typeof table !== 'undefined' && table.length > 0) {
+        let titles = '';
+        titles = Object.keys(table[0]).join('</th><th>');
+        titles = '<tr><th>'+titles+'</th></tr>';
 
-          let data = '';
-          let link = '';
-          let cover = '';
-          let lineStr = '';
+        console.log(table[0]);
 
-          table.forEach((line)=>{
-            lineStr = '';
+        let data = '';
+        let link = '';
+        let cover = '';
+        let lineStr = '';
 
-            Object.keys(line).forEach((key)=> {
-              if (key==="TrackURI" || key=="Filename") {
-                link = '<a href="'+baseLink;
-                Object.keys(line).forEach((key)=> {
-                  link += '&'+encodeURIComponent(key)+"="+encodeURIComponent(line[key]);
-                });
-                link += '">'+line[key]+'</a>'
-
-                lineStr += '<td>'+link+'</td>';
-              }
-              else if (key==='Trackcover') {
-                cover = '<img width="64" src="'+line[key]+'" />'
-                lineStr += '<td>'+cover+'</td>';
-              }
-              else {
-                lineStr += '<td>'+line[key]+'</td>';
-              }
-            });
-            data += '<tr>'+lineStr+'</tr>';
+        table.forEach((line)=>{
+          lineStr = '';
+          Object.keys(line).forEach((key)=> {
+            if (key==="TrackURI" || key=="Filename") {
+              link = baseLink;
+              Object.keys(line).forEach((key)=> {
+                link += '&'+encodeURIComponent(key)+"="+encodeURIComponent(line[key]);
+              });
+            }
+            else if (key==='Trackcover') {
+              cover = line[key];
+            }
+            else {
+              lineStr += '<td>'+line[key]+'</td>';
+            }
           });
 
-          let h3Element = document.createElement("H3");
-          h3Element.innerHTML = tableName;
+          let a1 = "<div class=card><div class=card-image><a href=" + link +"><img src="+ cover + "></a>";
+          a1 += "</div><div class=card-body><div class=card-date><time>" + line["Trackartist"] + "</time></div><div class=card-title>";
+          a1 += "<h2>" + line["Trackname"] + "</h2></div><div class=card-excerpt></div></div></a></div>"
 
-          let tableElement = document.createElement("TABLE");
-          tableElement.border=0;
-          if (tableName == "track"){
-            tableElement.id="track_table"
-          }
-          tableElement.innerHTML = titles+data;
-
-          let anchor = document.getElementById(id)
-          anchor.insertBefore(tableElement, anchor.childNodes[0]);
-          anchor.insertBefore(h3Element, anchor.childNodes[0]);
+          console.log(a1);
+          jquery('#container').append(jquery(a1));
+        });
       }
     }
   });
