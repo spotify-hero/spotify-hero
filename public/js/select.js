@@ -4,13 +4,14 @@ import { getQueryParams } from '../lib/functions';
 import '../css/select.scss';
 
 document.addEventListener("DOMContentLoaded", () => {
+
   let array = getQueryParams().table.split(' ');
 
   array.forEach((table)=> {
     addTrackHTMLBeforeElement('anchor', table);
   });
-
-  document.getElementById('searchTerm').onchange = (()=>{filterList('searchTerm', "track_table")});
+  document.getElementById('searchTerm').onkeypress = (()=>{filterList('searchTerm', "track_table")});
+  document.getElementById('searchTerm').onkeyup = (()=>{filterList('searchTerm', "track_table")});
   document.getElementById('searchButton').onclick = (()=>{filterList('searchTerm', "track_table")});
 
   console.log("Successfully loaded");
@@ -51,44 +52,6 @@ function filterList(inputId, tableId){
       table.rows[r].style="display:table-row";
     }
   }
-}
-
-/**
-* AJAX request to /database/table, parsing JSON and making it into an HTML table element
-* then inserting it before id with an h3 title
-* This is just a base function, it is not used as such
-*/
-function addTableHTMLBeforeElement(id, tableName) {
-
-  jquery.ajax({
-      type:'GET',
-      url: '/database/'+tableName,
-      success: function(array) {
-        let table = JSON.parse(array);
-
-        if (typeof table !== 'undefined' && table.length > 0) {
-          let titles = '';
-          titles = Object.keys(table[0]).join('</th><th>');
-          titles = '<tr><th>'+titles+'</th></tr>';
-
-          let data = '';
-          table.forEach((line)=>{
-            data += '<tr><td>'+Object.values(line).join('</td><td>')+'</td></tr>';
-          });
-
-          let h3Element = document.createElement("H3");
-          h3Element.innerHTML = tableName;
-
-          let tableElement = document.createElement("TABLE");
-          tableElement.border=1;
-          tableElement.innerHTML = titles+data;
-
-          let anchor = document.getElementById(id)
-          anchor.insertBefore(tableElement, anchor.childNodes[0]);
-          anchor.insertBefore(h3Element, anchor.childNodes[0]);
-        }
-      }
-  });
 }
 
 
@@ -151,7 +114,9 @@ function addTrackHTMLBeforeElement(id, tableName) {
 
           let tableElement = document.createElement("TABLE");
           tableElement.border=0;
-          tableElement.id="track_table"
+          if (tableName == "track"){
+            tableElement.id="track_table"
+          }
           tableElement.innerHTML = titles+data;
 
           let anchor = document.getElementById(id)

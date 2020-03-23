@@ -1,0 +1,100 @@
+@import '../lib/bootstrap.min.css';
+@import '../lib/navbar.scss';
+@import '../lib/glow-on-hover.css';
+
+@font-face {
+    font-family: 'Abadi-ExtraLight';
+    src: url('../fonts/Abadi-ExtraLight.otf') format("opentype");
+}
+@font-face {
+    font-family: 'Algerian';
+    src: url('../fonts/Algerian.ttf') format("ttf");
+}
+@import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
+
+/*                       backgrounds and images                          */
+/*-----------------------------------------------------------------------*/
+video {
+  // fixed in top-right corner
+  position: fixed;
+  right: 0;
+  top: 0;
+
+  height: 100%;
+  z-index: -3;
+}
+
+#home-background {
+  // fixed in top-right corner
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  height: 100%;
+  width: 85%;
+  z-index: -2;
+}
+
+#black-cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+/*-----------------------------------------------------------------------*/
+
+
+
+/*                              main grid                                */
+/*-----------------------------------------------------------------------*/
+// all the elements have to take all height available, so that they are equally spaced
+html, body, .container, .container>.row, .col-lg-6 {
+  height: 90%;
+  color: white;
+}
+
+#slogan{
+  margin-top: 17%;
+  min-height: 20%;
+  font-family: 'Algerian';
+  font-size: 85px;
+  text-align: center;
+}
+
+#divider{
+  margin-top: 0px;
+  width: 80%;
+}
+
+#subtext{
+  min-height: 20%;
+  font-family: 'Abadi-ExtraLight', sans-serif;
+  font-size: 20px;
+  margin-bottom: 10%;
+}
+
+// personal modifications to original lib/glow-on-hover.css
+.glow-on-hover {
+  width: 150px;
+  font-family: 'Lobster', sans-serif;
+  font-size: 30px;
+  //text-transform: uppercase;
+}
+
+.content-center {
+  display: flex;
+  justify-content : center;
+}
+
+.try-button {
+  margin-top: 20px;
+  color: black;
+
+  & + p {
+    text-align: justify;
+  }
+}

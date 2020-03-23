@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>TapTapHERO</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <meta property="og:title" content="TapTap-Hero">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="taptap-hero.com">
+    <meta property="og:site_name" content="TapTap-Hero">
+    <meta property="og:description" content="Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !">
+
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
+
+
+    <!------       Custom stylesheets       ------>
+    <script type="text/javascript" src="/build/home-bundle.js"></script>
+    <link rel="stylesheet" href="/build/home-bundle.css">
+    <!-------------------------------------------->
+
+</head>
+
+
+<body>
+<header>
+<div class="navbar container-fluid">
+
+    <div class="navbar-header">
+    <a href="/">
+    <img src="img/logo.png" id="navbar-logo" alt="spotify-hero">
+    </a>
+    </div>
+
+    <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/select">Select</a></li>
+        <li><a href="/game">Game</a></li>
+    </ul>
+
+</div>
+</header>
+
+
+  <!-- Video playing in background at z-index = -3 -->
+<video autoplay  loop>
+<source src="img/home-video.mp4" type="video/mp4">
+</video>
+
+ <!-- Homepage background at z-index = -2 so that it can cover the right-part of the video -->
+<img src="/img/home-background.png" id="home-background">
+
+<!-- Black transparent cover on top at z-index = -1 -->
+<div id="black-cover"></div>
+
+
+<!-- All other elements at z-index = 0 -->
+<div class="container">
+    <div class="row">
+
+    <!--    Left column with homepage background and content   -->
+    <div class="col-lg-6">
+
+        <div class="row" id="slogan">Just play it.</div>
+        <hr id="divider">
+
+        <div class="row" id="subtext">
+            The amazing crossover between Spotify and osu!<br>
+            games is back. Play millions of track, record your<br>
+            own and share your best scores with your friends
+        </div>
+        
+        <!--    Rainbow glowing button    -->
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <button class="glow-on-hover capitalize align-center" type="button" onclick="window.location.href='/login'">play</button>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+
+    <!--    Right column empty because video plays in background   -->
+    <div class="col-lg-6"></div>
+    </div>
+</div>
+
+
+</body>
+</html>

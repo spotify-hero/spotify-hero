@@ -1,4 +1,4 @@
-import '../css/index.scss';
+import '../css/home.scss';
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("login-button").onclick = function() {

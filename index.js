@@ -17,9 +17,9 @@
 var express       = require('express');
 var request       = require('request');
 var cookieParser  = require('cookie-parser');             // login is kept via a cookie
-var querystring   = require('querystring');               // stringify json dictionnaries to make requests
+var querystring   = require('querystring');
 var bodyParser    = require('body-parser');
-var handlebars    = require('handlebars');
+var exphbr        = require('express-handlebars');
 
 const PORT        = process.env.PORT || 8888;
 
@@ -32,17 +32,26 @@ var sqlite3       = require('sqlite3').verbose();
 var dbHandler     = require('./dbHandler');
 
 // API credentials from secured file
-var client_id     = process.env.CLIENT_ID;
-var client_secret = process.env.CLIENT_SECRET;
-var redirect_uri  = process.env.REDIRECT_URI;
+var CLIENT_ID     = process.env.CLIENT_ID;
+var CLIENT_SECRET = process.env.CLIENT_SECRET;
+var REDIRECT_URI  = process.env.REDIRECT_URI;
 
 // Initiate server, static folder is /public, load cookieParser, connect to db
-var stateKey = 'spotify_auth_state';
 var app = express();
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser())
    .use(bodyParser.json())
    .use(bodyParser.urlencoded({ extended: false }));
+
+// Sets our app to use the handlebars engine
+var handlebars = exphbr.create({
+    defaultLayout: '_TEMPLATE',
+    extname      : '.html',
+    layoutsDir: __dirname + '/public'
+});
+app.engine('html', handlebars.engine);
+app.set('view engine', 'html');
+app.set('views', __dirname + '/public');
 
 process.setMaxListeners(0);
 var db = new sqlite3.Database('./main.db', (err) => {
@@ -52,23 +61,41 @@ var db = new sqlite3.Database('./main.db', (err) => {
     console.log('Connected to the database.');
 });
 
+// Code taken directly from Spotify Developers website
+var stateKey = 'spotify_auth_state';
+var generateRandomString = function(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
 
 
 /*****************************************************
 *                routes definitions
 ******************************************************/
 app.get('/', function(req, res) {
-  res.status(200).sendFile(__dirname + '/public/index.html');
+  res.render('home', {name: 'home'});
+});
+
+app.get('/select', function(req, res) {
+    res.render('select', {name: 'select'});
+});
+
+app.get('/spotify', function(req, res) {
+    res.render('spotify', {name: 'spotify'});
 });
 
 app.get('/game', function(req, res) {
   res.status(200).sendFile(__dirname + '/public/game.html');
 });
 
-app.get('/spotify', function(req, res) {
-  res.status(200).sendFile(__dirname + '/public/spotify.html');
-});
 
+// Taken directly from Spotify Developers website
 app.get('/login', function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
@@ -77,15 +104,103 @@ app.get('/login', function(req, res) {
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
-      client_id: client_id,
+      client_id: CLIENT_ID,
       scope: scope,
-      redirect_uri: redirect_uri,
+      redirect_uri: REDIRECT_URI,
       state: state
     }));
 });
 
-app.get('/select', function(req, res) {
-  res.status(200).sendFile(__dirname + '/public/select.html');
+app.get('/spotify_cb', function(req, res) {
+  // requests refresh and access tokens after checking the state parameter
+  var code = req.query.code || null;
+  var state = req.query.state || null;
+  var storedState = req.cookies ? req.cookies[stateKey] : null;
+
+  if (state === null || state !== storedState) {
+    res.redirect('spotify?' +
+      querystring.stringify({
+        error: 'state_mismatch'
+      }));
+  } else {
+    res.clearCookie(stateKey);
+    var authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      form: {
+        code: code,
+        redirect_uri: REDIRECT_URI,
+        grant_type: 'authorization_code'
+      },
+      headers: {
+        'Authorization': 'Basic ' + (new Buffer(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
+      },
+      json: true
+    };
+
+    request.post(authOptions, function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+
+        var access_token = body.access_token,
+            refresh_token = body.refresh_token;
+
+        var options = {
+          url: 'https://api.spotify.com/v1/me',
+          headers: { 'Authorization': 'Bearer ' + access_token },
+          json: true
+        };
+
+        // use the access token to access the Spotify Web API
+        request.get(options, function(error, response, body) {
+          if(!error) {
+            inserts = [{
+              'UserURI': body.uri,
+              'Username': body.display_name,
+              'Country': body.country,
+              'Picture': body.images[0].url
+            }];
+            dbHandler.insertInto(db, 'User', inserts, ()=> {
+              console.log("Inserted into User with success !");
+            });
+            res.redirect('/select?' +
+              querystring.stringify({
+                table: "track mp3",
+                userURI : body.uri,
+                access_token: access_token
+              }));
+          }
+        });
+
+      } else {
+        res.redirect('/?' +
+          querystring.stringify({
+            error: 'invalid_token'
+          }));
+      }
+    });
+  }
+});
+
+app.get('/refresh_token',  function(req, res) {
+  // requesting access token from refresh token
+  var refresh_token = req.query.refresh_token;
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: { 'Authorization': 'Basic ' + (new Buffer(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')) },
+    form: {
+      grant_type: 'refresh_token',
+      refresh_token: refresh_token
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      var access_token = body.access_token;
+      res.send({
+        'access_token': access_token
+      });
+    }
+  });
 });
 
 
@@ -174,121 +289,16 @@ app.get('/mp3/:name', function(req, res) {
 });
 
 
-app.get('/spotify_cb', function(req, res) {
-  // requests refresh and access tokens after checking the state parameter
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
-
-  if (state === null || state !== storedState) {
-    res.redirect('spotify?' +
-      querystring.stringify({
-        error: 'state_mismatch'
-      }));
-  } else {
-    res.clearCookie(stateKey);
-    var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      form: {
-        code: code,
-        redirect_uri: redirect_uri,
-        grant_type: 'authorization_code'
-      },
-      headers: {
-        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-      },
-      json: true
-    };
-
-    request.post(authOptions, function(error, response, body) {
-      if (!error && response.statusCode === 200) {
-
-        var access_token = body.access_token,
-            refresh_token = body.refresh_token;
-
-        var options = {
-          url: 'https://api.spotify.com/v1/me',
-          headers: { 'Authorization': 'Bearer ' + access_token },
-          json: true
-        };
-
-        // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
-          if(!error) {
-            inserts = [{
-              'UserURI': body.uri,
-              'Username': body.display_name,
-              'Country': body.country,
-              'Picture': body.images[0].url
-            }];
-            dbHandler.insertInto(db, 'User', inserts, ()=> {
-              console.log("Inserted into User with success !");
-            });
-            res.redirect('/select?' +
-              querystring.stringify({
-                table: "track mp3",
-                userURI : body.uri,
-                access_token: access_token
-              }));
-          }
-        });
-
-      } else {
-        res.redirect('/?' +
-          querystring.stringify({
-            error: 'invalid_token'
-          }));
-      }
-    });
-  }
+// 404 Error : this route must remain on bottom and no dynamic route must be defined before
+app.use(function(req, res) {
+  res.status(404).send('404: Page not found');
 });
 
-app.get('/refresh_token', function(req, res) {
-
-  // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
-  var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token
-    },
-    json: true
-  };
-
-  request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        'access_token': access_token
-      });
-    }
-  });
+// 500 Error : this route must remain on bottom and no dynamic route must be defined before
+app.use(function(error, req, res, next) {
+  res.status(500).send('500: Internal server error');
 });
 
-app.listen(PORT, function() {
+module.exports = app.listen(PORT, function() {
   console.log('Listening on port ' + PORT);
 });
-
-
-
-
-/****************************************************
-*                 custom functions
-*****************************************************/
-function addTwoNumbers(a,b) {
-  return a+b;
-}
-
-var generateRandomString = function(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
-module.exports = addTwoNumbers;

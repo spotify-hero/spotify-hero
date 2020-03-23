@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
 
   entry: {
-    index: "./public/js/index.js",
+    home: "./public/js/home.js",
     game: "./public/js/game.js",
     spotify: "./public/js/spotify.js",
     select: "./public/js/select.js",
