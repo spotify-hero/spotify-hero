@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let array = getQueryParams().table.split(' ');
 
   array.forEach((table)=> {
-    addTrackHTMLBeforeElement('anchor', table);
+    addTrackHTMLBeforeElement(table);
   });
   document.getElementById('searchTerm').onkeypress = (()=>{filterList('searchTerm')});
   document.getElementById('searchTerm').onkeyup = (()=>{filterList('searchTerm')});
@@ -41,12 +41,11 @@ function filterList(inputId){
 * Same as addTableHTMLBeforeElement but for the database table 'track' only
 * Allows to insert links and images for specific elements
 */
-function addTrackHTMLBeforeElement(id, tableName) {
+function addTrackHTMLBeforeElement(tableName) {
   jquery.ajax({
     type:'GET',
     url: '/database/' + tableName,
     success: function(array) {
-
       let table = JSON.parse(array);
       let data = {audio : tableName};
 
@@ -64,12 +63,8 @@ function addTrackHTMLBeforeElement(id, tableName) {
         table.forEach((line) => {
           let title = line.Trackname;
           let artist = line.Trackartist;
+          let cover = line.Trackcover;
           let link = "";
-          let cover = "";
-
-          if (tableName == "track"){
-            cover = line.Trackcover;
-          }
 
           Object.keys(line).forEach((key)=> {
             if (key==="TrackURI" || key=="Filename") {
