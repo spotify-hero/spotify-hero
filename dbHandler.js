@@ -105,7 +105,9 @@ module.exports = {
   updateTrackFields: function(db, table, primary_key, update, callback) {
     if (primary_key !== "" && table !== "" && update !== "") {
 
-      let query = "UPDATE "+table+" SET "+update+" WHERE TrackURI ='"+primary_key+"'";
+      db = db.toLowerCase();
+      primaryName = { 'track' : 'TrackURI', 'mp3' : 'Filename'}
+      let query = "UPDATE "+table+" SET "+update+" WHERE "+primaryName[db]+" ='"+primary_key+"'";
 
       //console.log(query);
 

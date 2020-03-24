@@ -300,8 +300,8 @@ app.post('/:type/:name', function(req, res) {
 
 
 app.put('/database/:name/:primary_key', function(req, res) {
-  console.log('DB request : PUT in '+req.params.name +': '+req.body["0"]);
- dbHandler.updateTrackFields(db, req.params.name, req.params.primary_key, req.body["0"], function(data) {
+  console.log('PUT update /database/'+req.params.name+'/'+req.params.primary_key+' with value '+req.body["0"]);
+  dbHandler.updateTrackFields(db, req.params.name, req.params.primary_key, req.body["0"], function(data) {
      res.status(200).end(JSON.stringify(data));
   });
   //db.close();
