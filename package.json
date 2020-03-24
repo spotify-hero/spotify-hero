@@ -36,7 +36,7 @@
     "dev": "(webpack --watch &) && nodemon index.js",
     "build": "webpack -p",
     "start": "node index.js",
-    "test": "mocha"
+    "test": "webpack && mocha"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"
