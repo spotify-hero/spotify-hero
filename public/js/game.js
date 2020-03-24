@@ -29,7 +29,6 @@ class Game {
     this.started = false;
     this.beatmap = [];
     this.spAPI = new SpotifyAPI();
-    var spotifyAPI = this.spAPI;
 
     this.audioMode = getQueryParams().audio;
 
@@ -85,31 +84,17 @@ class Game {
     
     document.getElementsByClassName('open-pause')[0].onclick = function(){
       document.getElementsByClassName('pause')[0].className = "pause";
-      if (audioMode == "track"){
-        var access_token = getQueryParams().access_token;
-        spotifyAPI.pause(access_token);
-      }
-
-      else{
-        audio.pause();
-      }
-
-
+      this.pauseMusic()
       this.started = false;
     }
-
   }
 
   setupGame(){
     //il faut charger la musique sans la jouer + télécharger map
     //load musique
     this.getOsuFile();
-    console.log("audio mode : " + this.audioMode);
 
     if (this.audioMode == "mp3"){
-      console.log("mp3 ! ");
-      console.log(getQueryParams().Filename);
-
       jquery.ajax({
         async: false,
         type:'GET',
@@ -117,12 +102,9 @@ class Game {
         data: '',
         success: function(response) {
           console.log('Successfully got file from server.');
-          console.log(response);
-
           audio = new Audio();
           audio.src = 'data:audio/mp3;base64,' + response.fileContent;
           audio.load();
-
         },
         error: function(response) {
           console.log('ERROR : Could not get file from server !');
@@ -148,30 +130,8 @@ class Game {
       this.gameView.addMovingNotes(this.noteInterval, this.beatmap, 0);
     }
 
-    let musicDelay = Math.abs(getQueryParams().Trackdelay);
-
-    if (this.audioMode == "track"){
-
-      console.log("cookie");
-      console.log("uri" + getQueryParams().TrackURI);
-
-      //code before the pause
-      var spotifyAPI = this.spAPI;
-      setTimeout(function(){
-        var uri = getQueryParams().TrackURI;
-        if (uri) {
-          let access_token = getQueryParams().access_token;
-          console.log('send request to play '+uri);
-          spotifyAPI.play(access_token, getQueryParams().TrackURI, null);
-        } else {
-          console.error('Cannot play : no spotify URI specified !')
-        }
-      }, musicDelay);
-    }
-
-    if (this.audioMode == "mp3"){
-      audio.play();
-    }
+    let musicDelay = getQueryParams().Trackdelay;
+    this.playMusic(musicDelay)
 
     this.gameStartEl.className = "start hidden";
     this.started = true;
@@ -187,14 +147,7 @@ class Game {
 
     if (e.keyCode == 27){
       console.log("vous avez appuyé sur échap")
-      if (this.audioMode == "track"){
-        var access_token = getQueryParams().access_token;
-        this.spAPI.pause(access_token);
-      }
-
-      if (this.audioMode == "mp3"){
-        audio.pause();
-      }
+      this.pauseMusic()
 
       document.getElementsByClassName('pause')[0].className="pause"
       this.gameView.isPlay = false;
@@ -211,6 +164,48 @@ class Game {
         window.location.replace("/select?table=track%20mp3"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token);
       }
       
+    }
+  }
+
+  playMusic(musicDelay){
+    switch (this.audioMode) {
+      case "track":
+        setTimeout(() => {
+          var uri = getQueryParams().TrackURI;
+          if (uri) {
+            let access_token = getQueryParams().access_token;
+            console.log('send request to play '+uri);
+            this.spAPI.play(access_token, getQueryParams().TrackURI, null);
+          } else {
+            console.error('Cannot play : no spotify URI specified !')
+          }
+        },musicDelay)
+        break;
+
+      case "mp3":
+        setTimeout(() => {
+          audio.play()
+        }, musicDelay);
+        break
+    
+      default:
+        break;
+    }
+  }
+
+  pauseMusic(){
+    switch (this.audioMode) {
+      case "track":
+        let access_token = getQueryParams().access_token;
+        this.spAPI.pause(access_token);
+        break;
+
+      case "mp3":
+        audio.pause();
+        break;
+
+      default:
+        break;
     }
   }
 
