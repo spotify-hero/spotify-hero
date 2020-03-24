@@ -10,12 +10,23 @@ h1 {
   text-align: center;
 }
 
+#select-background {
+  // fixed in top-right corner
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform:scale(1.5);
+  -webkit-transform:scale(1.5);
+}
+
 body {
   overflow: hidden;
 }
 
 .navbar {
-  height: 50px;
+  height: 70px;
+  opacity: 0.7;
+  background-color: whitesmoke;
 }
 
 h2 {
@@ -98,8 +109,9 @@ h2 {
 
 .card {
   width: 300px;
-  margin:0px auto;
+  margin: 10px auto;
   float: left;
+  opacity: .99999;
   
   background-color:white;
   box-shadow: 0px 5px 20px #555;
@@ -145,7 +157,7 @@ h2 {
 
 .card-body {
   text-align:center; 
-  padding: 10px 10px; 
+  padding: 5px 5px; 
   box-sizing: border-box;
 }
 
@@ -170,9 +182,4 @@ h2 {
 .container {
   align-items: center;
   margin-top: 5%;
-}
-
-
-#anchor {
-  display: hidden;
 }

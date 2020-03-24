@@ -49,10 +49,8 @@ function addTrackHTMLBeforeElement(tableName) {
       let table = JSON.parse(array);
       let data = {audio : tableName};
 
-      if (tableName == "track"){
-        data.UserURI = getQueryParams().UserURI;
-        data.access_token = getQueryParams().access_token;
-      }
+      data.UserURI = getQueryParams().UserURI || undefined;
+      data.access_token = getQueryParams().access_token || undefined;
 
       let baseLink = "/game?" + encodeQueryData(data);
             
