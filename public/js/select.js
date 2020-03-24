@@ -22,13 +22,12 @@ function filterList(inputId){
   words = words.filter(Boolean);
 
   jquery(".card").each(function(){
-    let text = jquery(this).prop("title").toLowerCase().split(" ");
+    let text = jquery(this).prop("title").toLowerCase();
     let found = false;
-    words.forEach(word => {
-      if (text.some(res => res.includes(word))>0){
-        found = true;
-      }
-    });
+
+    if (words.every(res => text.includes(res))>0){
+      found = true;
+    }
     if (found || words.length == 0 || words == undefined){
       jquery(this).show();
     }else{
