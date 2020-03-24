@@ -120,8 +120,12 @@ export default class SpotifyAPI {
         console.log('play() successfully executed');
       },
       error: function(response) {
-        console.error('play() failed : ');
-        console.error(response.responseText);
+        console.error('play() failed');
+
+        if (response && response.responseJSON.error.reason === "NO_ACTIVE_DEVICE" ) {
+          alert('Spotify not playing 😭 ?\nJust play a song in Spotify and refresh this tab 💁‍♀️');
+          window.open('https://open.spotify.com/', '_blank');
+        }
       }
     });
     this.updateCurrentPlaying(access_token);
