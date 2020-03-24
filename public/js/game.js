@@ -167,22 +167,25 @@ class Game {
       
     } else if (e.keyCode == 186 && this.gameView) {
 
-      const delay = (new Date()).getTime() - this.gameView.startTimeRecord;
+      let delay = (new Date()).getTime() - this.gameView.startTimeRecord;
       console.log("vous avez appuyé sur $ : délai = "+delay);
 
       this.pauseMusic();
       this.gameView.isPlay = false;
 
-      const trackOrMP3 = getQueryParams().audio;
-
+      const audio = getQueryParams().audio;
       let trackID;
-      if (trackOrMP3 == 'track') {
+
+      if (audio == 'track') {
+        delay -= 1200;
         trackID = getQueryParams().TrackURI;
-      } else if (trackOrMP3 == 'mp3') {
+
+      } else if (audio == 'mp3') {
+        delay -= 300;
         trackID = getQueryParams().Filename;
       }
 
-      this.updateDelay(trackOrMP3, trackID, delay-1200);
+      this.updateDelay(audio, trackID, delay);
       console.log('New delay= '+delay+'sent to server.');
     }
   }
@@ -290,11 +293,11 @@ class Game {
       headers: {'Content-Type': 'application/json'},
       data: JSON.stringify({0: "Trackdelay = "+delay+""}),
       success: function(response) {
-        console.log('PUT /database/'+trackOrMP3+'/'+trackID);
-        window.location.href = "/select?table=track%20mp3"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token;
+        window.location.href = "/select?table=track%20mp3"+"&UserURI="+getQueryParams().UserURI+"&access_token="+getQueryParams().access_token;
       },
       error: function(response) {
-        document.location.reload(false);
+        alert('Database PUT request failed !');
+        //document.location.reload(false);
       }
     });
   }

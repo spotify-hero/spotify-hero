@@ -18,9 +18,9 @@ module.exports = {
 
     db.all(query, [], (err, rows) => {
       if (err) {
-        console.error(err);
-        callback("ERROR: request to "+table+" failed with "+String(err));
+        console.error('DB ERROR >> '+err);
       } else {
+        console.log('>> '+query);
         callback(rows);
       }
     });
@@ -49,16 +49,17 @@ module.exports = {
 
       db.run(query, [], (err, rows) => {
         if (err) {
-          console.error(err);
-          callback("ERROR: request to "+table+" failed with "+String(err));
+          console.error('DB ERROR >> '+err);
+          // throw new Error();
         } else {
+          console.log('>> '+query);
           callback();
         }
       });
+
     } else {
-      callback("Bad request : empty values");
-      callback(table);
-      callback(values);
+      console.error('DB ERROR >> '+err);
+      // throw new Error();
     }
 
   },
@@ -78,11 +79,17 @@ module.exports = {
 
       db.run(query, [], (err, rows) => {
         if (err) {
-          console.error(err);
+          console.error('DB ERROR >> '+err);
+          // throw new Error();
         } else {
+          console.log('>> '+query);
           callback();
         }
       });
+    } else {
+
+      console.error('DB ERROR >> '+err);
+      // throw new Error();
     }
   },
 
@@ -95,29 +102,37 @@ module.exports = {
 
     db.run(query, [], (err, rows) => {
       if (err) {
-        console.error(err);
+        console.error('DB ERROR >> '+err);
+        // throw new Error();
       } else {
+        console.log('>> '+query);
         callback();
       }
     });
   },
 
   updateTrackFields: function(db, table, primary_key, update, callback) {
-    if (primary_key !== "" && table !== "" && update !== "") {
+    if (primary_key && table && update ) {
 
-      db = db.toLowerCase();
-      primaryName = { 'track' : 'TrackURI', 'mp3' : 'Filename'}
-      let query = "UPDATE "+table+" SET "+update+" WHERE "+primaryName[db]+" ='"+primary_key+"'";
+      
+      table = table.toLowerCase();
+      dbToPrimary = { 'track' : 'TrackURI', 'mp3' : 'Filename'};
 
-      //console.log(query);
+      let query = "UPDATE "+table+" SET "+update+" WHERE "+dbToPrimary[table]+" ='"+primary_key+"'";
 
       db.run(query, [], (err, rows) => {
         if (err) {
-          console.error(err);
+          console.error('DB ERROR >> '+err);
+          // throw new Error();
         } else {
-          callback();
+          console.error('>> '+query);
+          callback(update);
         }
       });
+
+    } else {
+      console.error('DB ERROR >> '+err);
+      // throw new Error();
     }
   }
 
