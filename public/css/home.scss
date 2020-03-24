@@ -24,6 +24,10 @@ video {
   z-index: -3;
 }
 
+body {
+  overflow: hidden;
+}
+
 #home-background {
   // fixed in top-right corner
   position: fixed;
@@ -58,10 +62,10 @@ html, body, .container, .container>.row, .col-lg-6 {
 }
 
 #slogan{
-  margin-top: 17%;
+  margin-top: 10%;
   min-height: 20%;
   font-family: 'Algerian';
-  font-size: 85px;
+  font-size: 80px;
   text-align: center;
 }
 
