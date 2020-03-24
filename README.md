@@ -1,7 +1,7 @@
 # TC-Hero :video_game::headphones::musical_score:
 [![Build Status](https://travis-ci.org/spotify-hero/spotify-hero.svg?branch=master)](https://travis-ci.org/spotify-hero/spotify-hero)
 [![Heroku](https://img.shields.io/badge/heroku-open-blueviolet)](https://spotify-hero.herokuapp.com/)
-[![CodeFactor](https://www.codefactor.io/repository/github/gforien/tc-hero/badge)](https://www.codefactor.io/repository/github/gforien/tc-hero)
+[![CodeFactor](https://www.codefactor.io/repository/github/spotify-hero/spotify-hero/badge)](https://www.codefactor.io/repository/github/spotify-hero/spotify-hero)
 [![License](https://img.shields.io/static/v1.svg?label=License&message=CC%20BY-NC-SA%204.0&color=ff69b4&style=flat)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 #### Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !
