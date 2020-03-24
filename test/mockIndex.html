@@ -31,7 +31,7 @@
 
     <div class="navbar-header">
     <a href="/">
-    <img src="img/logo.png" id="navbar-logo" alt="spotify-hero">
+    <img src="img/logo.png" id="navbar-logo" style="max-width: 5%; height: auto !important;" alt="spotify-hero">
     </a>
     </div>
 
@@ -46,7 +46,7 @@
 
 
   <!-- Video playing in background at z-index = -3 -->
-<video autoplay  loop>
+<video autoplay muted loop>
 <source src="img/home-video.mp4" type="video/mp4">
 </video>
 
@@ -75,11 +75,13 @@
         
         <!--    Rainbow glowing button    -->
         <div class="row content-center">
-              <button class="glow-on-hover capitalize align-center" type="button" onclick="window.location.href='/login'">play me</button>
+              <button class="glow-on-hover capitalize align-center" type="button" onclick="window.location.href='/login'">Play</button>
         </div>
 
+        <br>
+
         <div class="row content-center">
-          <button class="btn-secondary btn-lg try-button" type="button" onclick="window.location.href='/select?table=mp3'">try me</button>
+          <button class="glow-on-hover capitalize align-center" type="button" onclick="window.location.href='/select?table=mp3'">try me*</button>
         </div>
         <div class="row content-center">
           <p>*No Spotify account needed</p>
