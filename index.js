@@ -288,19 +288,6 @@ app.get('/mp3/:name', function(req, res) {
   });
 });
 
-app.get('/artwork/:name', function(req, res) {
-  console.log('Request for cover file : '+req.params.name);
-  let filename = __dirname + "/artwork/"+req.params.name;
-  fs.stat(filename, (err, stat) => {
-    if(err == null) {
-        res.status(200).sendFile(filename);
-    } else {
-      console.log('Error: file not found '+filename);
-      res.status(404).end("File not found !");
-    }
-  });
-});
-
 
 // 404 Error : this route must remain on bottom and no dynamic route must be defined before
 app.use(function(req, res) {

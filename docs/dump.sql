@@ -28,14 +28,11 @@ Filename VARCHAR PRIMARY KEY NOT NULL CHECK (Filename <> ""),
 Trackname VARCHAR NOT NULL CHECK (Trackname <> ""),
 Trackartist VARCHAR NOT NULL CHECK (Trackartist <> ""),
 Trackdelay INTEGER NOT NULL CHECK (Trackdelay <> ""),
-Trackcover VARCHAR NOT NULL CHECK (Trackcover <> ""),
 OSUfile VARCHAR NOT NULL CHECK (OSUfile <> "")
 );
 
-INSERT INTO "MP3" VALUES('magic.mp3', 'Magic', 'Nhato', 0, '/artwork/undefined.jpg', 'nhato_magic.osu');
-INSERT INTO "MP3" VALUES('faded.mp3', 'Faded', 'Alan Walker', 0, '/artwork/faded.jpg', 'alan_walker_faded.osu');
-INSERT INTO "MP3" VALUES('spectre.mp3', 'Spectre', 'Alan Walker', 0, '/artwork/spectre.jpg', 'alan_walker_spectre.osu');
-
+INSERT INTO "MP3" VALUES('magic.mp3', 'Magic', 'Nhato', 1500, 'nhato_magic.osu');
+INSERT INTO "MP3" VALUES('faded.mp3', 'Faded', 'Alan Walker' , 1000, 'alan_walker_faded.osu');
 
 CREATE TABLE User (
 UserURI VARCHAR PRIMARY KEY NOT NULL CHECK (UserURI <> ""),

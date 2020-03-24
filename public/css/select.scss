@@ -5,28 +5,13 @@
 
 h1 {
   color: #111;
-  font-family: 'Open Sans', sans-serif;
-  font-size: large;
+  font-family: 'Roboto', sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
   text-align: center;
-}
-
-#select-background {
-  // fixed in top-right corner
-  position: fixed;
-  left: 0;
-  top: 0;
-  transform:scale(1.5);
-  -webkit-transform:scale(1.5);
-}
-
-body {
-  overflow: hidden;
-}
-
-.navbar {
-  height: 70px;
-  opacity: 0.7;
-  background-color: whitesmoke;
+  margin-bottom: 50px;
 }
 
 h2 {
@@ -35,12 +20,9 @@ h2 {
 }
 
 .search {
-  width: 50%;
+  width: 100%;
   position: relative;
   display: flex;
-  text-align: center;
-  margin:0 auto;
-  padding-bottom: 10px;
 }
 
 #searchTerm {
@@ -68,6 +50,15 @@ h2 {
   border-radius: 0 5px 5px 0;
   cursor: pointer;
   font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap{
+  width: 30%;
+  position: absolute;
+  padding: 20px;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* table */
@@ -99,19 +90,10 @@ h2 {
   color: white;
 }
 
-.cards {
-  overflow:auto;
-  height: 496px; 
-  display: flex;
-  flex-wrap: wrap;
-  overflow-y: auto;
-}
-
 .card {
   width: 300px;
-  margin: 10px auto;
+  margin:0px auto;
   float: left;
-  opacity: .99999;
   
   background-color:white;
   box-shadow: 0px 5px 20px #555;
@@ -125,7 +107,7 @@ h2 {
     .card-image {
       img {
          width: 330px;
-         //filter:grayscale(0);
+         filter:grayscale(0);
       }  
     }
   }
@@ -147,7 +129,7 @@ h2 {
     left: 50%;
     transform: translate(-50%, -50%);
     
-    //filter: grayscale(1);
+    filter: grayscale(1);
     
     transition-property: filter width;
     transition-duration: .3s; 
@@ -157,7 +139,7 @@ h2 {
 
 .card-body {
   text-align:center; 
-  padding: 5px 5px; 
+  padding: 10px 10px; 
   box-sizing: border-box;
 }
 
@@ -182,4 +164,9 @@ h2 {
 .container {
   align-items: center;
   margin-top: 5%;
+}
+
+
+#anchor {
+  display: hidden;
 }
