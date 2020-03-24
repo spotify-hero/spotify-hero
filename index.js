@@ -207,12 +207,54 @@ app.get('/refresh_token',  function(req, res) {
 /****************************************************
 *             callbacks and JSON-feeding
 *****************************************************/
-app.get('/database/:name', function(req, res) {
-  console.log('DB request : GET '+req.params.name);
-  dbHandler.selectAll(db, req.params.name, function(data) {
-      res.end(JSON.stringify(data));
-  });
-  //db.close();
+app.get('/:type/:name', function(req, res) {
+
+  console.log('GET /'+req.params.type+'/'+req.params.name);
+  switch (req.params.type) {
+
+    // Here we call dbHandler.js
+    case 'database':
+      dbHandler.selectAll(db, req.params.name, function(data) {
+          res.end(JSON.stringify(data));
+      });
+      //db.close();
+      break;
+
+    // Here we just load a file with fs and send it
+    case 'osu':
+    case 'artwork':
+    case 'mp3':
+      let filename = __dirname + "/"+ req.params.type +"/"+req.params.name;
+
+      fs.stat(filename, (err, stat) => {
+        if (!err) {
+
+          // OSU file : we parse it with osuParser.js before sending
+          if (req.params.type == 'osu') {
+            let textByLine = fs.readFileSync(filename).toString('utf-8').split('\n');
+            res.status(200).end(osuParser.parser(textByLine));
+
+          // PNG file : just send it
+          } else if (req.params.type == 'artwork') {
+            res.status(200).sendFile(filename);
+
+          // MP3 file : load the binary and send it in base64 
+          } else if (req.params.type == 'mp3') {
+            fs.readFile(filename, function(err, file) {
+              let base64File = Buffer.from(file, 'binary').toString('base64');
+              res.json({'fileContent': base64File});
+            });
+          }
+        } else {
+          console.log('Error: file not found '+filename);
+          res.status(404).end("File not found !");
+        }
+      });
+      break;
+
+      default:
+        res.status(404).send('404: Page not found');
+  }
 });
 
 app.post('/database/:name', function(req, res) {
@@ -220,35 +262,6 @@ app.post('/database/:name', function(req, res) {
   console.log(req.body);
   dbHandler.insertInto(db, req.params.name, req.body, console.log);
   res.status(200).end(JSON.stringify(req.body));
-});
-
-app.put('/database/:name/:primary_key', function(req, res) {
-  console.log('DB request : PUT in '+req.params.name +': '+req.body["0"]);
- dbHandler.updateTrackFields(db, req.params.name, req.params.primary_key, req.body["0"], function(data) {
-     res.status(200).end(JSON.stringify(data));
-  });
-  //db.close();
-});
-
-/*app.delete('/database/:name/:primary_key', function(req, res) {
-  dbHandler.selectAll(db, req.params.name, function(data) {
-      res.end(JSON.stringify(data));
-  });
-  //db.close();
-});*/
-
-app.get('/osu/:name', function(req, res) {
-  console.log('Request for osu file: '+req.params.name);
-  let filename = __dirname + "/osu/"+req.params.name;
-  fs.stat(filename, (err, stat) => {
-    if(err == null) {
-      let textByLine = fs.readFileSync(__dirname + "/osu/"+req.params.name).toString('utf-8').split('\n');
-      res.status(200).end(osuParser.parser(textByLine));
-    } else {
-      console.log('Error: file not found '+filename);
-      res.status(404).end("File not found !");
-    }
-  });
 });
 
 app.post('/osu/:name', function(req, res){
@@ -270,36 +283,20 @@ app.post('/osu/:name', function(req, res){
   res.status(200).end("");
 });
 
-app.get('/mp3/:name', function(req, res) {
-  console.log('Request for mp3 file : '+req.params.name);
-  let filename = __dirname + "/mp3/"+req.params.name;
-  fs.stat(filename, (err, stat) => {
-    if(err == null) {
-      let returnData = {};
-      fs.readFile(__dirname + "/mp3/"+req.params.name, function(err, file){
-        let base64File = new Buffer(file, 'binary').toString('base64');
-        returnData.fileContent = base64File;
-        res.json(returnData);
-      });
-    } else {
-      console.log('Error: file not found '+filename);
-      res.status(404).end("File not found !");
-    }
+app.put('/database/:name/:primary_key', function(req, res) {
+  console.log('DB request : PUT in '+req.params.name +': '+req.body["0"]);
+ dbHandler.updateTrackFields(db, req.params.name, req.params.primary_key, req.body["0"], function(data) {
+     res.status(200).end(JSON.stringify(data));
   });
+  //db.close();
 });
 
-app.get('/artwork/:name', function(req, res) {
-  console.log('Request for cover file : '+req.params.name);
-  let filename = __dirname + "/artwork/"+req.params.name;
-  fs.stat(filename, (err, stat) => {
-    if(err == null) {
-        res.status(200).sendFile(filename);
-    } else {
-      console.log('Error: file not found '+filename);
-      res.status(404).end("File not found !");
-    }
+/*app.delete('/database/:name/:primary_key', function(req, res) {
+  dbHandler.selectAll(db, req.params.name, function(data) {
+      res.end(JSON.stringify(data));
   });
-});
+  //db.close();
+});*/
 
 
 // 404 Error : this route must remain on bottom and no dynamic route must be defined before
