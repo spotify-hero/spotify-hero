@@ -197,6 +197,9 @@ class GameView {
     );
 
     if (typeof beatmap !== 'undefined' && beatmap.length > 0) {
+      //total count of notes 
+      let notesCount = beatmap.length;
+
       beatmap.forEach((songNote, idx) => {
 
         noteMaterial = this.note.materials[songNote.position];
@@ -232,19 +235,9 @@ class GameView {
             this.xPos[songNote.position],
             (this.yStartPoint),
             (this.zStartPoint));
-
-            if(idx == beatmap.length-1){
-              console.log("fin du jeu !!!!!!")
-              var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
-              scoreTosave = scoreTosave.replace( /^\D+/g, '');
-              document.getElementsByClassName('result-score')[0].innerHTML = "Your score : " + scoreTosave;
-              document.getElementsByClassName('end-game')[0].className="end-game"
-
-            }
-
           }, songNote.startTime + latency
           );
-        this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency);
+        this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency, notesCount, idx+1);
       })
     }
   }

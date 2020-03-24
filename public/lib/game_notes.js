@@ -21,16 +21,16 @@ class GameNotes {
     this.rockInput = 0;
   }
 
-  setNoteCheck(position, time) {
+  setNoteCheck(position, time, notesCount, idx) {
     let timeDelay = 1000 + this.musicDelay + time;
 
     setTimeout(
-      () => this.checkNote(position),
+      () => this.checkNote(position, notesCount, idx),
       timeDelay
     );
   }
 
-  checkNote(position) {
+  checkNote(position, notesCount, idx) {
     var res = false;
     if (this.key.isDown(this.key.pos[position])) {
       res = true
@@ -79,8 +79,14 @@ class GameNotes {
     this.multiplierEl.innerHTML = `Multiplier: ${this.multiplier}X`;
     this.rockInputEl.value = this.rockInput;//('value', `${this.rockInput}`);
 
-    console.log(res)
-
+    if(idx == notesCount){
+      setTimeout(()=>{
+        var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
+        scoreTosave = scoreTosave.replace( /^\D+/g, '');
+        document.getElementsByClassName('result-score')[0].innerHTML = "Your score : " + scoreTosave;
+        document.getElementsByClassName('end-game')[0].className="end-game";
+      }, 5000)
+    }
   }
 }
 

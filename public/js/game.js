@@ -161,8 +161,9 @@ class Game {
         filename += '_'+getQueryParams().Trackname.split(' ').join('')+'.osu';
         this.sendOsuFile(filename, this.gameView.recordMap);
         console.log("Recorded beatmap sent to server");
+        console.log(this.gameView.recordMap)
       } else {
-        window.location.replace("/select?table=track%20mp3"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token);
+        //window.location.replace("/select?table=track%20mp3"+"&userURI="+getQueryParams().userURI+"&access_token="+getQueryParams().access_token);
       }
       
     } else if (e.keyCode == 186 && this.gameView) {
