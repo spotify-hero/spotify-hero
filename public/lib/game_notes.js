@@ -17,21 +17,45 @@ class GameNotes {
     this.multiplier = 1;
     this.hits = 0;
     this.misses = 0;
-    this.totalNotes = 0;
     this.rockInput = 0;
   }
 
-  setNoteCheck(position, time, notesCount, idx) {
+  setNoteCheck(position, time, duration, notesCount, idx) {
     let timeDelay = 1000 + this.musicDelay + time;
 
     setTimeout(
-      () => this.checkNote(position, notesCount, idx),
+      () => this.checkNote(position, duration, notesCount, idx),
       timeDelay
     );
   }
 
-  checkNote(position, notesCount, idx) {
-    var res = false;
+  checkNote(position, duration, notesCount, idx) {
+    let startTime = Date.now();
+    let endTime = startTime + duration;
+    let interval = 20; //each 20 ms we add points if user press correct key during long note
+
+    let check = setInterval(() =>{
+      startTime += interval;
+
+      if(startTime > endTime){
+        clearInterval(check);
+      }
+
+      this.updateScore(position)
+    },interval);
+
+    if(idx == notesCount){
+      setTimeout(()=>{
+        var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
+        scoreTosave = scoreTosave.replace( /^\D+/g, '');
+        document.getElementsByClassName('result-score')[0].innerHTML = "Your score : " + scoreTosave;
+        document.getElementsByClassName('end-game')[0].className="end-game";
+      }, 3000)
+    }
+  }
+
+  updateScore(position){
+    let res = false;
     if (this.key.isDown(this.key.pos[position])) {
       res = true
       if (this.streak === 30) {
@@ -71,22 +95,11 @@ class GameNotes {
       this.maxStreak = this.streak;
     }
 
-    this.totalNotes += 1;
-
     this.scoreEl.innerHTML = `Score: ${this.score}`;
     this.maxStreakEl.innerHTML = `Max Streak: ${this.maxStreak}`;
     this.streakEl.innerHTML = `Streak: ${this.streak}`;
     this.multiplierEl.innerHTML = `Multiplier: ${this.multiplier}X`;
     this.rockInputEl.value = this.rockInput;//('value', `${this.rockInput}`);
-
-    if(idx == notesCount){
-      setTimeout(()=>{
-        var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
-        scoreTosave = scoreTosave.replace( /^\D+/g, '');
-        document.getElementsByClassName('result-score')[0].innerHTML = "Your score : " + scoreTosave;
-        document.getElementsByClassName('end-game')[0].className="end-game";
-      }, 5000)
-    }
   }
 }
 

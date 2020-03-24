@@ -197,8 +197,8 @@ class GameView {
     );
 
     if (typeof beatmap !== 'undefined' && beatmap.length > 0) {
-      //total count of notes 
-      let notesCount = beatmap.length;
+      //total count of notes 0 indexed
+      let notesCount = beatmap.length - 1;
 
       beatmap.forEach((songNote, idx) => {
 
@@ -209,19 +209,17 @@ class GameView {
 
           let cylinderMaterial = this.note.materials[songNote.position];
           let cylinderGeometry = new THREE.BoxGeometry(
-            this.note.radius*2.5,(songNote.duration/10 * this.note.vel),10
+            this.note.radius*2.5,((songNote.duration/3) * this.note.vel),10
           );
           this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
           this.cylinders[idx].rotateX(this.xRotation);
         }
 
-
-        //this.addMovingBeatLine(songNote.m, noteInterval, lag);
-
         // POSITION & ADD TO SCENE NOTES & HOLDS & BeatLines
         setTimeout( () => {
           if (this.cylinders[idx]) {
-            let hold = songNote.duration/100 ;
+            let hold = songNote.duration/32;
+            console.log("hold : " +hold)
             this.cylinders[idx].hold = hold;
             this.cylinders[idx].position.set(
               this.xPos[songNote.position],
@@ -229,15 +227,17 @@ class GameView {
               this.zStartPoint - hold * this.note.zVel
             );
             this.scene.add(this.cylinders[idx]);
+
           }
+
           this.scene.add(this.spheres[idx]);
           this.spheres[idx].position.set(
             this.xPos[songNote.position],
             (this.yStartPoint),
             (this.zStartPoint));
-          }, songNote.startTime + latency
-          );
-        this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency, notesCount, idx+1);
+            
+          }, songNote.startTime + latency);
+        this.gameNotes.setNoteCheck(songNote.position, songNote.startTime + latency, songNote.duration, notesCount, idx);
       })
     }
   }
