@@ -257,31 +257,47 @@ app.get('/:type/:name', function(req, res) {
   }
 });
 
-app.post('/database/:name', function(req, res) {
-  console.log('DB request : POST to '+req.params.name);
-  console.log(req.body);
-  dbHandler.insertInto(db, req.params.name, req.body, console.log);
-  res.status(200).end(JSON.stringify(req.body));
+
+
+app.post('/:type/:name', function(req, res) {
+
+  console.log('POST /'+req.params.type+'/'+req.params.name);
+  switch (req.params.type) {
+
+    // Here we call dbHandler.js
+    case 'database':
+      dbHandler.insertInto(db, req.params.name, req.body, console.log);
+      res.status(200).end(JSON.stringify(req.body));
+      //db.close();
+      break;
+
+    // Here we just load a file with fs and send it
+    case 'osu':
+      var recorded = req.body;
+      var nom = req.params.name;
+
+      fs.writeFile(__dirname + "/osu/" + nom, "[HitObjects]\n", function (err) {
+        if (err) throw err;
+        console.log('File '+nom+' was created successfully');
+      }); 
+
+      recorded.forEach(element => {
+        var newPos = osuParser.convertPosition(element.position)
+        let line = newPos +"," + newPos + "," + element.startTime + ",1,0,0:0:0:0:\n"
+        fs.appendFile(__dirname + "/osu/" + nom, line, function(err){
+          if (err) throw err;
+        })
+      });
+      res.status(200).end("");
+      break;
+
+    case 'artwork':
+    case 'mp3':
+    default:
+      res.status(404).send('404: Page not found');
+  }
 });
 
-app.post('/osu/:name', function(req, res){
-  var recorded = req.body;
-  var nom = req.params.name;
-
-  fs.writeFile(__dirname + "/osu/" + nom, "[HitObjects]\n", function (err) {
-    if (err) throw err;
-    console.log('File '+nom+' was created successfully');
-  }); 
-
-  recorded.forEach(element => {
-    var newPos = osuParser.convertPosition(element.position)
-    let line = newPos +"," + newPos + "," + element.startTime + ",1,0,0:0:0:0:\n"
-    fs.appendFile(__dirname + "/osu/" + nom, line, function(err){
-      if (err) throw err;
-    })
-  });
-  res.status(200).end("");
-});
 
 app.put('/database/:name/:primary_key', function(req, res) {
   console.log('DB request : PUT in '+req.params.name +': '+req.body["0"]);
@@ -290,6 +306,7 @@ app.put('/database/:name/:primary_key', function(req, res) {
   });
   //db.close();
 });
+
 
 /*app.delete('/database/:name/:primary_key', function(req, res) {
   dbHandler.selectAll(db, req.params.name, function(data) {
