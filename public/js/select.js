@@ -1,5 +1,6 @@
 import jquery from '../lib/jquery.min';
 import { getQueryParams } from '../lib/functions';
+import SpotifyAPI from '../lib/SpotifyAPI';
 
 import '../css/select.scss';
 
@@ -10,11 +11,53 @@ document.addEventListener("DOMContentLoaded", () => {
   array.forEach((table)=> {
     addTrackHTMLBeforeElement(table);
   });
+
   document.getElementById('searchTerm').onkeypress = (()=>{filterList('searchTerm')});
   document.getElementById('searchTerm').onkeyup = (()=>{filterList('searchTerm')});
   document.getElementById('searchButton').onclick = (()=>{filterList('searchTerm')});
-  console.log("Successfully loaded");
+  document.getElementById('addSpotifyButton').onclick = addTrack;
+
+  console.log('Successfully loaded');
 });
+
+const addTrack = function() {
+  const link = document.getElementById('addSpotifyInput').value;
+  const file = document.getElementById('addMP3Input').files[0];
+
+  let trackID, audio;
+
+  if (link) {
+    let audio = "track";
+    let test = link.match(/^(https?:\/\/)?open\.spotify\.com\/track\/(.*)$/);
+
+    // we add the Spotify track directly with its URI
+    if (test.length == 3 && getQueryParams().access_token) {
+        const spAPI = new SpotifyAPI();
+        spAPI.searchOne(test[2], getQueryParams().access_token);
+    }
+
+  } else if(file) {
+    let audio = "mp3";
+
+  /*  if(trackID) {
+      // insert into database
+      jquery.ajax({
+        async: false,
+        type:'POST',
+        url: '/database/'+audio,
+        headers: {'Content-Type': 'application/json'},
+        data: JSON.stringify(recordMap),
+
+        success: function(response) {
+          window.location.href = "/select?table=track%20mp3"+"&UserURI="+getQueryParams().UserURI+"&access_token="+getQueryParams().access_token;
+        },
+        error: function(response) {
+          alert('Database PUT request failed !');
+        }
+      });
+    }*/
+  }
+}
 
 function filterList(inputId){
   var words = document.getElementById(inputId).value.toLowerCase().split(" ");
@@ -54,6 +97,18 @@ function addTrackHTMLBeforeElement(tableName) {
       let baseLink = "/game?" + encodeQueryData(data);
             
       if (typeof table !== 'undefined' && table.length > 0) {
+
+        // special card to add tracks
+        let special = '<div class="card" id=special-card><div class="card-image"><img src="/img/plus.svg"></div>';
+        special += "<div class=card-body><div class=card-date><time> ADD A TRACK </time></div><div class=card-title>";
+        special += "<h2>click me</h2></div><div class=card-excerpt></div></div>";
+        jquery('#cards').append(jquery(special));
+        document.getElementById('special-card').onclick = (() =>
+        {
+          let disp = document.getElementById("addTrackContainer").style.display;
+          document.getElementById("addTrackContainer").style.display = (disp == "none")? "block" : "none";
+        });
+
         //counter
         let i = 0;
         

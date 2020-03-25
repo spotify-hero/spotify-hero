@@ -131,10 +131,10 @@ export default class SpotifyAPI {
     this.updateCurrentPlaying(access_token);
   }
 
-  searchOne(id, access_token) {
+  searchOne(uri, access_token) {
     jquery.ajax({
       type: 'GET',
-      url: 'https://api.spotify.com/v1/tracks/'+document.getElementById(id).value,
+      url: 'https://api.spotify.com/v1/tracks/'+uri,
       headers: {
         'Authorization': 'Bearer ' + access_token
       },

@@ -70,11 +70,21 @@ h2 {
   font-size: 20px;
 }
 
-/* table */
-#anchor {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
+#addTrackContainer {
+  display: block;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  margin-left: 300px;
+  padding: 10px;
+  z-index: 1000;
+  background: rgba(0,0,0,0.8);
+  text-align: center;
+  color: white;
+
+  & > div > input {
+    color: black;
+  }
 }
 
 .content-center {
@@ -82,22 +92,6 @@ h2 {
   justify-content: center;
 }
 
-#anchor td, #anchor th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-#anchor tr:nth-child(even){background-color: #f2f2f2;}
-
-#anchor tr:hover {background-color: #ddd;}
-
-#anchor th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #33cccc;
-  color: white;
-}
 
 .cards {
   overflow:auto;

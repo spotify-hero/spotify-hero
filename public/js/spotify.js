@@ -24,8 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("button-next").onclick = (()=>{spAPI.next(access_token)});
   document.getElementById("keywords").onchange = (()=>{spAPI.search('keywords', access_token)});
   document.getElementById("keywords_button").onclick = (()=>{spAPI.search('keywords', access_token)});
-  document.getElementById("trackID").onchange = (()=>{spAPI.searchOne('trackID', access_token)});
-  document.getElementById("trackID_button").onclick = (()=>{spAPI.searchOne('trackID', access_token)});
+  
+  // doesn't work anymore
+  //document.getElementById("trackID").onchange = (()=>{spAPI.searchOne('trackID', access_token)});
+  //document.getElementById("trackID_button").onclick = (()=>{spAPI.searchOne('trackID', access_token)});
 
 
   document.getElementById('button-database').innerHTML = '<a href="/select?table=Track+Score&access_token='+access_token+'">Part 2 : Database</a>';
