@@ -21,20 +21,28 @@ document.addEventListener("DOMContentLoaded", () => {
   jquery('#cards').on('click','.card',function(){
     let trackURI = jquery(this).attr("URI");
     if (trackURI.includes("spotify")){
-      spAPI.setVolume(access_token, 0);
+      spAPI.setVolume(access_token, 0)
+      .then(() => {
+        jquery(".loader-wrapper").slideDown();
+        jquery(".cards").fadeOut(400);
+        jquery(".search").fadeOut(400);
+  
+        setTimeout( ()=>{
+          spAPI.play(access_token, trackURI, null);
+        },100);
+  
+        setTimeout(()=>{
+          window.location.href = jquery(this).attr("gameLink");
+        }, 3000);
 
-      jquery(".loader-wrapper").slideDown();
-      jquery(".cards").fadeOut(400);
-      jquery(".search").fadeOut(400);
+      })
+      .catch((reject) => {
+        if (reject == "NO_ACTIVE_DEVICE" ) {
+          alert('Spotify not playing 😭 ?\nJust play a song in Spotify and try again 💁‍♀️');
+          window.open('https://open.spotify.com/', '_blank');
+        }
+      });
 
-
-      setTimeout( ()=>{
-        spAPI.play(access_token, trackURI, null);
-      },100);
-
-      setTimeout(()=>{
-        window.location.href = jquery(this).attr("gameLink");
-      }, 3000);
     }else{
       window.location.href = jquery(this).attr("gameLink");
     }

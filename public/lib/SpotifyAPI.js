@@ -130,24 +130,23 @@ export default class SpotifyAPI {
   }
 
   setVolume(access_token, volume) {
-    jquery.ajax({
-      type: 'PUT',
-      url: 'https://api.spotify.com/v1/me/player/volume?volume_percent=' + volume,
-      headers: {
-        'Authorization': 'Bearer ' + access_token
-      },
-      success: function(response) {
-        console.log('pause successfully executed');
-      },
-      error: function(response) {
-        console.error('pause failed');
-
-        if (response && response.responseJSON.error.reason === "NO_ACTIVE_DEVICE" ) {
-          alert('Spotify not playing 😭 ?\nJust play a song in Spotify and refresh this tab 💁‍♀️');
-          window.open('https://open.spotify.com/', '_blank');
+    return new Promise((resolve, reject) => {
+      jquery.ajax({
+        type: 'PUT',
+        url: 'https://api.spotify.com/v1/me/player/volume?volume_percent=' + volume,
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        },
+        success: (response) => {
+          console.log('pause successfully executed');
+          resolve(response); 
+        },
+        error: (response) => {
+          console.error('pause failed');
+          reject(response.responseJSON.error.reason);
         }
-      }
-    });
+      });
+    })
   }
 
   searchOne(id, access_token) {
