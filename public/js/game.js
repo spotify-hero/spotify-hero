@@ -9,14 +9,11 @@ import Instructions from '../lib/instructions';
 import SpotifyAPI from '../lib/SpotifyAPI';
 import { getQueryParams, copyClipboard } from '../lib/functions';
 
-
 import '../css/game.scss';
 
-
 document.addEventListener("DOMContentLoaded", () => {
-  let game = new Game();
+  new Game();
 });
-
 
 let audio;
 
@@ -138,7 +135,6 @@ class Game {
     this.started = true;
   }
 
-
   hitAToStart(e) {
     if (!this.started) {
       if (e.keyCode === 97 || e.keyCode === 65) {
@@ -198,6 +194,7 @@ class Game {
           var uri = getQueryParams().TrackURI;
           if (uri) {
             let access_token = getQueryParams().access_token;
+            this.spAPI.setVolume(access_token, 50);
             console.log('send request to play '+uri);
             this.spAPI.play(access_token, getQueryParams().TrackURI, null);
           } else {
@@ -232,7 +229,6 @@ class Game {
         break;
     }
   }
-
 
   getOsuFile(){
     let osuData;
