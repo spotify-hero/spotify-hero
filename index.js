@@ -283,7 +283,7 @@ app.post('/:type/:name', function(req, res) {
 
       recorded.forEach(element => {
         var newPos = osuParser.convertPosition(element.position)
-        let line = newPos +"," + newPos + "," + element.startTime + ",1,0,0:0:0:0:\n"
+        let line = newPos +"," + newPos + "," + element.startTime + ",1,0," + element.duration + ":0:0:0:\n"
         fs.appendFile(__dirname + "/osu/" + nom, line, function(err){
           if (err) throw err;
         })

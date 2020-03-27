@@ -54,3 +54,17 @@ export function addJSONBeforeElement(id, array) {
     anchor.insertBefore(h3Element, anchor.childNodes[0]);
   }
 }
+
+/**
+* Obtains common keys from previous object which are also in next object
+* @return Array
+*/
+export function diffObj(previous , next) {
+  if (previous !== undefined && next !== undefined){
+    // Create arrays of property names
+    let previousProps = Object.getOwnPropertyNames(previous);
+    let nextProps = Object.getOwnPropertyNames(next);
+  
+    return previousProps.filter(value => nextProps.includes(value));
+  }
+}

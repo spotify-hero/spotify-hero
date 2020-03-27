@@ -2,7 +2,7 @@ import * as THREE from './three.min';
 import ViewControls from './view_controls';
 import Light from './light';
 import GameNotes from './game_notes';
-import { getQueryParams } from './functions';
+import { getQueryParams, diffObj} from './functions';
 
 
 class GameView {
@@ -24,9 +24,6 @@ class GameView {
     this.yStartPoint = 50;
     this.yEndPoint = -110;
     this.xPos = [-45, -15, 15, 45];
-
-    //index pour tableau des sphères créées
-    this.idx = 0
 
     this.xRotation = -Math.atan(
       (this.zEndPoint - this.zStartPoint) / (this.yStartPoint - this.yEndPoint)
@@ -183,7 +180,7 @@ class GameView {
          } else {
            circle.material = this.note.materials[idx];
          }
-      }, 100);
+      }, 40);
 
       this.scene.add(circle);
     });
@@ -244,54 +241,79 @@ class GameView {
 
   addNoteRecord(){
     this.isRecord = true
-    window.addEventListener('keydown', (e) => {
-      console.log(e.keyCode)
-      let noteMaterial;
-      let position;
+    let interval = 20;
+    let temp;
+    let idx = 0;
+    
+    let cylinderMaterial = this.note.materials[0];
 
-      switch(e.keyCode){
-        case this.key.pos[0]:
-          position = 0;
-          break;
+    let startTime = undefined;
 
-        case this.key.pos[1]:
-            position = 1;
-            break;
+    let first = true;
 
-        case this.key.pos[2]:
-            position = 2;
-            break;
+    let dist = Math.sqrt(this.note.yVel * this.note.yVel + this.note.zVel * this.note.zVel );
 
-        case this.key.pos[3]:
-          position = 3;
-          break;
+    setInterval(() =>{
+      //compute the remaining keys from previous iteration
+      let diff = diffObj(temp,this.key._pressedVisually);
 
-        default:
-          position = 4;
+      //do for loop on common keys
+      //if first time : we create the note
+
+      if (first && diff != undefined && diff.length > 0 && diff[0] == "83"){
+
+        //compute startime of the note :
+        startTime = parseInt(Date.now());
+
+        let cylinderGeometry = new THREE.BoxGeometry(this.note.radius*2.5, 0 ,10);
+
+        this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+        //apply rotation to fit playground
+        this.cylinders[idx].rotateX(this.xRotation);
+        this.cylinders[idx].position.set(this.xPos[0],this.yEndPoint, this.zEndPoint);
+
+        this.scene.add(this.cylinders[idx]);
+
+        //prevent creating new note next time
+        first = false;
+
+      }else{
+        //if same keycode we make the note longer
+        if (diff != undefined && diff.length > 0 && diff[0] == "83"){
+
+          let alpha = 0.7;
+          //increase note size
+          this.cylinders[idx].scale.y += dist; 
+
+          //transformation due to symmetry scaling in threeJS
+          this.cylinders[idx].position.y += (this.note.yVel * alpha);
+          this.cylinders[idx].position.z += (this.note.zVel * alpha);
+
+        }else{
+          if (startTime !== undefined){
+            //we compute the duration of the note
+            let duration = parseInt(Date.now()) - startTime;
+            
+            //We can now push the not into the recordMap
+            this.recordMap.push({
+              "position" : 0,
+              "startTime": startTime - this.startTimeRecord,
+              "duration"  :  startTime - this.startTimeRecord + duration
+            });
+
+            console.log(this.recordMap);
+            
+            //we reintialize variables
+            idx += 1;
+            first = true;
+            startTime = undefined;
+          }
+
+        }
       }
-
-      //on calcule start en millis
-      var endDate   = new Date();
-      var startTime = endDate.getTime() - this.startTimeRecord;
-
-      if (position<4){
-        this.recordMap.push({
-          "position" : position,
-          "startTime": startTime,
-          "duration"  : 0
-        });
-      }
-
-      this.idx ++;
-
-      noteMaterial = this.note.materials[position];
-      this.spheres[this.idx] = new THREE.Mesh(this.note.geometry, noteMaterial);
-      this.scene.add(this.spheres[this.idx]);
-      this.spheres[this.idx].position.set(
-        this.xPos[position],
-        (this.yEndPoint),
-        (this.zEndPoint));
-    });
+      //sample status of keys
+      temp = this.key._pressedVisually; 
+    },interval);
   }
 
   setStartTimeRecord(){
