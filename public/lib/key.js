@@ -90,7 +90,7 @@ class Key {
 
   onKeyup(keyCode) {
     delete this._pressedVisually[keyCode];
-    let buffer = 300; // buffer for leniency
+    let buffer = 200; // buffer for leniency
     setTimeout( () => {
       delete this._pressed[keyCode];
     }, buffer);

@@ -50,7 +50,7 @@ class GameNotes {
         scoreTosave = scoreTosave.replace( /^\D+/g, '');
         document.getElementsByClassName('result-score')[0].innerHTML = "Your score : " + scoreTosave;
         document.getElementsByClassName('end-game')[0].className="end-game";
-      }, 3000)
+      }, 3000 + duration)
     }
   }
 

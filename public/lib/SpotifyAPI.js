@@ -119,7 +119,6 @@ export default class SpotifyAPI {
       },
       error: function(response) {
         console.error('play() failed');
-
         if (response && response.responseJSON.error.reason === "NO_ACTIVE_DEVICE" ) {
           alert('Spotify not playing 😭 ?\nJust play a song in Spotify and refresh this tab 💁‍♀️');
           window.open('https://open.spotify.com/', '_blank');
@@ -143,6 +142,10 @@ export default class SpotifyAPI {
         },
         error: (response) => {
           console.error('pause failed');
+          if (response && response.responseJSON.error.reason === "NO_ACTIVE_DEVICE" ) {
+            alert('Spotify not playing 😭 ?\nJust play a song in Spotify and refresh this tab 💁‍♀️');
+            window.open('https://open.spotify.com/', '_blank');
+          }
           reject(response.responseJSON.error.reason);
         }
       });
