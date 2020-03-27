@@ -7,7 +7,7 @@ import GameNotes from '../lib/game_notes';
 import GameView from '../lib/game_view';
 import Instructions from '../lib/instructions';
 import SpotifyAPI from '../lib/SpotifyAPI';
-import { getQueryParams, copyClipboard } from '../lib/functions';
+import { getQueryParams, copyClipboard, updateQueryStringParameter } from '../lib/functions';
 
 import '../css/game.scss';
 
@@ -48,7 +48,9 @@ class Game {
     }
 
     document.getElementsByClassName('record-pause')[0].onclick = function(){
-      window.location.search += '&mode=record';
+      let url = updateQueryStringParameter(window.location.href, "Trackdelay", 0);
+      url = updateQueryStringParameter(url, "mode", "record");
+      window.location = url;
     }
 
     document.getElementsByClassName('save-score')[0].onclick = function(){
@@ -155,7 +157,10 @@ class Game {
       if (getQueryParams().mode === 'record') {
         var filename = getQueryParams().Trackartist.split(' ').join('');
         filename += '_'+getQueryParams().Trackname.split(' ').join('')+'.osu';
-        this.sendOsuFile(filename, this.gameView.recordMap);
+
+        //deal with both cases : Spotify uri or filename
+        let uri = getQueryParams().TrackURI || getQueryParams().Filename;
+        this.sendOsuFile(filename, this.gameView.recordMap, this.audioMode, uri);
         console.log("Recorded beatmap sent to server");
         console.log(this.gameView.recordMap)
       } else {
@@ -250,7 +255,7 @@ class Game {
     this.beatmap = osuData;
   }
 
-  sendOsuFile(filename, recordMap){
+  sendOsuFile(filename, recordMap, tableName, uri){
     // AJAX request
     jquery.ajax({
       async: false,
@@ -263,11 +268,12 @@ class Game {
         jquery.ajax({
           async: false,
           type:'PUT',
-          url: '/database/track/'+getQueryParams().TrackURI,
+          url: '/database/'+tableName+'/'+ uri,
           headers: {'Content-Type': 'application/json'},
-          data: JSON.stringify({0: "OSUfile = '"+filename+"'"}),
+          data: JSON.stringify({0: "OSUfile = '"+filename+"', Trackdelay = "+2000+""}),
           success: function(response) {
             console.log('Chained AJAX successfull !');
+            //avertir l'utilisateur !!!
             window.location.replace("/select?table=track%20mp3&access_token="+getQueryParams().access_token);
           },
           error: function(response) {

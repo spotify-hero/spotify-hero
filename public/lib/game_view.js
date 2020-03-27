@@ -240,13 +240,23 @@ class GameView {
             this.yStartPoint,
             this.zStartPoint
           );
+
+          if (idx == notesCount) {
+            setTimeout(() => {
+              var scoreTosave = document.getElementsByClassName("score")[0]
+                .innerHTML;
+              scoreTosave = scoreTosave.replace(/^\D+/g, "");
+              document.getElementsByClassName("result-score")[0].innerHTML =
+                "Your score : " + scoreTosave;
+              document.getElementsByClassName("end-game")[0].className =
+                "end-game";
+            }, 7000 + songNote.duration);
+          }
         }, songNote.startTime + latency);
         this.gameNotes.setNoteCheck(
           songNote.position,
           songNote.startTime + latency,
-          songNote.duration,
-          notesCount,
-          idx
+          songNote.duration
         );
       });
     }

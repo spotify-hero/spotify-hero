@@ -20,16 +20,16 @@ class GameNotes {
     this.rockInput = 0;
   }
 
-  setNoteCheck(position, time, duration, notesCount, idx) {
+  setNoteCheck(position, time, duration) {
     let timeDelay = 1000 + this.musicDelay + time;
 
     setTimeout(
-      () => this.checkNote(position, duration, notesCount, idx),
+      () => this.checkNote(position, duration),
       timeDelay
     );
   }
 
-  checkNote(position, duration, notesCount, idx) {
+  checkNote(position, duration) {
     let startTime = Date.now();
     let endTime = startTime + duration;
     let interval = 20; //each 20 ms we add points if user press correct key during long note
@@ -43,15 +43,6 @@ class GameNotes {
 
       this.updateScore(position)
     },interval);
-
-    if(idx == notesCount){
-      setTimeout(()=>{
-        var scoreTosave = document.getElementsByClassName('score')[0].innerHTML
-        scoreTosave = scoreTosave.replace( /^\D+/g, '');
-        document.getElementsByClassName('result-score')[0].innerHTML = "Your score : " + scoreTosave;
-        document.getElementsByClassName('end-game')[0].className="end-game";
-      }, 3000 + duration)
-    }
   }
 
   updateScore(position){
