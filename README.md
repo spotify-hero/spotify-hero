@@ -11,12 +11,15 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Osu_new_logo.png" alt="Osu" height="145" width="145">
 </p>
 
+#### You can directly play [here](https://spotify-hero.herokuapp.com/) and follow this [Walktrhough](#play).
+
 ## Table of Contents
 
 - [Background](#background)
 - [Features](#features)
 - [Play](#play)
 - [Install](#install)
+- [Technologies](#technologies)
 - [Sources](#sources)
 - [License](#license)
 
@@ -61,6 +64,26 @@ Create the following file *run.sh* with the following scipt :
 #!/bin/bash
 PORT=8888 CLIENT_ID=YOUR_CLIENT_ID CLIENT_SECRET=YOUR_CLIENT_SECRET REDIRECT_URI=http://localhost:8888/spotify_cb/ nodemon index.js
 ```
+
+You can now launch the script 
+``` bash
+sh run.sh
+```
+
+And open your favorite brownser at http://localhost:8888/
+
+## Technologies
+During this project we used different libraries to create the game itself :
+
+- **Vanilla Javascript** was used throughout much of this project. The object oriented programming aspects were utilized with classes to separate and organize the code.
+
+- **Three.js** library was used for all the 3D animation throughout the game.
+
+But also a tools to make our app faster :
+
+- **Travis CI** to check if our build were correct
+- **Heroku** to deploy our app on the internet
+- **Webpack** to create a bundle of the code in order to reduce size and thus loading time for end-users
 
 ## Sources
 First, we are very grateful to [@jyschwrtz](https://github.com/jyschwrtz) who allowed us, with his projet [JS-Hero](https://github.com/jyschwrtz/JS-Hero), to start from a solid codebase using [three.js](https://threejs.org/)
