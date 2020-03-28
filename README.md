@@ -11,7 +11,7 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Osu_new_logo.png" alt="Osu" height="145" width="145">
 </p>
 
-#### You can directly play [here](https://spotify-hero.herokuapp.com/) and follow this [Walktrhough](#play).
+#### You can directly play [here](https://spotify-hero.herokuapp.com/) and follow this [Walkthrough](#play).
 
 ## Table of Contents
 
@@ -35,8 +35,8 @@ We decided to start coding **spotify-hero** during a Web Development course at [
 
 ## Features
 * play osu!mania/Guitar-Hero style game with 4 rows of incoming notes
-* use Spotify account to play copyrighted music 
-* allow users to create their own beatmpas : recording notes played by user and associate spotify tracks
+* use your Spotify account to play copyrighted music
+* allow users to create their own beatmaps : recording notes played by user and associate spotify tracks
 
 ## Play
 
@@ -53,7 +53,7 @@ We decided to start coding **spotify-hero** during a Web Development course at [
 > First you have to set-up your developper account [here](https://developer.spotify.com/), create a new app (i.e "spotify-hero") and defined a redirect URL : http://localhost:8888/spotify_cb/
 
 ```bash
-git clone https://github.com/spotify-hero/spotify-hero-Hero.git
+git clone https://github.com/spotify-hero/spotify-hero.git
 cd spotify-hero-Hero
 npm install
 ```
@@ -62,15 +62,15 @@ npm install
 Create the following file *run.sh* with the following scipt :
 ``` bash
 #!/bin/bash
-PORT=8888 CLIENT_ID=YOUR_CLIENT_ID CLIENT_SECRET=YOUR_CLIENT_SECRET REDIRECT_URI=http://localhost:8888/spotify_cb/ nodemon index.js
+PORT=8888 CLIENT_ID=xxx CLIENT_SECRET=xxx REDIRECT_URI=http://localhost:8888/spotify_cb/ nodemon index.js
 ```
 
 You can now launch the script 
 ``` bash
-sh run.sh
+./run.sh
 ```
 
-And open your favorite brownser at http://localhost:8888/
+And open your favorite browser at http://localhost:8888/
 
 ## Technologies
 During this project we used different libraries to create the game itself :
@@ -79,9 +79,9 @@ During this project we used different libraries to create the game itself :
 
 - **Three.js** library was used for all the 3D animation throughout the game.
 
-But also a tools to make our app faster :
+But also tools to make our app faster :
 
-- **Travis CI** to check if our build were correct
+- **Travis CI** to run unit & integration tests
 - **Heroku** to deploy our app on the internet
 - **Webpack** to create a bundle of the code in order to reduce size and thus loading time for end-users
 
