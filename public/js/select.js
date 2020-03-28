@@ -1,118 +1,148 @@
-import jquery from '../lib/jquery.min';
-import { getQueryParams } from '../lib/functions';
-import SpotifyAPI from '../lib/SpotifyAPI';
+import jquery from "../lib/jquery.min";
+import { getQueryParams } from "../lib/functions";
+import SpotifyAPI from "../lib/SpotifyAPI";
 
-import '../css/select.scss';
+import "../css/select.scss";
 
 document.addEventListener("DOMContentLoaded", () => {
   let spAPI = new SpotifyAPI();
-  let array = getQueryParams().table.split(' ');
+  let array = getQueryParams().table.split(" ");
   let access_token = getQueryParams().access_token || undefined;
 
-  array.forEach((table)=> {
+  //for each database (track & mp3 for now) create cards
+  array.forEach(table => {
     addTrackHTMLBeforeElement(table);
   });
 
-  document.getElementById('searchTerm').onkeypress = (()=>{filterList('searchTerm')});
-  document.getElementById('searchTerm').onkeyup = (()=>{filterList('searchTerm')});
-  document.getElementById('searchButton').onclick = (()=>{filterList('searchTerm')});
+  document.getElementById("searchTerm").onkeypress = () => {
+    filterList("searchTerm");
+  };
+  document.getElementById("searchTerm").onkeyup = () => {
+    filterList("searchTerm");
+  };
+  document.getElementById("searchButton").onclick = () => {
+    filterList("searchTerm");
+  };
   console.log("Successfully loaded");
 
-  jquery('#cards').on('click','.card',function(){
+  //on click on a card, set Volume of Spotify to 0 and load the track on spotify -> display loading animation
+  jquery("#cards").on("click", ".card", function() {
     let trackURI = jquery(this).attr("URI");
-    if (trackURI.includes("spotify")){
-      spAPI.setVolume(access_token, 0)
-      .then(() => {
-        jquery(".loader-wrapper").slideDown();
-        jquery(".cards").fadeOut(400);
-        jquery(".search").fadeOut(400);
-  
-        setTimeout( ()=>{
-          spAPI.play(access_token, trackURI, null);
-        },100);
-  
-        setTimeout(()=>{
-          window.location.href = jquery(this).attr("gameLink");
-        }, 3000);
+    if (trackURI.includes("spotify")) {
+      spAPI
+        .setVolume(access_token, 0) //spotify now silent
+        .then(() => {
+          //animation to distract user while caching spotify
+          jquery(".loader-wrapper").slideDown();
+          jquery(".cards").fadeOut(400);
+          jquery(".search").fadeOut(400);
 
-      })
-      .catch((reject) => {
-        if (reject == "NO_ACTIVE_DEVICE" ) {
-          alert('Spotify not playing 😭 ?\nJust play a song in Spotify and try again 💁‍♀️');
-          window.open('https://open.spotify.com/', '_blank');
-        }
-      });
+          //caching spotify track silently
+          setTimeout(() => {
+            spAPI.play(access_token, trackURI, null);
+          }, 100);
 
-    }else{
+          //redirect user to the game once track cached
+          setTimeout(() => {
+            window.location.href = jquery(this).attr("gameLink");
+          }, 3000);
+        })
+        .catch(reject => {
+          console.log("error : should display alert to user from play request");
+        });
+    } else {
       window.location.href = jquery(this).attr("gameLink");
     }
   });
 });
 
-function filterList(inputId){
-  var words = document.getElementById(inputId).value.toLowerCase().split(" ");
-  // on enleve les espaces
+/** Search among the cards based on artist & track names
+ *  Change property of found cards from showed to hidden
+ * @param String inputId
+ */
+function filterList(inputId) {
+  var words = document
+    .getElementById(inputId)
+    .value.toLowerCase()
+    .split(" ");
+  // removing spaces
   words = words.filter(Boolean);
 
-  jquery(".card").each(function(){
-    let text = jquery(this).attr("title").toLowerCase();
+  jquery(".card").each(function() {
+    let text = jquery(this)
+      .attr("title")
+      .toLowerCase();
     let found = false;
 
-    if (words.every(res => text.includes(res))>0){
+    if (words.every(res => text.includes(res)) > 0) {
       found = true;
     }
-    if (found || words.length == 0 || words == undefined){
+    if (found || words.length == 0 || words == undefined) {
       jquery(this).show();
-    }else{
-     jquery(this).hide();
+    } else {
+      jquery(this).hide();
     }
-  })
+  });
 }
 
 /**
-* Same as addTableHTMLBeforeElement but for the database table 'track' only
-* Allows to insert links and images for specific elements
-*/
+ * Same as addTableHTMLBeforeElement but for the database table 'track' only
+ * Allows to insert links and images for specific elements
+ */
 function addTrackHTMLBeforeElement(tableName) {
+  //retrieve entire table from database
   jquery.ajax({
-    type:'GET',
-    url: '/database/' + tableName,
+    type: "GET",
+    url: "/database/" + tableName,
     success: function(array) {
       let table = JSON.parse(array);
-      let data = {audio : tableName};
+      let data = { audio: tableName };
 
       data.UserURI = getQueryParams().UserURI || undefined;
       data.access_token = getQueryParams().access_token || undefined;
 
       let baseLink = "/game?" + encodeQueryData(data);
-            
-      if (typeof table !== 'undefined' && table.length > 0) {
-        
-        table.forEach((line) => {
+
+      if (typeof table !== "undefined" && table.length > 0) {
+        table.forEach(line => {
           let title = line.Trackname;
           let artist = line.Trackartist;
           let cover = line.Trackcover;
           let trackURI = line.TrackURI || line.Filename;
           let link = "";
 
-          Object.keys(line).forEach((key)=> {
-            if (key==="TrackURI" || key=="Filename") {
+          Object.keys(line).forEach(key => {
+            if (key === "TrackURI" || key == "Filename") {
               link = baseLink;
-              Object.keys(line).forEach((key)=> {
-                link += '&'+encodeURIComponent(key)+"="+encodeURIComponent(line[key]);
+              Object.keys(line).forEach(key => {
+                link +=
+                  "&" +
+                  encodeURIComponent(key) +
+                  "=" +
+                  encodeURIComponent(line[key]);
               });
             }
           });
 
-          let a1 = "<div class=card><div class=card-image><img src="+ cover + ">";
-          a1 += "</div><div class=card-body><div class=card-date><time>" + artist + "</time></div><div class=card-title>";
-          a1 += "<h2>" + title + "</h2></div><div class=card-excerpt></div></div></a></div>"
+          //create HTML Element (should improve this...)
+          let a1 =
+            "<div class=card><div class=card-image><img src=" + cover + ">";
+          a1 +=
+            "</div><div class=card-body><div class=card-date><time>" +
+            artist +
+            "</time></div><div class=card-title>";
+          a1 +=
+            "<h2>" +
+            title +
+            "</h2></div><div class=card-excerpt></div></div></a></div>";
 
-          jquery('#cards').append(jquery(a1).attr({
-            title: title + " " + artist,
-            URI: trackURI,
-            gameLink: link
-          }));
+          jquery("#cards").append(
+            jquery(a1).attr({
+              title: title + " " + artist,
+              URI: trackURI,
+              gameLink: link
+            })
+          );
         });
       }
     }
@@ -122,6 +152,6 @@ function addTrackHTMLBeforeElement(tableName) {
 function encodeQueryData(data) {
   const ret = [];
   for (let d in data)
-    ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
-  return ret.join('&');
+    ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
+  return ret.join("&");
 }

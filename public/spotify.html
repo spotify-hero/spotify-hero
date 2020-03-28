@@ -1,159 +1,168 @@
-  <!-------------------------------------------------------------------------->
-  <!--                    SDK Spotify Web Player code                       -->
-  <!-------------------------------------------------------------------------->
-  <script type="text/javascript" src="/build/spotify-bundle.js"></script>
-  <script>
-    var params = (() => {
-      var qs = document.location.search.split('+').join(' ');
-      var params = {},
-          tokens,
-          re = /[?&]?([^=]+)=([^&]*)/g;
-      while (tokens = re.exec(qs)) {
-          params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-      }
+<!-------------------------------------------------------------------------->
+<!--                    SDK Spotify Web Player code                       -->
+<!-------------------------------------------------------------------------->
+<script type="text/javascript" src="/build/spotify-bundle.js"></script>
+<script>
+  var params = (() => {
+    var qs = document.location.search.split("+").join(" ");
+    var params = {},
+      tokens,
+      re = /[?&]?([^=]+)=([^&]*)/g;
+    while ((tokens = re.exec(qs))) {
+      params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+    }
     return params;
   })();
 
-    var access_token = params.access_token,
-      refresh_token = params.refresh_token,
-      error = params.error;
+  var access_token = params.access_token,
+    refresh_token = params.refresh_token,
+    error = params.error;
 
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
-        getOAuthToken: cb => { cb(access_token); }
-      });
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    const player = new Spotify.Player({
+      name: "Web Playback SDK Quick Start Player",
+      getOAuthToken: cb => {
+        cb(access_token);
+      }
+    });
 
-      // Error handling
-      player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      player.addListener('authentication_error', ({ message }) => { console.error(message); });
-      player.addListener('account_error', ({ message }) => { console.error(message); });
-      player.addListener('playback_error', ({ message }) => { console.error(message); });
+    // Error handling
+    player.addListener("initialization_error", ({ message }) => {
+      console.error(message);
+    });
+    player.addListener("authentication_error", ({ message }) => {
+      console.error(message);
+    });
+    player.addListener("account_error", ({ message }) => {
+      console.error(message);
+    });
+    player.addListener("playback_error", ({ message }) => {
+      console.error(message);
+    });
 
-      // Playback status updates
-      player.addListener('player_state_changed', state => { console.log(state); });
+    // Playback status updates
+    player.addListener("player_state_changed", state => {
+      console.log(state);
+    });
 
-      // Ready
-      player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
+    // Ready
+    player.addListener("ready", ({ device_id }) => {
+      console.log("Ready with Device ID", device_id);
+    });
 
-      // Not Ready
-      player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-      });
+    // Not Ready
+    player.addListener("not_ready", ({ device_id }) => {
+      console.log("Device ID has gone offline", device_id);
+    });
 
-      // Connect to the player!
-      player.connect();
-    };
+    // Connect to the player!
+    player.connect();
+  };
+</script>
+<!-------------------------------------------------------------------------->
+
+<!-------------------------------------------------------------------------->
+<!--                                  body                                -->
+<!-------------------------------------------------------------------------->
+<div class="container">
+  <!-- Blocs cachés par défaut, puis activés par jQuery -->
+  <div id="login">
+    <!-- Avant login -->
+    <h1>Start by linking your Spotify account</h1>
+    <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+  </div>
+
+  <div id="loggedin">
+    <!--  Après login -->
+    <div id="user-profile"></div>
+
+    <div id="searchbar">
+      <h3>Rechercher un artiste:</h3>
+      <form action="javascript:void(0);" method="get" class="form-example">
+        <div class="form-example">
+          <input type="text" id="keywords" required />
+          <input type="button" id="keywords_button" value="Rechercher" />
+        </div>
+      </form>
+
+      <h3>Rechercher une trackID:</h3>
+      <form action="javascript:void(0);" method="get" class="form-example">
+        <div class="form-example">
+          <input type="text" id="trackID" required />
+          <input type="button" id="trackID_button" value="Rechercher" />
+        </div>
+      </form>
+
+      <p id="ValeurRecherchee"></p>
+      <div id="pochettes"></div>
+
+      <div id="plus" style="margin-bottom: 30px">
+        <!-- Bloc avec fonctionnalités bonus de l'API -->
+        <h3>Musique en cours</h3>
+        <div id="currently-playing"></div>
+
+        <h3>Contrôles</h3>
+        <div id="playback-controls"></div>
+        <button class="btn-play" id="button-previous">&#8249;</button>
+        <button class="btn-pause" id="button-pause">&#10074;&#10074;</button>
+        <button class="btn-play" id="button-play">&#9658;</button>
+        <button class="btn-play" id="button-next">&#8250;</button>
+      </div>
+    </div>
+
+    <button
+      style="position:fixed; top:600px; right:100px;"
+      id="button-database"
+    ></button>
+  </div>
+  <!-------------------------------------------------------------------------->
+
+  <!-------------------------------------------------------------------------->
+  <!--                    Templates Handlebars                              -->
+  <!-------------------------------------------------------------------------->
+  <script id="user-profile-template" type="text/x-handlebars-template">
+    <h3>Logged in as {{display_name}}</h3>
+    <div class="media">
+      <div class="pull-left">
+        <img class="media-object" width="150" src="{{images.0.url}}" />
+      </div>
+      <div class="media-body">
+        <dl class="dl-horizontal">
+          <dt>Display name</dt><dd class="clearfix">{{display_name}}</dd>
+          <dt>Id</dt><dd>{{id}}</dd>
+          <dt>Email</dt><dd>{{email}}</dd>
+          <dt>Spotify URI</dt><dd><a href="{{external_urls.spotify}}">{{external_urls.spotify}}</a></dd>
+          <dt>Link</dt><dd><a href="{{href}}">{{href}}</a></dd>
+          <!-- <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd> -->
+          <dt>Country</dt><dd>{{country}}</dd>
+
+          <dt>Token</dt><dd>
+            <input type="text" value="" id="oauth-access">
+            <button class="btn btn-default" onclick="copyClipboard('oauth-access')">Copy</button>
+            <input type="button" class="btn btn-default" onclick="refresh()" value="Refresh">
+          </dd>
+
+        </dl>
+      </div>
+    </div>
+  </script>
+
+  <script id="currently-playing-template" type="text/x-handlebars-template">
+      <div class="media">
+      <div class="pull-left">
+        <img id="playing_album" class="media-object" width="150" src="{{item.album.images.0.url}}" />
+      </div>
+      <div class="media-body">
+        <dl class="dl-horizontal">
+          <dt>En cours ?</dt><dd id="is_playing">{{is_playing}}</dd>
+          <dt>Titre</dt><dd id="playing_title">{{item.name}}</dd>
+          <dt>Spotify ID</dt><dd id="playing_id">{{item.id}}</dd>
+          <dt>Artiste</dt><dd id="playing_artist">{{item.artists.0.name}}</dd>
+          <dt>Temps écoulé (ms)</dt><dd id="playing_progress">{{progress_ms}}</dd>
+          <dt>Popularité</dt><dd id="playing_populariry">{{item.popularity}}</dd>
+        </dl>
+      </div>
+    </div>
   </script>
   <!-------------------------------------------------------------------------->
-
-
-
-  <!-------------------------------------------------------------------------->
-  <!--                                  body                                -->
-  <!-------------------------------------------------------------------------->
-    <div class="container">
-
-      <!-- Blocs cachés par défaut, puis activés par jQuery -->
-      <div id="login"> <!-- Avant login -->
-        <h1>Start by linking your Spotify account</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
-      </div>
-
-      <div id="loggedin"><!--  Après login -->
-        <div id="user-profile">
-        </div>
-
-        <div id="searchbar">
-          <h3>Rechercher un artiste: </h3>
-          <form action="javascript:void(0);" method="get" class="form-example">
-            <div class="form-example">
-              <input type="text"   id="keywords" required>
-              <input type="button" id="keywords_button" value="Rechercher" >
-            </div>
-          </form>
-
-          <h3>Rechercher une trackID: </h3>
-          <form action="javascript:void(0);" method="get" class="form-example">
-            <div class="form-example">
-              <input type="text"   id="trackID" required>
-              <input type="button" id="trackID_button" value="Rechercher" >
-            </div>
-          </form>
-
-        <p id="ValeurRecherchee"></p>
-        <div id="pochettes"></div>
-
-
-        <div id="plus" style="margin-bottom: 30px"> <!-- Bloc avec fonctionnalités bonus de l'API -->
-          <h3>Musique en cours</h3>
-          <div id="currently-playing"></div>
-
-          <h3>Contrôles</h3>
-          <div id="playback-controls"></div>
-          <button  class ="btn-play" id="button-previous">&#8249;</button>
-          <button  class ="btn-pause" id="button-pause">&#10074;&#10074;</button>
-          <button  class ="btn-play" id="button-play">&#9658;</button>
-          <button  class ="btn-play" id="button-next">&#8250;</button>
-        </div>
-
-      </div>
-
-      <button style="position:fixed; top:600px; right:100px;" id="button-database"></button>
-    </div>
-    <!-------------------------------------------------------------------------->
-
-
-
-
-    <!-------------------------------------------------------------------------->
-    <!--                    Templates Handlebars                              -->
-    <!-------------------------------------------------------------------------->
-    <script id="user-profile-template" type="text/x-handlebars-template">
-      <h3>Logged in as {{display_name}}</h3>
-      <div class="media">
-        <div class="pull-left">
-          <img class="media-object" width="150" src="{{images.0.url}}" />
-        </div>
-        <div class="media-body">
-          <dl class="dl-horizontal">
-            <dt>Display name</dt><dd class="clearfix">{{display_name}}</dd>
-            <dt>Id</dt><dd>{{id}}</dd>
-            <dt>Email</dt><dd>{{email}}</dd>
-            <dt>Spotify URI</dt><dd><a href="{{external_urls.spotify}}">{{external_urls.spotify}}</a></dd>
-            <dt>Link</dt><dd><a href="{{href}}">{{href}}</a></dd>
-            <!-- <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd> -->
-            <dt>Country</dt><dd>{{country}}</dd>
-
-            <dt>Token</dt><dd>
-              <input type="text" value="" id="oauth-access">
-              <button class="btn btn-default" onclick="copyClipboard('oauth-access')">Copy</button>
-              <input type="button" class="btn btn-default" onclick="refresh()" value="Refresh">
-            </dd>
-
-          </dl>
-        </div>
-      </div>
-    </script>
-
-    <script id="currently-playing-template" type="text/x-handlebars-template">
-        <div class="media">
-        <div class="pull-left">
-          <img id="playing_album" class="media-object" width="150" src="{{item.album.images.0.url}}" />
-        </div>
-        <div class="media-body">
-          <dl class="dl-horizontal">
-            <dt>En cours ?</dt><dd id="is_playing">{{is_playing}}</dd>
-            <dt>Titre</dt><dd id="playing_title">{{item.name}}</dd>
-            <dt>Spotify ID</dt><dd id="playing_id">{{item.id}}</dd>
-            <dt>Artiste</dt><dd id="playing_artist">{{item.artists.0.name}}</dd>
-            <dt>Temps écoulé (ms)</dt><dd id="playing_progress">{{progress_ms}}</dd>
-            <dt>Popularité</dt><dd id="playing_populariry">{{item.popularity}}</dd>
-          </dl>
-        </div>
-      </div>
-    </script>
-    <!-------------------------------------------------------------------------->
-    
+</div>

@@ -1,52 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>TapTapHERO</title>
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <meta property="og:title" content="TapTap-Hero" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="taptap-hero.com" />
+    <meta property="og:site_name" content="TapTap-Hero" />
+    <meta
+      property="og:description"
+      content="Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !"
+    />
 
-    <meta property="og:title" content="TapTap-Hero">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="taptap-hero.com">
-    <meta property="og:site_name" content="TapTap-Hero">
-    <meta property="og:description" content="Play Guitar Hero with your favorite Spotify playlist and custom music scores from the worldwide .osu database !">
-
-    <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
-
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png" />
 
     <!------       Custom stylesheets       ------>
     <script type="text/javascript" src="/build/{{name}}-bundle.js"></script>
-    <link rel="stylesheet" href="/build/{{name}}-bundle.css">
+    <link rel="stylesheet" href="/build/{{name}}-bundle.css" />
     <!-------------------------------------------->
+  </head>
 
-</head>
+  <body>
+    <header>
+      <div class="navbar container-fluid">
+        <div class="navbar-header">
+          <a href="/">
+            <img
+              src="img/logo.png"
+              id="navbar-logo"
+              style="max-width: 5%; height: auto !important;"
+              alt="spotify-hero"
+            />
+          </a>
+        </div>
 
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/select">Select</a></li>
+          <li><a href="/game">Game</a></li>
+        </ul>
+      </div>
+    </header>
 
-<body>
-<header>
-<div class="navbar container-fluid">
-
-    <div class="navbar-header">
-    <a href="/">
-    <img src="img/logo.png" id="navbar-logo" style="max-width: 5%; height: auto !important;" alt="spotify-hero">
-    </a>
-    </div>
-
-    <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/select">Select</a></li>
-        <li><a href="/game">Game</a></li>
-    </ul>
-
-</div>
-</header>
-
-
-  {{{body}}}
-
-
-</body>
+    {{{body}}}
+  </body>
 </html>

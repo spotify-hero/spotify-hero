@@ -1,48 +1,57 @@
- <!-- Video playing in background at z-index = -3 -->
+<!-- Video playing in background at z-index = -3 -->
 <video autoplay muted loop>
-<source src="img/home-video.mp4" type="video/mp4">
+  <source src="img/home-video.mp4" type="video/mp4" />
 </video>
 
- <!-- Homepage background at z-index = -2 so that it can cover the right-part of the video -->
-<img src="/img/home-background.png" id="home-background">
+<!-- Homepage background at z-index = -2 so that it can cover the right-part of the video -->
+<img src="/img/home-background.png" id="home-background" />
 
 <!-- Black transparent cover on top at z-index = -1 -->
 <div id="black-cover"></div>
 
-
 <!-- All other elements at z-index = 0 -->
 <div class="container">
-    <div class="row">
-
+  <div class="row">
     <!--    Left column with homepage background and content   -->
     <div class="col-lg-6">
+      <div class="row" id="slogan">Just play it.</div>
+      <hr id="divider" />
 
-        <div class="row" id="slogan">Just play it.</div>
-        <hr id="divider">
+      <div class="row content-center" id="subtext">
+        The amazing crossover between Spotify and osu!<br />
+        games is back. Play millions of track, record your<br />
+        own and share your best scores with your friends
+      </div>
 
-        <div class="row content-center" id="subtext">
-            The amazing crossover between Spotify and osu!<br>
-            games is back. Play millions of track, record your<br>
-            own and share your best scores with your friends
-        </div>
-        
-        <!--    Rainbow glowing button    -->
-        <div class="row content-center">
-              <button class="glow-on-hover capitalize align-center" type="button" onclick="window.location.href='/login'">Play</button>
-        </div>
+      <!--    Rainbow glowing button LOGIN    -->
+      <div class="row content-center">
+        <button
+          class="glow-on-hover capitalize align-center"
+          type="button"
+          onclick="window.location.href='/login'"
+        >
+          Play
+        </button>
+      </div>
 
-        <br>
+      <br />
 
-        <div class="row content-center">
-          <button class="glow-on-hover capitalize align-center" type="button" onclick="window.location.href='/select?table=mp3'">try me*</button>
-        </div>
-        <div class="row content-center">
-          <p>*No Spotify account needed</p>
-        </div>
+      <!--    Rainbow glowing button TRY-ME    -->
+      <div class="row content-center">
+        <button
+          class="glow-on-hover capitalize align-center"
+          type="button"
+          onclick="window.location.href='/select?table=mp3'"
+        >
+          try me*
+        </button>
+      </div>
+      <div class="row content-center">
+        <p>*No Spotify account needed</p>
+      </div>
     </div>
 
     <!--    Right column empty because video plays in background   -->
     <div class="col-lg-6"></div>
-    </div>
+  </div>
 </div>
-

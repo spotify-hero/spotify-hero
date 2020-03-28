@@ -1,17 +1,17 @@
-@import '../lib/bootstrap.min.css';
-@import '../lib/navbar.scss';
+@import "../lib/bootstrap.min.css";
+@import "../lib/navbar.scss";
 
 /*********************
 VARIABLES
 **********************/
-$link-color:white;
-$link-hover:#00aedb;
-$link-vertical-padding:15px;      //Controls Menu top & bottom padding
-$link-horizontal-padding:20px;    //Contols Menu left & right padding
-$menu-background: #353535;        //Control Menu Color Scheme
+$link-color: white;
+$link-hover: #00aedb;
+$link-vertical-padding: 15px; //Controls Menu top & bottom padding
+$link-horizontal-padding: 20px; //Contols Menu left & right padding
+$menu-background: #353535; //Control Menu Color Scheme
 
-
-#login, #loggedin{
+#login,
+#loggedin {
   display: none;
 }
 .text-overflow {

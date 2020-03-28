@@ -1,19 +1,22 @@
-import * as THREE from './three.min';
-import OrbitControls from './OrbitControls.js';
+import * as THREE from "./three.min";
+import OrbitControls from "./OrbitControls.js";
 
 class ViewControls {
   constructor(camera, renderer) {
     this.camera = camera;
     this.renderer = renderer;
 
-    this.displayEl = document.getElementsByClassName('game-display')[0];
-    this.lookAroundEl = document.getElementsByClassName('look-around')[0];
-    this.lookAroundInstructionsEl =
-      document.getElementsByClassName('look-around-instructions')[0];
+    this.displayEl = document.getElementsByClassName("game-display")[0];
+    this.lookAroundEl = document.getElementsByClassName("look-around")[0];
+    this.lookAroundInstructionsEl = document.getElementsByClassName(
+      "look-around-instructions"
+    )[0];
 
     this.lookAroundEl.onclick = this.toggleLookAround.bind(this);
-    this.controls =
-      new THREE.OrbitControls(this.camera, this.renderer.domElement);
+    this.controls = new THREE.OrbitControls(
+      this.camera,
+      this.renderer.domElement
+    );
     this.controls.enabled = false;
   }
 
@@ -23,7 +26,8 @@ class ViewControls {
     this.lookAroundInstructionsEl.className = "look-around-instructions";
     console.log(this.lookAroundInstructionsEl);
     setTimeout(() => {
-      this.lookAroundInstructionsEl.className = "look-around-instructions hidden";
+      this.lookAroundInstructionsEl.className =
+        "look-around-instructions hidden";
     }, 2000);
   }
 
@@ -46,7 +50,6 @@ class ViewControls {
   toggleLookAround() {
     return this.controls.enabled ? this.fixView() : this.lookAround();
   }
-
 }
 
 export default ViewControls;

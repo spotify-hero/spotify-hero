@@ -4,12 +4,12 @@ class GameNotes {
     this.musicDelay = musicDelay;
     this.key = key;
 
-    this.scoreEl = document.getElementsByClassName('score')[0];
-    this.maxStreakEl = document.getElementsByClassName('max-streak')[0];
-    this.streakEl = document.getElementsByClassName('streak')[0];
-    this.multiplierEl = document.getElementsByClassName('multiplier')[0];
-    this.gameProgressEl = document.getElementsByClassName('game-progress')[0];
-    this.rockInputEl = document.getElementsByClassName('rock-input')[0];
+    this.scoreEl = document.getElementsByClassName("score")[0];
+    this.maxStreakEl = document.getElementsByClassName("max-streak")[0];
+    this.streakEl = document.getElementsByClassName("streak")[0];
+    this.multiplierEl = document.getElementsByClassName("multiplier")[0];
+    this.gameProgressEl = document.getElementsByClassName("game-progress")[0];
+    this.rockInputEl = document.getElementsByClassName("rock-input")[0];
 
     this.score = 0;
     this.maxStreak = 0;
@@ -23,10 +23,7 @@ class GameNotes {
   setNoteCheck(position, time, duration) {
     let timeDelay = 1000 + this.musicDelay + time;
 
-    setTimeout(
-      () => this.checkNote(position, duration),
-      timeDelay
-    );
+    setTimeout(() => this.checkNote(position, duration), timeDelay);
   }
 
   checkNote(position, duration) {
@@ -34,21 +31,21 @@ class GameNotes {
     let endTime = startTime + duration;
     let interval = 20; //each 20 ms we add points if user press correct key during long note
 
-    let check = setInterval(() =>{
+    let check = setInterval(() => {
       startTime += interval;
 
-      if(startTime > endTime){
+      if (startTime > endTime) {
         clearInterval(check);
       }
 
-      this.updateScore(position)
-    },interval);
+      this.updateScore(position);
+    }, interval);
   }
 
-  updateScore(position){
+  updateScore(position) {
     let res = false;
     if (this.key.isDown(this.key.pos[position])) {
-      res = true
+      res = true;
       if (this.streak === 30) {
         this.multiplier = 4;
       } else if (this.streak === 20) {
@@ -66,20 +63,22 @@ class GameNotes {
       this.streak = 0;
       this.misses += 1;
       this.multiplier = 1;
-      if (this.rockInput > -20 ) {
+      if (this.rockInput > -20) {
         this.rockInput -= 1;
       }
       if (this.rockInput < -10) {
-        this.gameProgressEl.className = 'game-progress red';
-        setTimeout(() => {this.gameProgressEl.className = 'game-progress';}, 75);
+        this.gameProgressEl.className = "game-progress red";
+        setTimeout(() => {
+          this.gameProgressEl.className = "game-progress";
+        }, 75);
       }
     }
     if (this.rockInput > 19) {
-      this.gameProgressEl.className = 'game-progress green';
+      this.gameProgressEl.className = "game-progress green";
     } else if (this.rockInput > 10) {
-      this.gameProgressEl.className = 'game-progress yellow';
+      this.gameProgressEl.className = "game-progress yellow";
     } else if (this.rockInput > -10 && this.rockInput < 10) {
-      this.gameProgressEl.className = 'game-progress';
+      this.gameProgressEl.className = "game-progress";
     }
 
     if (this.streak > this.maxStreak) {
@@ -90,7 +89,7 @@ class GameNotes {
     this.maxStreakEl.innerHTML = `Max Streak: ${this.maxStreak}`;
     this.streakEl.innerHTML = `Streak: ${this.streak}`;
     this.multiplierEl.innerHTML = `Multiplier: ${this.multiplier}X`;
-    this.rockInputEl.value = this.rockInput;//('value', `${this.rockInput}`);
+    this.rockInputEl.value = this.rockInput; //('value', `${this.rockInput}`);
   }
 }
 

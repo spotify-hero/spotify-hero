@@ -1,28 +1,27 @@
-import jquery from './jquery.min';
-import { getQueryParams } from './functions';
+import jquery from "./jquery.min";
+import { getQueryParams } from "./functions";
 
 export default class SpotifyAPI {
-
   // Demande un nouvel acces_token (valable 1h seulement) grace au refresh token
   refresh() {
     var params = getQueryParams();
 
     if (params.error) {
-      alert('There was an error during the authentication');
+      alert("There was an error during the authentication");
     } else {
-
-      jquery.ajax({
-        url: '/refresh_token',
-        data: {
-          'refresh_token': params.refresh_token
-        }
-      }).done(function(data) {
-
-          var field = document.getElementById('oauth-access');
+      jquery
+        .ajax({
+          url: "/refresh_token",
+          data: {
+            refresh_token: params.refresh_token
+          }
+        })
+        .done(function(data) {
+          var field = document.getElementById("oauth-access");
           if (field != null) {
             field.value = data.access_token;
           } else {
-            console.log('refresh: Could not write in oauth-access')
+            console.log("refresh: Could not write in oauth-access");
           }
         });
     }
@@ -30,14 +29,14 @@ export default class SpotifyAPI {
 
   pause(access_token) {
     jquery.ajax({
-      type: 'PUT',
-      url: 'https://api.spotify.com/v1/me/player/pause',
+      type: "PUT",
+      url: "https://api.spotify.com/v1/me/player/pause",
       headers: {
-        'Authorization': 'Bearer ' + access_token
+        Authorization: "Bearer " + access_token
       },
-      data : "",
+      data: "",
       success: function(response) {
-        console.log('pause() successfully executed');
+        console.log("pause() successfully executed");
       }
     });
     this.updateCurrentPlaying(access_token);
@@ -45,17 +44,17 @@ export default class SpotifyAPI {
 
   resume(access_token) {
     jquery.ajax({
-      type: 'PUT',
-      url: 'https://api.spotify.com/v1/me/player/play',
+      type: "PUT",
+      url: "https://api.spotify.com/v1/me/player/play",
       headers: {
-        'Authorization': 'Bearer ' + access_token
+        Authorization: "Bearer " + access_token
       },
-      data : "",
-      success: (res) => {
-        console.log('resume() successfully executed');
+      data: "",
+      success: res => {
+        console.log("resume() successfully executed");
       },
-      fail: (res) => {
-        console.error('resume() failed :');
+      fail: res => {
+        console.error("resume() failed :");
         console.error(res.responseText);
       }
     });
@@ -64,14 +63,14 @@ export default class SpotifyAPI {
 
   previous(access_token) {
     jquery.ajax({
-      type: 'POST',
-      url: 'https://api.spotify.com/v1/me/player/previous',
+      type: "POST",
+      url: "https://api.spotify.com/v1/me/player/previous",
       headers: {
-        'Authorization': 'Bearer ' + access_token
+        Authorization: "Bearer " + access_token
       },
-      data : "",
+      data: "",
       success: function(response) {
-        console.log('previous() successfully executed');
+        console.log("previous() successfully executed");
       }
     });
     this.updateCurrentPlaying(access_token);
@@ -79,11 +78,11 @@ export default class SpotifyAPI {
 
   updateCurrentPlaying(access_token) {
     jquery.ajax({
-      type: 'GET',
+      type: "GET",
       timeout: 1000,
-      url: 'https://api.spotify.com/v1/me/player/currently-playing',
+      url: "https://api.spotify.com/v1/me/player/currently-playing",
       headers: {
-        'Authorization': 'Bearer ' + access_token
+        Authorization: "Bearer " + access_token
       },
       success: function(response) {
         console.log(response);
@@ -93,14 +92,14 @@ export default class SpotifyAPI {
 
   next(access_token) {
     jquery.ajax({
-      type: 'POST',
-      url: 'https://api.spotify.com/v1/me/player/next',
+      type: "POST",
+      url: "https://api.spotify.com/v1/me/player/next",
       headers: {
-        'Authorization': 'Bearer ' + access_token
+        Authorization: "Bearer " + access_token
       },
-      data : "",
+      data: "",
       success: function(response) {
-        console.log('next() successfully executed');
+        console.log("next() successfully executed");
       }
     });
     this.updateCurrentPlaying(access_token);
@@ -108,20 +107,27 @@ export default class SpotifyAPI {
 
   play(access_token, uri, device_id) {
     jquery.ajax({
-      type: 'PUT',
-      url: ((device_id)?'https://api.spotify.com/v1/me/player/play?device_id'+device_id:'https://api.spotify.com/v1/me/player/play'),
+      type: "PUT",
+      url: device_id
+        ? "https://api.spotify.com/v1/me/player/play?device_id" + device_id
+        : "https://api.spotify.com/v1/me/player/play",
       headers: {
-        'Authorization': 'Bearer ' + access_token
+        Authorization: "Bearer " + access_token
       },
-      data : '{"uris": ["'+uri+'"]}',
+      data: '{"uris": ["' + uri + '"]}',
       success: function(response) {
-        console.log('play() successfully executed');
+        console.log("play() successfully executed");
       },
       error: function(response) {
-        console.error('play() failed');
-        if (response && response.responseJSON.error.reason === "NO_ACTIVE_DEVICE" ) {
-          alert('Spotify not playing 😭 ?\nJust play a song in Spotify and refresh this tab 💁‍♀️');
-          window.open('https://open.spotify.com/', '_blank');
+        console.error("play() failed");
+        if (
+          response &&
+          response.responseJSON.error.reason === "NO_ACTIVE_DEVICE"
+        ) {
+          alert(
+            "Spotify not playing 😭 ?\nJust play a song in Spotify and refresh this tab 💁‍♀️"
+          );
+          window.open("https://open.spotify.com/", "_blank");
         }
       }
     });
@@ -131,51 +137,60 @@ export default class SpotifyAPI {
   setVolume(access_token, volume) {
     return new Promise((resolve, reject) => {
       jquery.ajax({
-        type: 'PUT',
-        url: 'https://api.spotify.com/v1/me/player/volume?volume_percent=' + volume,
+        type: "PUT",
+        url:
+          "https://api.spotify.com/v1/me/player/volume?volume_percent=" +
+          volume,
         headers: {
-          'Authorization': 'Bearer ' + access_token
+          Authorization: "Bearer " + access_token
         },
-        success: (response) => {
-          console.log('pause successfully executed');
-          resolve(response); 
+        success: response => {
+          console.log("pause successfully executed");
+          resolve(response);
         },
-        error: (response) => {
-          console.error('pause failed');
-          if (response && response.responseJSON.error.reason === "NO_ACTIVE_DEVICE" ) {
-            alert('Spotify not playing 😭 ?\nJust play a song in Spotify and refresh this tab 💁‍♀️');
-            window.open('https://open.spotify.com/', '_blank');
+        error: response => {
+          console.error("pause failed");
+          if (
+            response &&
+            response.responseJSON.error.reason === "NO_ACTIVE_DEVICE"
+          ) {
+            alert(
+              "Spotify not playing 😭 ?\nJust play a song in Spotify and refresh this tab 💁‍♀️"
+            );
+            window.open("https://open.spotify.com/", "_blank");
           }
           reject(response.responseJSON.error.reason);
         }
       });
-    })
+    });
   }
 
   searchOne(id, access_token) {
     jquery.ajax({
-      type: 'GET',
-      url: 'https://api.spotify.com/v1/tracks/'+document.getElementById(id).value,
+      type: "GET",
+      url:
+        "https://api.spotify.com/v1/tracks/" +
+        document.getElementById(id).value,
       headers: {
-        'Authorization': 'Bearer ' + access_token
+        Authorization: "Bearer " + access_token
       },
       success: function(response) {
-        console.log('searchOne() successfully executed');
+        console.log("searchOne() successfully executed");
 
         var inserts = [];
         inserts[0] = {
-          "TrackURI" : response.uri,
-          "Trackname" : response.name,
-          "Trackartist" : response.artists[0].name,
-          "Trackcover" : response.album.images[0].url,
-          "Trackdelay" : 0,
-          "OSUfile" : 'undefined'
+          TrackURI: response.uri,
+          Trackname: response.name,
+          Trackartist: response.artists[0].name,
+          Trackcover: response.album.images[0].url,
+          Trackdelay: 0,
+          OSUfile: "undefined"
         };
 
         jquery.ajax({
-          type: 'POST',
-          url: '/database/track',
-          headers: {'Content-Type': 'application/json'},
+          type: "POST",
+          url: "/database/track",
+          headers: { "Content-Type": "application/json" },
           data: JSON.stringify(inserts),
           success: function(res) {
             console.log("Successfully inserted into Track :");
@@ -186,45 +201,40 @@ export default class SpotifyAPI {
             console.error(inserts);
           }
         });
-
       }
     });
   }
 
-
   search(id, access_token) {
-
     var keyword = document.getElementById(id).value;
-    var BASE_URL = 'https://api.spotify.com/v1/search?';
-    var FETCH_URL = BASE_URL + 'q=' + keyword + '&type=artist&limit=1';
-    var ALBUM_URL = 'https://api.spotify.com/v1/artists/';
+    var BASE_URL = "https://api.spotify.com/v1/search?";
+    var FETCH_URL = BASE_URL + "q=" + keyword + "&type=artist&limit=1";
+    var ALBUM_URL = "https://api.spotify.com/v1/artists/";
 
     var myOptions = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': 'Bearer ' + access_token
+        Authorization: "Bearer " + access_token
       }
     };
 
     fetch(FETCH_URL, myOptions)
-
-    .then(response => response.json())
+      .then(response => response.json())
       .then(json => {
         var artist = json.artists.items[0];
-        FETCH_URL = `${ALBUM_URL}${artist.id}/top-tracks?country=FR&`
+        FETCH_URL = `${ALBUM_URL}${artist.id}/top-tracks?country=FR&`;
         fetch(FETCH_URL, myOptions)
+          .then(response => response.json())
+          .then(json => {
+            var { tracks } = json;
+            console.log(tracks);
 
-        .then(response => response.json())
-        .then(json => {
-          var { tracks } = json;
-          console.log(tracks);
-
-          // create album images
-          for (var i=0; i<5; i++) {
-            var ele = document.createElement("img");
-            ele.src = tracks[i].album.images[0].url;
-            ele.style="margin: 10px"
-/*            ele.onclick = function jouer(album_uri) {
+            // create album images
+            for (var i = 0; i < 5; i++) {
+              var ele = document.createElement("img");
+              ele.src = tracks[i].album.images[0].url;
+              ele.style = "margin: 10px";
+              /*            ele.onclick = function jouer(album_uri) {
 
               jquery.ajax({
                 type: 'PUT',
@@ -239,39 +249,39 @@ export default class SpotifyAPI {
               });
               console.log('onclick AJAX request executed');
             }(tracks[i].album.uri);*/
-            document.getElementById("pochettes").appendChild(ele);
-          }
-
-          var inserts = [];
-          for (var i=0; i<5; i++) {
-            inserts[i] = {
-              "TrackURI" : tracks[i].uri,
-              "Trackname" : tracks[i].name,
-              "Trackartist" : tracks[i].artists[0].name,
-              "Trackcover" : tracks[i].album.images[2].url,
-              "Trackdelay" : 0,
-              "OSUfile" : 'undefined'
-            };
-          }
-
-          jquery.ajax({
-            type: 'POST',
-            url: '/database/track',
-            headers: {'Content-Type': 'application/json'},
-            data: JSON.stringify(inserts),
-            success: function(res) {
-              console.log("Successfully inserted into Track :");
-              console.log(inserts);
-            },
-            error: function(res) {
-              console.error("Could not insert into Track :");
-              console.error(inserts);
+              document.getElementById("pochettes").appendChild(ele);
             }
-          });
-        });
-    });
 
-/*    setTimeout(function() {
+            var inserts = [];
+            for (var i = 0; i < 5; i++) {
+              inserts[i] = {
+                TrackURI: tracks[i].uri,
+                Trackname: tracks[i].name,
+                Trackartist: tracks[i].artists[0].name,
+                Trackcover: tracks[i].album.images[2].url,
+                Trackdelay: 0,
+                OSUfile: "undefined"
+              };
+            }
+
+            jquery.ajax({
+              type: "POST",
+              url: "/database/track",
+              headers: { "Content-Type": "application/json" },
+              data: JSON.stringify(inserts),
+              success: function(res) {
+                console.log("Successfully inserted into Track :");
+                console.log(inserts);
+              },
+              error: function(res) {
+                console.error("Could not insert into Track :");
+                console.error(inserts);
+              }
+            });
+          });
+      });
+
+    /*    setTimeout(function() {
       jquery.ajax({
         type: 'GET',
         url: 'https://api.spotify.com/v1/me/player/currently-playing',

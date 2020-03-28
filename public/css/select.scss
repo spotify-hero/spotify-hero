@@ -1,11 +1,11 @@
 /* bare de recherche */
-@import '../lib/bootstrap.min.css';
-@import '../lib/navbar.scss';
+@import "../lib/bootstrap.min.css";
+@import "../lib/navbar.scss";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 h1 {
   color: #111;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: large;
   text-align: center;
 }
@@ -15,8 +15,8 @@ h1 {
   position: fixed;
   left: 0;
   top: 0;
-  transform:scale(1.5);
-  -webkit-transform:scale(1.5);
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
 }
 
 body {
@@ -39,30 +39,30 @@ h2 {
   position: relative;
   display: flex;
   text-align: center;
-  margin:0 auto;
+  margin: 0 auto;
   padding-bottom: 10px;
 }
 
 #searchTerm {
   width: 100%;
-  border: 3px solid #00B4CC;
+  border: 3px solid #00b4cc;
   border-right: none;
   padding: 5px;
   height: 36px;
   border-radius: 5px 0 0 5px;
   outline: none;
-  color: #9DBFAF;
+  color: #9dbfaf;
 }
 
-#searchTerm:focus{
-  color: #00B4CC;
+#searchTerm:focus {
+  color: #00b4cc;
 }
 
 #searchButton {
   width: 40px;
   height: 36px;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
+  border: 1px solid #00b4cc;
+  background: #00b4cc;
   text-align: center;
   color: #fff;
   border-radius: 0 5px 5px 0;
@@ -85,13 +85,12 @@ h2 {
   margin-top: 20%;
 }
 
-
 .loader {
   display: inline-block;
   width: 60px;
   height: 60px;
   position: relative;
-  border: 8px solid #Fff;
+  border: 8px solid #fff;
   top: 50%;
   animation: loader 2s infinite ease;
 }
@@ -108,19 +107,19 @@ h2 {
   0% {
     transform: rotate(0deg);
   }
-  
+
   25% {
     transform: rotate(180deg);
   }
-  
+
   50% {
     transform: rotate(180deg);
   }
-  
+
   75% {
     transform: rotate(360deg);
   }
-  
+
   100% {
     transform: rotate(360deg);
   }
@@ -130,19 +129,19 @@ h2 {
   0% {
     height: 0%;
   }
-  
+
   25% {
     height: 0%;
   }
-  
+
   50% {
     height: 100%;
   }
-  
+
   75% {
     height: 100%;
   }
-  
+
   100% {
     height: 0%;
   }
@@ -150,8 +149,8 @@ h2 {
 
 .cards {
   cursor: pointer;
-  overflow:auto;
-  height: 496px; 
+  overflow: auto;
+  height: 496px;
   display: flex;
   flex-wrap: wrap;
   overflow-y: auto;
@@ -161,71 +160,71 @@ h2 {
   width: 300px;
   margin: 10px auto;
   float: left;
-  opacity: .99999;
-  
-  background-color:white;
+  opacity: 0.99999;
+
+  background-color: white;
   box-shadow: 0px 5px 20px #555;
- 
+
   a {
-   color: #333;
-     text-decoration:none;
+    color: #333;
+    text-decoration: none;
   }
-  
-  &:hover {  
+
+  &:hover {
     .card-image {
       img {
-         width: 330px;
-         //filter:grayscale(0);
-      }  
+        width: 330px;
+        //filter:grayscale(0);
+      }
     }
   }
-  
 }
 
 .card-image {
-
   height: 300px;
-  
-  position:relative;
-  overflow:hidden;
-  
+
+  position: relative;
+  overflow: hidden;
+
   img {
     width: 300px;
-    
-    position:absolute;
+
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
+
     //filter: grayscale(1);
-    
+
     transition-property: filter width;
-    transition-duration: .3s; 
+    transition-duration: 0.3s;
   }
- 
 }
 
 .card-body {
-  text-align:center; 
-  padding: 5px 5px; 
+  text-align: center;
+  padding: 5px 5px;
   box-sizing: border-box;
 }
 
 .card-date {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
-.card-title, .card-exceprt {
-   font-family: 'Playfair Display', serif;
+.card-title,
+.card-exceprt {
+  font-family: "Playfair Display", serif;
 }
 
-.card-date, .card-title {
-  text-align:center;
-  text-transform:uppercase;
+.card-date,
+.card-title {
+  text-align: center;
+  text-transform: uppercase;
   font-weight: bold;
 }
 
-.card-date, .card-excerpt {
+.card-date,
+.card-excerpt {
   color: #777;
 }
 

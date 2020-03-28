@@ -1,9 +1,9 @@
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
-.pause h1:hover{
+.pause h1:hover {
   color: #33cccc;
 }
 
@@ -29,7 +29,8 @@ body {
   padding: 50px 20px 20px 20px;
 }
 
-.game-details-right, .game-details-left {
+.game-details-right,
+.game-details-left {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -38,28 +39,30 @@ body {
   height: 120px;
   padding: 15px 20px;
   border-radius: 20px;
-  background: rgba(0, 0, 0, .75);
+  background: rgba(0, 0, 0, 0.75);
 }
 
-.player-spotify{
+.player-spotify {
   position: absolute;
   top: 1000;
   left: 0;
   right: 0;
   color: white;
-/*  display: flex;*/
+  /*  display: flex;*/
   align-items: center;
   float: left;
   justify-content: space-between;
   padding: 300px 20px 20px 20px;
-
 }
 
-.score, .streak, .multiplier, .max-streak {
+.score,
+.streak,
+.multiplier,
+.max-streak {
   font-size: 28px;
 }
 
-.game-progress  {
+.game-progress {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -69,9 +72,8 @@ body {
   padding: 20px;
   border-radius: 20px;
   color: white;
-  background: rgba(0, 0, 0, .75);
+  background: rgba(0, 0, 0, 0.75);
 }
-
 
 .rock-input {
   background: transparent;
@@ -127,7 +129,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, .75);
+  background: rgba(0, 0, 0, 0.75);
   /*background: #818181;*/
   display: flex;
   flex-direction: row;
@@ -152,11 +154,12 @@ body {
 }
 
 .title {
-  font-family: 'Bangers', sans-serif;
+  font-family: "Bangers", sans-serif;
   letter-spacing: 2.5px;
 }
 
-.header h1, .header p {
+.header h1,
+.header p {
   margin: 0;
   margin-bottom: 5px;
   padding: 0 20px;
@@ -170,7 +173,8 @@ body {
   transform: translateY(2.5px);
 }
 
-.game-start, .look-around-instructions {
+.game-start,
+.look-around-instructions {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -185,9 +189,10 @@ body {
   text-align: center;
 }
 
-.instructions, .end-game {
+.instructions,
+.end-game {
   position: absolute;
-  background: rgba(0, 0, 0, .90);
+  background: rgba(0, 0, 0, 0.9);
   top: 0;
   bottom: 0;
   left: 0;
@@ -197,7 +202,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .close-instructions {
@@ -275,9 +280,10 @@ body {
   background: orange;
 }
 
-.pause, .end-game {
+.pause,
+.end-game {
   position: absolute;
-  background: rgba(0, 0, 0, .90);
+  background: rgba(0, 0, 0, 0.9);
   top: 0;
   bottom: 0;
   left: 0;
@@ -287,10 +293,15 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
-.retry-pause, .record-pause, .select-pause, .save-score, .result-score, .congrat {
+.retry-pause,
+.record-pause,
+.select-pause,
+.save-score,
+.result-score,
+.congrat {
   color: white;
   display: flex;
   flex-direction: column;
@@ -298,11 +309,13 @@ body {
   justify-content: flex-start;
 }
 
-.close-pause h1:hover, .save-score h1:hover {
+.close-pause h1:hover,
+.save-score h1:hover {
   cursor: pointer;
 }
 
-.close-pause h1, .save-score h1{
+.close-pause h1,
+.save-score h1 {
   font-size: 50px;
   font-weight: 700;
   margin-bottom: 10px;
