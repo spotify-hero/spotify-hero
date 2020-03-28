@@ -14,7 +14,7 @@
 ## Table of Contents
 
 - [Background](#background)
-- [Features](#fatures)
+- [Features](#features)
 - [Play](#play)
 - [Install](#install)
 - [Sources](#sources)
@@ -35,7 +35,7 @@ We decided to start coding **spotify-hero** during a Web Development course at [
 * use Spotify account to play copyrighted music 
 * allow users to create their own beatmpas : recording notes played by user and associate spotify tracks
 
-## Play (easy as pie :ok_hand:)
+## Play
 
 **Walkthrough**
 1. Click [here](https://spotify-hero.herokuapp.com/) to open the app in your browser
@@ -45,7 +45,7 @@ We decided to start coding **spotify-hero** during a Web Development course at [
 3. Select a track by clicking on its album's cover
 4. Enjoy ! :tada:
 
-## Install (easy as pie :ok_hand:)
+## Install
 
 > First you have to set-up your developper account [here](https://developer.spotify.com/), create a new app (i.e "spotify-hero") and defined a redirect URL : http://localhost:8888/spotify_cb/
 
