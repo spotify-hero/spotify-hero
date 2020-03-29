@@ -1,5 +1,5 @@
 import * as THREE from "./three.min";
-import OrbitControls from "./OrbitControls.js";
+import {OrbitControls} from "./OrbitControls.js";
 
 class ViewControls {
   constructor(camera, renderer) {
@@ -13,7 +13,7 @@ class ViewControls {
     )[0];
 
     this.lookAroundEl.onclick = this.toggleLookAround.bind(this);
-    this.controls = new THREE.OrbitControls(
+    this.controls = new OrbitControls(
       this.camera,
       this.renderer.domElement
     );

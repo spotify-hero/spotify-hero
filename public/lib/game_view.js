@@ -1,4 +1,6 @@
 import * as THREE from "./three.min";
+import { Fire } from "./Fire";
+
 import ViewControls from "./view_controls";
 import Light from "./light";
 import GameNotes from "./game_notes";
@@ -31,6 +33,7 @@ class GameView {
     //différents tableaux
     this.spheres = [];
     this.cylinders = [];
+    this.fires = [];
     this.beatLines = [];
     this.recordMap = [];
 
@@ -172,9 +175,57 @@ class GameView {
       5,
       10
     );
+
     const circles = [];
+
+    let paramsFire = {
+      color1: '#ffffff',
+      color2: '#0069ff',
+      color3: '#000000',
+      colorBias: 0.78,
+      burnRate: 3.13,
+      diffuse: 1.33,
+      viscosity: 0,
+      expansion: -1,
+      swirl: 16.77,
+      drag: 0.2,
+      airSpeed: 7,
+      windX: 0,
+      windY: 0.73,
+      speed: 500.0,
+      massConservation: false
+    };
+
     for (let i = 0; i < 4; i++) {
       circles[i] = new THREE.Mesh(rectangleGeometry, this.note.materials[i]);
+
+      let plane = new THREE.PlaneBufferGeometry(90, 90);
+
+
+      this.fires[i] = new Fire(plane, {
+        textureWidth: 256,
+        textureHeight: 256,
+        debug: false
+      });
+
+      this.fires[i].clearSources();
+      this.fires[i].addSource( 0.5, 0.1, 0.1, 1.0, 0.0, 1.0 );
+      this.fires[i].position.set(this.xPos[i], this.yEndPoint +43 , this.zEndPoint + 5);
+      this.fires[i].color1.set(paramsFire.color1);
+      this.fires[i].color2.set(paramsFire.color2);
+      this.fires[i].color3.set(paramsFire.color3);
+      this.fires[i].colorBias = paramsFire.colorBias;
+      this.fires[i].burnRate = paramsFire.burnRate;
+      this.fires[i].diffuse = paramsFire.diffuse;
+      this.fires[i].viscosity = paramsFire.viscosity;
+      this.fires[i].expansion = paramsFire.expansion;
+      this.fires[i].swirl = paramsFire.swirl;
+      this.fires[i].drag = paramsFire.drag;
+      this.fires[i].windVector.x = paramsFire.windX;
+      this.fires[i].windVector.y = paramsFire.windY;
+      this.fires[i].speed = paramsFire.speed;
+      this.fires[i].visible = true;
+      this.scene.add(this.fires[i]);
     }
 
     circles.forEach((circle, idx) => {
@@ -184,20 +235,21 @@ class GameView {
       // LIGHT UP CIRCLE WHEN KEY IS PRESSED
       setInterval(() => {
         if (this.key.isDownVisually(this.key.pos[idx])) {
+          this.fires[idx].expansion = -0.25;
           circle.material = this.note.materials[4];
         } else {
+          this.fires[idx].expansion = -1;
           circle.material = this.note.materials[idx];
         }
       }, 40);
-
-      this.scene.add(circle);
+      //this.scene.add(circle);
     });
   }
 
   addMovingNotes(noteInterval, beatmap, latency) {
     let noteMaterial;
 
-    this.gameNotes = new GameNotes(noteInterval, this.musicDelay, this.key);
+    this.gameNotes = new GameNotes(noteInterval, this.musicDelay, this.key, this.fires);
 
     if (typeof beatmap !== "undefined" && beatmap.length > 0) {
       //total count of notes 0 indexed
@@ -256,7 +308,8 @@ class GameView {
         this.gameNotes.setNoteCheck(
           songNote.position,
           songNote.startTime + latency,
-          songNote.duration
+          songNote.duration,
+          
         );
       });
     }
