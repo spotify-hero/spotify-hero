@@ -11,41 +11,39 @@
 /*************************************
  *            depedencies
  **************************************/
-const chai = require("chai");
-const chaiHttp = require("chai-http");
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
-var sinon = require("sinon");
+var sinon = require('sinon');
 
 /*************************************
  *            unit-testing
  **************************************/
-describe("Unit testing", function() {
-  // load mock data
-  // mockIndex = require('mockIndex.html');
+describe('Unit testing', function () {
 
-  beforeEach(function() {
-    this.log = sinon.stub(console, "log");
+  beforeEach(function () {
+    this.log = sinon.stub(console, 'log');
   });
-  afterEach(function() {
+  afterEach(function () {
     this.log.restore();
   });
 
-  it('should log "Listening on port 8888"', function() {
-    console.log("Listening on port 8888");
-    expect(console.log.calledWith("Listening on port 8888")).to.be.true;
+  it('should log "Listening on port 8888"', function () {
+    console.log('Listening on port 8888');
+    expect(console.log.calledWith('Listening on port 8888')).to.be.true;
   });
 });
 
 /*************************************
  *        integration-testing
  **************************************/
-describe("Integration testing", () => {
+describe('Integration testing', () => {
   // launching the back-end
-  const server = require("../index");
+  const server = require('../index');
 
-  describe("GET all links in html tags <a> or <img>", () => {
-    var rootPages = ["/", "/select", "/game", "/spotify"];
+  describe('GET all links in html tags <a> or <img>', () => {
+    var rootPages = ['/', '/select', '/game', '/spotify'];
     var linksToTest = rootPages;
 
     // we search all links available in root pages
@@ -58,15 +56,15 @@ describe("Integration testing", () => {
       Promise.all(promises)
         .then(results => {
           // get all the html code
-          html = results.join(" ");
+          html = results.join(' ');
 
           // parse it with regex
-          const regex = RegExp('(src|href)="([^ ]*)"', "ig");
+          const regex = RegExp('(src|href)="([^ ]*)"', 'ig');
           let result;
           while ((result = regex.exec(html)) !== null) {
             if (
               result[2] &&
-              result[2].charAt(0) === "/" &&
+              result[2].charAt(0) === '/' &&
               !linksToTest.includes(result[2])
             ) {
               // retrieve the link
@@ -80,7 +78,7 @@ describe("Integration testing", () => {
         });
     });
 
-    it("all links should result in HTTP status 200", function(done) {
+    it('all links should result in HTTP status 200', function (done) {
       // we create a promise for each link to be tested
       promises = [];
       linksToTest.forEach(link => {
@@ -89,7 +87,7 @@ describe("Integration testing", () => {
 
       Promise.all(promises)
         .then(results => {
-          console.log("      " + results.join("\n      "));
+          console.log('      ' + results.join('\n      '));
           done();
         })
         .catch(err => {
@@ -100,8 +98,8 @@ describe("Integration testing", () => {
 });
 
 // used in before() to retrieve links from HTML code
-const getHTML = function(server, link) {
-  return new Promise(function(resolve, reject) {
+const getHTML = function (server, link) {
+  return new Promise(function (resolve, reject) {
     chai
       .request(server)
       .get(link)
@@ -112,8 +110,8 @@ const getHTML = function(server, link) {
 };
 
 // actual test
-const testLink = function(server, link) {
-  return new Promise(function(resolve, reject) {
+const testLink = function (server, link) {
+  return new Promise(function (resolve, reject) {
     chai
       .request(server)
       .get(link)

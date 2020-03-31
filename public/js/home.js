@@ -1,3 +1,3 @@
-import "../css/home.scss";
+import '../css/home.scss';
 
-document.addEventListener("DOMContentLoaded", () => {});
+document.addEventListener('DOMContentLoaded', () => {});

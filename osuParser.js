@@ -1,6 +1,6 @@
 module.exports = {
   //parse Osu file and create JSON
-  parser: function(textByLine) {
+  parser: function (textByLine) {
     let found = false;
 
     let hitObject = [];
@@ -10,7 +10,7 @@ module.exports = {
 
     //looking for first occurence of "HitObject"
     for (const [i, element] of textByLine.entries()) {
-      if (element.includes("HitObjects")) {
+      if (element.includes('HitObjects')) {
         found = true;
         hitObject = textByLine.slice(i + 1);
         break;
@@ -18,18 +18,18 @@ module.exports = {
     }
 
     if (!found) {
-      console.log("Error, HitObject not found in osu file !");
+      console.log('Error, HitObject not found in osu file !');
     }
 
     hitTab = [];
     //format data to array
-    hitObject.forEach(function(element) {
+    hitObject.forEach(function (element) {
       if (element !== null) {
         tab = element.match(/\d+\.\d+|\d+\b|\d+(?=\w)/g || []);
 
         if (tab) {
           hitTab.push(
-            tab.map(function(v) {
+            tab.map(function (v) {
               return +v;
             })
           );
@@ -39,7 +39,7 @@ module.exports = {
 
     let finalRes = [];
 
-    hitTab.map(function(item) {
+    hitTab.map(function (item) {
       let position;
 
       if (item[0] < 128) {

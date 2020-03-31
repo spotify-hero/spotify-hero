@@ -1,14 +1,14 @@
-import * as THREE from "../lib/three.min";
-import jquery from "../lib/jquery.min";
-import Key from "../lib/key";
-import GameView from "../lib/game_view";
-import Instructions from "../lib/instructions";
-import SpotifyAPI from "../lib/SpotifyAPI";
-import { getQueryParams, updateQueryStringParameter } from "../lib/functions";
+import * as THREE from '../lib/three.min';
+import jquery from '../lib/jquery.min';
+import Key from '../lib/key';
+import GameView from '../lib/game_view';
+import Instructions from '../lib/instructions';
+import SpotifyAPI from '../lib/SpotifyAPI';
+import { getQueryParams, updateQueryStringParameter } from '../lib/functions';
 
-import "../css/game.scss";
+import '../css/game.scss';
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   new Game();
 });
 
@@ -17,47 +17,47 @@ let audio;
 class Game {
   constructor() {
     this.noteInterval = 237.8;
-    this.musicDelay   = 1250;
-    this.key          = new Key();
+    this.musicDelay = 1250;
+    this.key = new Key();
     this.instructions = new Instructions();
-    this.started      = false;
-    this.beatmap      = [];
-    this.spAPI        = new SpotifyAPI();
+    this.started = false;
+    this.beatmap = [];
+    this.spAPI = new SpotifyAPI();
 
     //get audio mode : mp3 or track (=spotify)
     this.audioMode = getQueryParams().audio;
 
-    this.gameStartEl = document.getElementsByClassName("start")[0];
+    this.gameStartEl = document.getElementsByClassName('start')[0];
     this.createGameView();
     this.setupGame();
 
-    document.getElementsByClassName("retry-pause")[0].onclick = function() {
+    document.getElementsByClassName('retry-pause')[0].onclick = function () {
       document.location.reload(false);
     };
 
-    document.getElementsByClassName("record-pause")[0].onclick = function() {
-      window.location.search += "&mode=record";
+    document.getElementsByClassName('record-pause')[0].onclick = function () {
+      window.location.search += '&mode=record';
     };
 
-    document.getElementsByClassName("select-pause")[0].onclick = function() {
+    document.getElementsByClassName('select-pause')[0].onclick = function () {
       window.location.href =
-        "/select?table=track%20mp3&access_token=" +
+        '/select?table=track%20mp3&access_token=' +
         getQueryParams().access_token;
     };
 
-    document.getElementsByClassName("record-pause")[0].onclick = function() {
+    document.getElementsByClassName('record-pause')[0].onclick = function () {
       let url = updateQueryStringParameter(
         window.location.href,
-        "Trackdelay",
+        'Trackdelay',
         0
       );
-      url = updateQueryStringParameter(url, "mode", "record");
+      url = updateQueryStringParameter(url, 'mode', 'record');
       window.location = url;
     };
 
-    document.getElementsByClassName("save-score")[0].onclick = function() {
-      var scoreTosave = document.getElementsByClassName("score")[0].innerHTML;
-      scoreTosave = scoreTosave.replace(/^\D+/g, "");
+    document.getElementsByClassName('save-score')[0].onclick = function () {
+      var scoreTosave = document.getElementsByClassName('score')[0].innerHTML;
+      scoreTosave = scoreTosave.replace(/^\D+/g, '');
 
       /*      inserts = [];
       inserts.push({
@@ -83,8 +83,8 @@ class Game {
       });*/
     };
 
-    document.getElementsByClassName("open-pause")[0].onclick = function() {
-      document.getElementsByClassName("pause")[0].className = "pause";
+    document.getElementsByClassName('open-pause')[0].onclick = function () {
+      document.getElementsByClassName('pause')[0].className = 'pause';
       this.pauseMusic();
       this.started = false;
     };
@@ -94,27 +94,27 @@ class Game {
     this.getOsuFile();
 
     //case of mp3 => we retrieve the audio file and load it with an Audio object
-    if (this.audioMode == "mp3") {
+    if (this.audioMode == 'mp3') {
       jquery.ajax({
         async: false,
-        type : "GET",
-        url  : "/mp3/" + getQueryParams().mp3_file,
-        data : "",
-        success: function(response) {
-          console.log("Successfully got file from server.");
-          audio     = new Audio();
-          audio.src = "data:audio/mp3;base64," + response.fileContent;
+        type: 'GET',
+        url: '/mp3/' + getQueryParams().mp3_file,
+        data: '',
+        success: function (response) {
+          console.log('Successfully got file from server.');
+          audio = new Audio();
+          audio.src = 'data:audio/mp3;base64,' + response.fileContent;
           audio.load();
         },
-        error: function(response) {
-          console.log("ERROR : Could not get file from server !");
+        error: function (response) {
+          console.log('ERROR : Could not get file from server !');
         }
       });
     }
 
     //add event listener to start the game
-    window.addEventListener("keydown", this.hitAToStart.bind(this));
-    window.addEventListener("touchstart", e => {
+    window.addEventListener('keydown', this.hitAToStart.bind(this));
+    window.addEventListener('touchstart', e => {
       if (!this.started) {
         this.startGame();
       }
@@ -124,7 +124,7 @@ class Game {
   startGame() {
     this.gameView.setStartTimeRecord();
 
-    if (getQueryParams().mode === "record") {
+    if (getQueryParams().mode === 'record') {
       this.gameView.addNoteRecord();
     } else {
       this.gameView.addMovingNotes(this.noteInterval, this.beatmap, 0);
@@ -133,7 +133,7 @@ class Game {
     let musicDelay = getQueryParams().track_delay;
     this.playMusic(musicDelay);
 
-    this.gameStartEl.className = "start hidden";
+    this.gameStartEl.className = 'start hidden';
     this.started = true;
   }
 
@@ -150,33 +150,27 @@ class Game {
       this.pauseMusic();
 
       //display pause overlay
-      document.getElementsByClassName("pause")[0].className = "pause";
+      document.getElementsByClassName('pause')[0].className = 'pause';
       this.gameView.isPlay = false;
       this.started = false;
     } else if (
       (e.keyCode == 122 || e.keyCode == 90) &&
-      getQueryParams().mode === "record"
+      getQueryParams().mode === 'record'
     ) {
       //User pressed "Z" key and is in recordMode => send .osu file to database
-      var filename = getQueryParams()
-        .track_artist.split(" ")
-        .join("");
+      var filename = getQueryParams().track_artist.split(' ').join('');
       filename +=
-        "_" +
-        getQueryParams()
-          .track_name.split(" ")
-          .join("") +
-        ".osu";
+        '_' + getQueryParams().track_name.split(' ').join('') + '.osu';
 
       //deal with both cases : Spotify uri or filename
       let uri = getQueryParams().track_uri || getQueryParams().mp3_file;
       this.sendOsuFile(filename, this.gameView.recordMap, this.audioMode, uri);
-      console.log("Recorded beatmap sent to server");
+      console.log('Recorded beatmap sent to server');
       console.log(this.gameView.recordMap);
     } else if (e.keyCode == 186 && this.gameView) {
       //User pressed "$" key => set new delay for this track
       let delay = new Date().getTime() - this.gameView.startTimeRecord;
-      console.log("vous avez appuyé sur $ : délai = " + delay);
+      console.log('vous avez appuyé sur $ : délai = ' + delay);
 
       this.pauseMusic();
       this.gameView.isPlay = false;
@@ -184,16 +178,16 @@ class Game {
       const audio = getQueryParams().audio;
       let trackID;
 
-      if (audio == "track") {
+      if (audio == 'track') {
         delay -= 1200;
         trackID = getQueryParams().track_uri;
-      } else if (audio == "mp3") {
+      } else if (audio == 'mp3') {
         delay -= 300;
         trackID = getQueryParams().mp3_file;
       }
 
       this.updateDelay(audio, trackID, delay);
-      console.log("New delay= " + delay + "sent to server.");
+      console.log('New delay= ' + delay + 'sent to server.');
     }
   }
 
@@ -202,21 +196,21 @@ class Game {
    */
   playMusic(musicDelay) {
     switch (this.audioMode) {
-      case "track":
+      case 'track':
         setTimeout(() => {
           var uri = getQueryParams().track_uri;
           if (uri) {
             let access_token = getQueryParams().access_token;
             this.spAPI.setVolume(access_token, 50);
-            console.log("send request to play " + uri);
+            console.log('send request to play ' + uri);
             this.spAPI.play(access_token, getQueryParams().track_uri, null);
           } else {
-            console.error("Cannot play : no spotify URI specified !");
+            console.error('Cannot play : no spotify URI specified !');
           }
         }, musicDelay);
         break;
 
-      case "mp3":
+      case 'mp3':
         setTimeout(() => {
           audio.play();
         }, musicDelay);
@@ -229,12 +223,12 @@ class Game {
 
   pauseMusic() {
     switch (this.audioMode) {
-      case "track":
+      case 'track':
         let access_token = getQueryParams().access_token;
         this.spAPI.pause(access_token);
         break;
 
-      case "mp3":
+      case 'mp3':
         audio.pause();
         break;
 
@@ -250,15 +244,15 @@ class Game {
     // AJAX request
     jquery.ajax({
       async: false,
-      type : "GET",
-      url  : "/osu/" + getQueryParams().osu_file,
-      data : "",
-      success: function(response) {
+      type: 'GET',
+      url: '/osu/' + getQueryParams().osu_file,
+      data: '',
+      success: function (response) {
         osuData = JSON.parse(response);
-        console.log("Successfully got file from server.");
+        console.log('Successfully got file from server.');
       },
-      error: function(response) {
-        console.log("ERROR : Could not get file from server !");
+      error: function (response) {
+        console.log('ERROR : Could not get file from server !');
       }
     });
 
@@ -275,34 +269,34 @@ class Game {
     //Upload .osu file on server
     jquery.ajax({
       async: false,
-      type: "POST",
-      url: "/osu/" + filename,
-      headers: { "Content-Type": "application/json" },
+      type: 'POST',
+      url: '/osu/' + filename,
+      headers: { 'Content-Type': 'application/json' },
       data: JSON.stringify(recordMap),
-      success: function(response) {
+      success: function (response) {
         //Update DB table
         jquery.ajax({
           async: false,
-          type: "PUT",
-          url: "/database/" + tableName + "/" + uri,
-          headers: { "Content-Type": "application/json" },
+          type: 'PUT',
+          url: '/database/' + tableName + '/' + uri,
+          headers: { 'Content-Type': 'application/json' },
           data: JSON.stringify({
-            0: "OSUfile = '" + filename + "', Trackdelay = " + 2000 + ""
+            0: "OSUfile = '" + filename + "', Trackdelay = " + 2000 + ''
           }),
-          success: function(response) {
-            console.log("Chained AJAX successfull !");
+          success: function (response) {
+            console.log('Chained AJAX successfull !');
             //---> need to advert user
             window.location.replace(
-              "/select?table=track%20mp3&access_token=" +
+              '/select?table=track%20mp3&access_token=' +
                 getQueryParams().access_token
             );
           },
-          error: function(response) {
+          error: function (response) {
             document.location.reload(false);
           }
         });
       },
-      error: function(response) {
+      error: function (response) {
         document.location.reload(false);
       }
     });
@@ -310,29 +304,29 @@ class Game {
 
   /**
    * Update the delay of a give track either mp3 or spotify
-   * @param {string} trackOrMP3 
-   * @param {string} trackID 
-   * @param {number} delay 
+   * @param {string} trackOrMP3
+   * @param {string} trackID
+   * @param {number} delay
    */
 
   updateDelay(trackOrMP3, trackID, delay) {
-    // Update 
+    // Update
     jquery.ajax({
       async: false,
-      type: "PUT",
-      url: "/database/" + trackOrMP3 + "/" + trackID,
-      headers: { "Content-Type": "application/json" },
-      data: JSON.stringify({ 0: "Trackdelay = " + delay + "" }),
-      success: function(response) {
+      type: 'PUT',
+      url: '/database/' + trackOrMP3 + '/' + trackID,
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify({ 0: 'Trackdelay = ' + delay + '' }),
+      success: function (response) {
         window.location.href =
-          "/select?table=track%20mp3" +
-          "&UserURI=" +
+          '/select?table=track%20mp3' +
+          '&UserURI=' +
           getQueryParams().user_uri +
-          "&access_token=" +
+          '&access_token=' +
           getQueryParams().access_token;
       },
-      error: function(response) {
-        alert("Database PUT request failed !");
+      error: function (response) {
+        alert('Database PUT request failed !');
         //document.location.reload(false);
       }
     });
@@ -356,7 +350,7 @@ class Game {
 
     let renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
-    document.getElementById("game-canvas").appendChild(renderer.domElement);
+    document.getElementById('game-canvas').appendChild(renderer.domElement);
 
     this.gameView = new GameView(
       renderer,
