@@ -61,10 +61,10 @@ class Game {
 
       /*      inserts = [];
       inserts.push({
-        'userURI' : getQueryParams().userURI,
+        'userURI' : getQueryParams().user_uri,
         'Timestamp' : '',
         'ScoreValue' : scoreTosave,
-        'TrackURI' : getQueryParams().TrackURI
+        'TrackURI' : getQueryParams().user_uri
       });
 
       jquery.ajax({
@@ -98,7 +98,7 @@ class Game {
       jquery.ajax({
         async: false,
         type : "GET",
-        url  : "/mp3/" + getQueryParams().Filename,
+        url  : "/mp3/" + getQueryParams().mp3_file,
         data : "",
         success: function(response) {
           console.log("Successfully got file from server.");
@@ -130,7 +130,7 @@ class Game {
       this.gameView.addMovingNotes(this.noteInterval, this.beatmap, 0);
     }
 
-    let musicDelay = getQueryParams().Trackdelay;
+    let musicDelay = getQueryParams().track_delay;
     this.playMusic(musicDelay);
 
     this.gameStartEl.className = "start hidden";
@@ -159,17 +159,17 @@ class Game {
     ) {
       //User pressed "Z" key and is in recordMode => send .osu file to database
       var filename = getQueryParams()
-        .Trackartist.split(" ")
+        .track_artist.split(" ")
         .join("");
       filename +=
         "_" +
         getQueryParams()
-          .Trackname.split(" ")
+          .track_name.split(" ")
           .join("") +
         ".osu";
 
       //deal with both cases : Spotify uri or filename
-      let uri = getQueryParams().TrackURI || getQueryParams().Filename;
+      let uri = getQueryParams().track_uri || getQueryParams().mp3_file;
       this.sendOsuFile(filename, this.gameView.recordMap, this.audioMode, uri);
       console.log("Recorded beatmap sent to server");
       console.log(this.gameView.recordMap);
@@ -186,10 +186,10 @@ class Game {
 
       if (audio == "track") {
         delay -= 1200;
-        trackID = getQueryParams().TrackURI;
+        trackID = getQueryParams().track_uri;
       } else if (audio == "mp3") {
         delay -= 300;
-        trackID = getQueryParams().Filename;
+        trackID = getQueryParams().mp3_file;
       }
 
       this.updateDelay(audio, trackID, delay);
@@ -204,12 +204,12 @@ class Game {
     switch (this.audioMode) {
       case "track":
         setTimeout(() => {
-          var uri = getQueryParams().TrackURI;
+          var uri = getQueryParams().track_uri;
           if (uri) {
             let access_token = getQueryParams().access_token;
             this.spAPI.setVolume(access_token, 50);
             console.log("send request to play " + uri);
-            this.spAPI.play(access_token, getQueryParams().TrackURI, null);
+            this.spAPI.play(access_token, getQueryParams().track_uri, null);
           } else {
             console.error("Cannot play : no spotify URI specified !");
           }
@@ -251,7 +251,7 @@ class Game {
     jquery.ajax({
       async: false,
       type : "GET",
-      url  : "/osu/" + getQueryParams().OSUfile,
+      url  : "/osu/" + getQueryParams().osu_file,
       data : "",
       success: function(response) {
         osuData = JSON.parse(response);
@@ -327,7 +327,7 @@ class Game {
         window.location.href =
           "/select?table=track%20mp3" +
           "&UserURI=" +
-          getQueryParams().UserURI +
+          getQueryParams().user_uri +
           "&access_token=" +
           getQueryParams().access_token;
       },

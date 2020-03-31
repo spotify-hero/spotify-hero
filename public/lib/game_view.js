@@ -62,7 +62,7 @@ class GameView {
 
   backgroundSetup() {
     let coverGeometry = new THREE.BoxGeometry(800, 800, 985);
-    var texture = new THREE.TextureLoader().load(getQueryParams().Trackcover);
+    var texture = new THREE.TextureLoader().load(getQueryParams().track_cover);
     texture.wrapS = THREE.RepeatWrapping;
     texture.repeat.x = -1;
     texture.minFilter = THREE.NearestFilter;

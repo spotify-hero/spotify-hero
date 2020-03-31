@@ -179,17 +179,17 @@ export default class SpotifyAPI {
 
         var inserts = [];
         inserts[0] = {
-          TrackURI: response.uri,
-          Trackname: response.name,
-          Trackartist: response.artists[0].name,
-          Trackcover: response.album.images[0].url,
-          Trackdelay: 0,
-          OSUfile: "undefined"
+          track_uri: response.uri,
+          track_name: response.name,
+          track_artist: response.artists[0].name,
+          track_cover: response.album.images[0].url,
+          track_delay: 0,
+          osu_file: "undefined"
         };
 
         jquery.ajax({
           type: "POST",
-          url: "/database/track",
+          url: "/database/spotify",
           headers: { "Content-Type": "application/json" },
           data: JSON.stringify(inserts),
           success: function(res) {
@@ -255,18 +255,18 @@ export default class SpotifyAPI {
             var inserts = [];
             for (var i = 0; i < 5; i++) {
               inserts[i] = {
-                TrackURI: tracks[i].uri,
-                Trackname: tracks[i].name,
-                Trackartist: tracks[i].artists[0].name,
-                Trackcover: tracks[i].album.images[2].url,
-                Trackdelay: 0,
-                OSUfile: "undefined"
+                track_uri: tracks[i].uri,
+                track_name: tracks[i].name,
+                track_artist: tracks[i].artists[0].name,
+                track_cover: tracks[i].album.images[2].url,
+                track_delay: 0,
+                osu_file: "undefined"
               };
             }
 
             jquery.ajax({
               type: "POST",
-              url: "/database/track",
+              url: "/database/spotify",
               headers: { "Content-Type": "application/json" },
               data: JSON.stringify(inserts),
               success: function(res) {

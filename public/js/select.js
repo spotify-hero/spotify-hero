@@ -98,21 +98,21 @@ function addTrackHTMLBeforeElement(tableName) {
       let table = JSON.parse(array);
       let data = { audio: tableName };
 
-      data.UserURI = getQueryParams().UserURI || undefined;
+      data.UserURI = getQueryParams().user_uri || undefined;
       data.access_token = getQueryParams().access_token || undefined;
 
       let baseLink = "/game?" + encodeQueryData(data);
 
       if (typeof table !== "undefined" && table.length > 0) {
         table.forEach(line => {
-          let title = line.Trackname;
-          let artist = line.Trackartist;
-          let cover = line.Trackcover;
-          let trackURI = line.TrackURI || line.Filename;
+          let title = line.track_name;
+          let artist = line.track_artist;
+          let cover = line.track_cover;
+          let trackURI = line.track_uri || line.mp3_file;
           let link = "";
 
           Object.keys(line).forEach(key => {
-            if (key === "TrackURI" || key == "Filename") {
+            if (key === "track_uri" || key == "mp3_file") {
               link = baseLink;
               Object.keys(line).forEach(key => {
                 link +=

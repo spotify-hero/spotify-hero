@@ -53,13 +53,20 @@ app.engine("html", handlebars.engine);
 app.set("view engine", "html");
 app.set("views", __dirname + "/public");
 
-process.setMaxListeners(0);
+/*process.setMaxListeners(0);
 var db = new sqlite3.Database("./main.db", err => {
   if (err) {
     console.error(err.message);
   }
   console.log("Connected to the database.");
+});*/
+
+const { Client } = require('pg');
+const db = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
 });
+db.connect();
 
 // Code taken directly from Spotify Developers website
 var stateKey = "spotify_auth_state";
@@ -156,28 +163,41 @@ app.get("/spotify_cb", function(req, res) {
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
           if (!error) {
-            inserts = [
-              {
-                UserURI: body.uri,
-                Username: body.display_name,
-                Country: body.country,
-                Picture: body.images[0].url
+
+            dbHandler
+            .selectAllWhere(db, "user", "user_uri='"+body.uri+"'")
+
+            // is the user already in the database ?
+            .then( userData => {
+
+              if (!userData) {
+                let insert = [
+                    body.uri,
+                    body.display_name,
+                    body.country,
+                    body.images[0].url
+                ];
+                // if not insert him
+                dbHandler.insertInto(db, "user", insert, console.log);
               }
-            ];
-            dbHandler.insertInto(db, "User", inserts, () => {
-              console.log("Inserted into User with success !");
-            });
-            res.redirect(
-              "/select?" +
-                querystring.stringify({
-                  table: "track mp3",
-                  userURI: body.uri,
-                  access_token: access_token
-                })
-            );
+            })
+            .catch( err => console.log(err.stack))
+
+            // redirect to /select in any case
+            .finally( () => {
+              res.redirect(
+                "/select?" +
+                  querystring.stringify({
+                    table: "spotify mp3",
+                    user_uri: body.uri,
+                    access_token: access_token
+                  })
+              );
+            })
           }
         });
       } else {
+        console.log(error);
         res.redirect(
           "/?" +
             querystring.stringify({
@@ -221,13 +241,13 @@ app.get("/refresh_token", function(req, res) {
  *****************************************************/
 app.get("/:type/:name", function(req, res) {
   console.log("GET /" + req.params.type + "/" + req.params.name);
+
   switch (req.params.type) {
-    // Here we call dbHandler.js
     case "database":
-      dbHandler.selectAll(db, req.params.name, function(data) {
+
+      dbHandler.selectAll(db, req.params.name, (data) => {
         res.end(JSON.stringify(data));
       });
-      //db.close();
       break;
 
     // Here we just load a file with fs and send it
@@ -272,14 +292,12 @@ app.get("/:type/:name", function(req, res) {
 app.post("/:type/:name", function(req, res) {
   console.log("POST /" + req.params.type + "/" + req.params.name);
   switch (req.params.type) {
-    // Here we call dbHandler.js
+
     case "database":
       dbHandler.insertInto(db, req.params.name, req.body, console.log);
       res.status(200).end(JSON.stringify(req.body));
-      //db.close();
       break;
 
-    // Here we just load a file with fs and send it
     case "osu":
       var recorded = req.body;
       var nom = req.params.name;
@@ -315,15 +333,10 @@ app.post("/:type/:name", function(req, res) {
 });
 
 app.put("/database/:name/:primary_key", function(req, res) {
-  console.log(
-    "PUT update /database/" +
-      req.params.name +
-      "/" +
-      req.params.primary_key +
-      " with value " +
-      req.body["0"]
+  console.log( "PUT update /database/"+ req.params.name +"/"+ req.params.primary_key
+              +" with value " + req.body["0"]
   );
-  dbHandler.updateTrackFields(
+  dbHandler.update(
     db,
     req.params.name,
     req.params.primary_key,
