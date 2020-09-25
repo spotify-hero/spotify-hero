@@ -161,7 +161,7 @@ class GameView {
     this.note.colors[3] = 0x2edda5;
     this.note.colors[4] = 0xffffff;
 
-    this.note.geometry = new THREE.BoxGeometry(this.note.radius * 2.5, 10, 10);
+    this.note.geometry = new THREE.SphereGeometry(this.note.radius + 2);
 
     this.note.materials = [];
     this.note.colors.forEach((color, idx) => {
@@ -170,47 +170,46 @@ class GameView {
       });
     });
 
-    const rectangleGeometry = new THREE.BoxGeometry(
-      this.note.radius * 2.5,
-      5,
-      10
-    );
-
+    const circleGeometry = new THREE.CircleGeometry(this.note.radius + 4);
+    const edges = new THREE.EdgesGeometry( circleGeometry );
     const circles = [];
 
     let paramsFire = {
       color1: '#ffffff',
       color2: '#0069ff',
       color3: '#000000',
-      colorBias: 0.78,
-      burnRate: 3.13,
+      colorBias: 0.8,
+      burnRate: 0.3,
       diffuse: 1.33,
-      viscosity: 0,
-      expansion: -1,
-      swirl: 16.77,
-      drag: 0.2,
-      airSpeed: 7,
-      windX: 0,
-      windY: 0.73,
+      viscosity: 0.25,
+      expansion: -0.25,
+      swirl: 50,
+      drag: 0.35,
+      airSpeed: 12,
+      windX: -0.10,
+      windY: 0.75,
       speed: 500.0,
       massConservation: false
     };
 
+    let plane = new THREE.PlaneBufferGeometry(70, 70);
+
+    this.fires[0] = new Fire(plane, {
+      textureWidth: 256,
+      textureHeight: 256,
+      debug: false
+    });
+
     for (let i = 0; i < 4; i++) {
-      circles[i] = new THREE.Mesh(rectangleGeometry, this.note.materials[i]);
+      circles[i] = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: '#FFFFFF' } ) );
 
-      let plane = new THREE.PlaneBufferGeometry(90, 90);
-
-
-      this.fires[i] = new Fire(plane, {
-        textureWidth: 256,
-        textureHeight: 256,
-        debug: false
-      });
+      if (i>0){
+        this.fires[i] = this.fires[0].clone();
+      }
 
       this.fires[i].clearSources();
-      this.fires[i].addSource( 0.5, 0.1, 0.1, 1.0, 0.0, 1.0 );
-      this.fires[i].position.set(this.xPos[i], this.yEndPoint +43 , this.zEndPoint + 5);
+      this.fires[i].addSource( 0.5, 0.1, 0.1, 0.5, 0.0, 1.0 );
+      this.fires[i].position.set(this.xPos[i], this.yEndPoint + 40 , this.zEndPoint + 7);
       this.fires[i].color1.set(paramsFire.color1);
       this.fires[i].color2.set(paramsFire.color2);
       this.fires[i].color3.set(paramsFire.color3);
@@ -224,25 +223,27 @@ class GameView {
       this.fires[i].windVector.x = paramsFire.windX;
       this.fires[i].windVector.y = paramsFire.windY;
       this.fires[i].speed = paramsFire.speed;
-      this.fires[i].visible = true;
+      this.fires[i].visible = false;
       this.scene.add(this.fires[i]);
     }
 
+    this.fires[0].color2.set('#d200ff');
+    this.fires[1].color2.set('#ff0000');
+    this.fires[2].color2.set('#00ff96');
+
     circles.forEach((circle, idx) => {
       circle.position.set(this.xPos[idx], this.yEndPoint, this.zEndPoint);
-      //circle.rotateX(-.2);
+      circle.rotateX(- Math.PI/2);
 
       // LIGHT UP CIRCLE WHEN KEY IS PRESSED
       setInterval(() => {
         if (this.key.isDownVisually(this.key.pos[idx])) {
-          this.fires[idx].expansion = -0.25;
-          circle.material = this.note.materials[4];
+          this.fires[idx].visible = true;
         } else {
-          this.fires[idx].expansion = -1;
-          circle.material = this.note.materials[idx];
+          this.fires[idx].visible = false;
         }
       }, 40);
-      //this.scene.add(circle);
+      this.scene.add(circle);
     });
   }
 
@@ -261,15 +262,10 @@ class GameView {
 
         if (songNote.duration > 0) {
           let cylinderMaterial = this.note.materials[songNote.position];
-          let cylinderGeometry = new THREE.BoxGeometry(
-            this.note.radius * 2.5,
-            (songNote.duration / 3) * this.note.vel,
-            10
+          let cylinderGeometry = new THREE.CylinderGeometry(
+            5, 5, (songNote.duration / 4)
           );
-          this.cylinders[idx] = new THREE.Mesh(
-            cylinderGeometry,
-            cylinderMaterial
-          );
+          this.cylinders[idx] = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
           this.cylinders[idx].rotateX(this.xRotation);
         }
 
