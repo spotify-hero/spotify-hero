@@ -175,7 +175,7 @@ app.get('/spotify_cb', function (req, res) {
               .catch(err => console.log(err.stack))
 
               // redirect to /select in any case
-              .finally(() => {
+              .then(() => {
                 res.redirect(
                   '/select?' +
                     querystring.stringify({

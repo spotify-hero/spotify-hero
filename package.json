@@ -17,7 +17,7 @@
     "express-handlebars": "^3.1.0",
     "file-loader": "^6.0.0",
     "file-system": "^2.2.2",
-    "handlebars": "^4.7.3",
+    "handlebars": "^4.7.6",
     "jshint": "^2.10.2",
     "mini-css-extract-plugin": "^0.9.0",
     "minimist": "^1.2.5",
