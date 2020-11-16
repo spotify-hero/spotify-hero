@@ -20,9 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('searchTerm').onkeyup = () => {
     filterList('searchTerm');
   };
-  document.getElementById('searchButton').onclick = () => {
-    filterList('searchTerm');
-  };
+
   console.log('Successfully loaded');
 
   //on click on a card, set Volume of Spotify to 0 and load the track on spotify -> display loading animation

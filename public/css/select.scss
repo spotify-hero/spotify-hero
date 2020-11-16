@@ -3,6 +3,10 @@
 @import "../lib/navbar.scss";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 h1 {
   color: #111;
   font-family: "Open Sans", sans-serif;
@@ -15,16 +19,11 @@ h1 {
   position: fixed;
   left: 0;
   top: 0;
-  transform: scale(1.5);
-  -webkit-transform: scale(1.5);
-}
-
-body {
-  overflow: hidden;
 }
 
 .navbar {
-  height: 70px;
+  position: fixed;
+  height: 40px;
   opacity: 0.7;
   background-color: whitesmoke;
 }
@@ -35,39 +34,12 @@ h2 {
 }
 
 .search {
+  left: 25%;
+  position: fixed;
+  text-align: center;
   width: 50%;
-  position: relative;
-  display: flex;
-  text-align: center;
-  margin: 0 auto;
-  padding-bottom: 10px;
-}
-
-#searchTerm {
-  width: 100%;
-  border: 3px solid #00b4cc;
-  border-right: none;
-  padding: 5px;
-  height: 36px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #9dbfaf;
-}
-
-#searchTerm:focus {
-  color: #00b4cc;
-}
-
-#searchButton {
-  width: 40px;
-  height: 36px;
-  border: 1px solid #00b4cc;
-  background: #00b4cc;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
+  padding-top: 70px;
+  z-index: 2;
 }
 
 .loader-wrapper {
@@ -149,11 +121,10 @@ h2 {
 
 .cards {
   cursor: pointer;
-  overflow: auto;
-  height: 496px;
   display: flex;
   flex-wrap: wrap;
-  overflow-y: auto;
+  flex-direction: row;
+  margin: 80px auto;
 }
 
 .card {
@@ -182,7 +153,6 @@ h2 {
 
 .card-image {
   height: 300px;
-
   position: relative;
   overflow: hidden;
 
@@ -226,9 +196,4 @@ h2 {
 .card-date,
 .card-excerpt {
   color: #777;
-}
-
-.container {
-  align-items: center;
-  margin-top: 5%;
 }
