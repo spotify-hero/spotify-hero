@@ -4,16 +4,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 html {
-  overflow: scroll;
-  overflow-x: hidden;
-}
-::-webkit-scrollbar {
-  width: 0px;  /* Remove scrollbar space */
-  background: transparent;  /* Optional: just make scrollbar invisible */
-}
-/* Optional: show position indicator in red */
-::-webkit-scrollbar-thumb {
-  background: #FF0000;
+  background-color: #777;
 }
 
 h1 {
@@ -23,23 +14,22 @@ h1 {
   text-align: center;
 }
 
-#select-background {
-  // fixed in top-right corner
-  position: fixed;
-  left: 0;
-  top: 0;
+h2 {
+  font-family: sans-serif;
+  font-size: small;
+}
+
+// Remove scrollbar
+::-webkit-scrollbar {
+  width: 0px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
 .navbar {
   position: fixed;
   height: 40px;
-  opacity: 0.7;
+  width: 100%;
   background-color: whitesmoke;
-}
-
-h2 {
-  font-family: sans-serif;
-  font-size: small;
 }
 
 .search {
@@ -129,10 +119,12 @@ h2 {
 }
 
 .cards {
+  background-color: #777;
   cursor: pointer;
   display: flex;
-  flex-wrap: wrap;;
-  margin: 30px auto;
+  flex-wrap: wrap;
+  padding-top: 50px;
+  margin: 0px auto;
 }
 
 .card {
@@ -204,9 +196,4 @@ h2 {
 .card-date,
 .card-excerpt {
   color: #777;
-}
-
-.container {
-  align-items: center;
-  margin-top: 5%;
 }
