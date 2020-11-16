@@ -41,7 +41,7 @@ class Game {
 
     document.getElementsByClassName('select-pause')[0].onclick = function () {
       window.location.href =
-        '/select?table=track%20mp3&access_token=' +
+        '/select?table=spotify%20mp3&access_token=' +
         getQueryParams().access_token;
     };
 
@@ -153,20 +153,22 @@ class Game {
       document.getElementsByClassName('pause')[0].className = 'pause';
       this.gameView.isPlay = false;
       this.started = false;
-    } else if (
-      (e.keyCode == 122 || e.keyCode == 90) &&
-      getQueryParams().mode === 'record'
-    ) {
-      //User pressed "Z" key and is in recordMode => send .osu file to database
-      var filename = getQueryParams().track_artist.split(' ').join('');
-      filename +=
-        '_' + getQueryParams().track_name.split(' ').join('') + '.osu';
 
-      //deal with both cases : Spotify uri or filename
-      let uri = getQueryParams().track_uri || getQueryParams().mp3_file;
-      this.sendOsuFile(filename, this.gameView.recordMap, this.audioMode, uri);
-      console.log('Recorded beatmap sent to server');
-      console.log(this.gameView.recordMap);
+    // ##################   RECORD PART (unavailable for now) #########
+    // }else if (
+    //   (e.keyCode == 122 || e.keyCode == 90) &&
+    //   getQueryParams().mode === 'record'
+    // ) {
+    //   //User pressed "Z" key and is in recordMode => send .osu file to database
+    //   var filename = getQueryParams().track_artist.split(' ').join('');
+    //   filename +=
+    //     '_' + getQueryParams().track_name.split(' ').join('') + '.osu';
+
+    //   //deal with both cases : Spotify uri or filename
+    //   let uri = getQueryParams().track_uri || getQueryParams().mp3_file;
+    //   this.sendOsuFile(filename, this.gameView.recordMap, this.audioMode, uri);
+    //   console.log('Recorded beatmap sent to server');
+    //   console.log(this.gameView.recordMap);
     } else if (e.keyCode == 186 && this.gameView) {
       //User pressed "$" key => set new delay for this track
       let delay = new Date().getTime() - this.gameView.startTimeRecord;
@@ -178,7 +180,7 @@ class Game {
       const audio = getQueryParams().audio;
       let trackID;
 
-      if (audio == 'track') {
+      if (audio == 'spotify') {
         delay -= 1200;
         trackID = getQueryParams().track_uri;
       } else if (audio == 'mp3') {
@@ -196,7 +198,7 @@ class Game {
    */
   playMusic(musicDelay) {
     switch (this.audioMode) {
-      case 'track':
+      case 'spotify':
         setTimeout(() => {
           var uri = getQueryParams().track_uri;
           if (uri) {
@@ -223,7 +225,7 @@ class Game {
 
   pauseMusic() {
     switch (this.audioMode) {
-      case 'track':
+      case 'spotify':
         let access_token = getQueryParams().access_token;
         this.spAPI.pause(access_token);
         break;
@@ -255,7 +257,6 @@ class Game {
         console.log('ERROR : Could not get file from server !');
       }
     });
-
     this.beatmap = osuData;
   }
 
@@ -287,7 +288,7 @@ class Game {
             console.log('Chained AJAX successfull !');
             //---> need to advert user
             window.location.replace(
-              '/select?table=track%20mp3&access_token=' +
+              '/select?table=spotify%20mp3&access_token=' +
                 getQueryParams().access_token
             );
           },
@@ -319,7 +320,7 @@ class Game {
       data: JSON.stringify({ 0: 'Trackdelay = ' + delay + '' }),
       success: function (response) {
         window.location.href =
-          '/select?table=track%20mp3' +
+          '/select?table=spotify%20mp3' +
           '&UserURI=' +
           getQueryParams().user_uri +
           '&access_token=' +

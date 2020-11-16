@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let array = getQueryParams().table.split(' ');
   let access_token = getQueryParams().access_token || undefined;
 
-  //for each database (track & mp3 for now) create cards
+  //for each database (spotify & mp3 for now) create cards
   array.forEach(table => {
     addTrackHTMLBeforeElement(table);
   });
