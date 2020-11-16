@@ -3,8 +3,17 @@
 @import "../lib/navbar.scss";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
 ::-webkit-scrollbar {
-  display: none;
+  width: 0px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
 }
 
 h1 {
@@ -38,7 +47,7 @@ h2 {
   position: fixed;
   text-align: center;
   width: 50%;
-  padding-top: 70px;
+  padding-top: 10px;
   z-index: 2;
 }
 
@@ -122,9 +131,8 @@ h2 {
 .cards {
   cursor: pointer;
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  margin: 80px auto;
+  flex-wrap: wrap;;
+  margin: 30px auto;
 }
 
 .card {
@@ -196,4 +204,9 @@ h2 {
 .card-date,
 .card-excerpt {
   color: #777;
+}
+
+.container {
+  align-items: center;
+  margin-top: 5%;
 }

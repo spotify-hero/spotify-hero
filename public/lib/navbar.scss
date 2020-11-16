@@ -12,14 +12,14 @@
     /*-----------------------------------------------------------------------*/
     .navbar {
         // the navbar has to be on top, whatever are the other elements
-        z-index: 100;
+        z-index: 1;
         padding-left: 20px;
         padding-right: 20px;
     }
 
     #navbar-logo {
         $margin: 0px;
-        height: $navbarH - $margin - $margin;
+        height: $navbarH;
         margin: $margin;
     }
 
