@@ -83,6 +83,12 @@ body,
   margin-bottom: 10%;
 }
 
+.navbar {
+  position: fixed;
+  height: 50px;
+  width: 100%;
+}
+
 // personal modifications to original lib/glow-on-hover.css
 .glow-on-hover {
   width: 150px;
